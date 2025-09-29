@@ -180,8 +180,8 @@ export default function ClientDashboard() {
                             </div>
                           </div>
                         </div>
-                        <Badge className={`${getStatusColor(reservation.status)} text-white`} data-testid={`reservation-status-${reservation.id}`}>
-                          {getStatusLabel(reservation.status)}
+                        <Badge className={`${getStatusColor(reservation.status || 'pending')} text-white`} data-testid={`reservation-status-${reservation.id}`}>
+                          {getStatusLabel(reservation.status || 'pending')}
                         </Badge>
                       </div>
                       

@@ -57,11 +57,11 @@ export interface IStorage {
   createSubscription(subscription: InsertSubscription): Promise<Subscription>;
   updateSubscription(id: string, subscription: Partial<InsertSubscription>): Promise<Subscription>;
 
-  sessionStore: session.SessionStore;
+  sessionStore: any;
 }
 
 export class DatabaseStorage implements IStorage {
-  sessionStore: session.SessionStore;
+  sessionStore: any;
 
   constructor() {
     this.sessionStore = new PostgresSessionStore({
@@ -143,17 +143,17 @@ export class DatabaseStorage implements IStorage {
   }
 
   async searchVehicles(region?: string, category?: string): Promise<Vehicle[]> {
-    let query = db.select().from(vehicles).where(eq(vehicles.available, true));
+    const conditions = [eq(vehicles.available, true)];
     
     if (region) {
-      query = query.where(like(vehicles.region, `%${region}%`));
+      conditions.push(like(vehicles.region, `%${region}%`));
     }
     
     if (category) {
-      query = query.where(eq(vehicles.category, category));
+      conditions.push(eq(vehicles.category, category));
     }
     
-    return await query.orderBy(desc(vehicles.createdAt));
+    return await db.select().from(vehicles).where(and(...conditions)).orderBy(desc(vehicles.createdAt));
   }
 
   async createVehicle(insertVehicle: InsertVehicle): Promise<Vehicle> {
@@ -196,7 +196,7 @@ export class DatabaseStorage implements IStorage {
   async updateReservationStatus(id: string, status: string): Promise<Reservation> {
     const [reservation] = await db
       .update(reservations)
-      .set({ status })
+      .set({ status: status as any })
       .where(eq(reservations.id, id))
       .returning();
     return reservation;

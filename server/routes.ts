@@ -5,13 +5,9 @@ import { setupAuth } from "./auth";
 import { insertVehicleSchema, insertReservationSchema, insertAgencySchema } from "@shared/schema";
 import Stripe from "stripe";
 
-if (!process.env.STRIPE_SECRET_KEY) {
-  throw new Error('Missing required Stripe secret: STRIPE_SECRET_KEY. Please set VITE_STRIPE_PUBLIC_KEY and STRIPE_SECRET_KEY environment variables.');
-}
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: "2024-11-20.acacia",
-});
+const stripe = process.env.STRIPE_SECRET_KEY ? new Stripe(process.env.STRIPE_SECRET_KEY, {
+  apiVersion: "2024-11-20.acacia" as any,
+}) : null;
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Setup authentication
@@ -220,6 +216,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
+    if (!stripe) {
+      return res.status(500).json({ message: "Stripe not configured. Please add STRIPE_SECRET_KEY." });
+    }
+
     try {
       const { amount, reservationId } = req.body;
       const paymentIntent = await stripe.paymentIntents.create({
@@ -257,6 +257,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
+    if (!stripe) {
+      return res.status(500).json({ message: "Stripe not configured. Please add STRIPE_SECRET_KEY." });
+    }
+
     try {
       const user = req.user!;
       if (user.role !== "agency") {
@@ -279,20 +283,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
         await storage.updateUserStripeInfo(user.id, stripeCustomerId);
       }
 
-      const subscription = await stripe.subscriptions.create({
+      const subscription = await stripe!.subscriptions.create({
         customer: stripeCustomerId,
         items: [{
           price_data: {
             currency: 'eur',
-            product_data: {
-              name: 'Carivoo Premium Agency Plan',
-              description: 'Premium placement and enhanced visibility',
-            },
-            unit_amount: 2999, // €29.99
+            product: 'prod_carivoo_premium',
+            unit_amount: 2999,
             recurring: {
               interval: 'month',
             },
-          },
+          } as any,
         }],
         payment_behavior: 'default_incomplete',
         expand: ['latest_invoice.payment_intent'],
