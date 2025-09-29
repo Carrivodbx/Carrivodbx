@@ -7,7 +7,7 @@ import { Shield, Crown, Zap, ChartLine, Users, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
 import type { Vehicle } from "@shared/schema";
-import agencyBg from "@assets/stock_images/dubai_palm_jumeirah__1480bace.jpg";
+import agencyBg from "@assets/stock_images/elegant_professional_f758cc17.jpg";
 
 export default function HomePage() {
   const [, setLocation] = useLocation();

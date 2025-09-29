@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Search, Car, Building } from "lucide-react";
-import heroBackground from "@assets/stock_images/dubai_skyline_at_nig_895bbdaf.jpg";
+import heroBackground from "@assets/stock_images/minimalist_luxury_ca_c8e9db1a.jpg";
 
 export default function HeroSection() {
   const [, setLocation] = useLocation();
