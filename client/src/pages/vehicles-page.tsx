@@ -11,7 +11,7 @@ import type { Vehicle } from "@shared/schema";
 
 export default function VehiclesPage() {
   const [searchRegion, setSearchRegion] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
 
   const { data: vehicles, isLoading } = useQuery<Vehicle[]>({
@@ -19,7 +19,7 @@ export default function VehiclesPage() {
     queryFn: async () => {
       const params = new URLSearchParams();
       if (searchRegion) params.set("region", searchRegion);
-      if (selectedCategory) params.set("category", selectedCategory);
+      if (selectedCategory && selectedCategory !== "all") params.set("category", selectedCategory);
       
       const response = await fetch(`/api/vehicles?${params.toString()}`);
       if (!response.ok) throw new Error("Failed to fetch vehicles");
@@ -98,7 +98,7 @@ export default function VehiclesPage() {
                     <SelectValue placeholder="Catégorie" />
                   </SelectTrigger>
                   <SelectContent className="glass-morphism border-border">
-                    <SelectItem value="">Toutes catégories</SelectItem>
+                    <SelectItem value="all">Toutes catégories</SelectItem>
                     {categories.map((category) => (
                       <SelectItem key={category} value={category}>
                         {category}
@@ -113,9 +113,9 @@ export default function VehiclesPage() {
           {/* Category Filter Buttons */}
           <div className="flex flex-wrap gap-4 justify-center mb-12">
             <Button
-              variant={selectedCategory === "" ? "default" : "outline"}
-              className={`${selectedCategory === "" ? "btn-neon bg-gradient-to-r from-primary to-secondary" : "btn-neon border-border hover:border-primary"}`}
-              onClick={() => setSelectedCategory("")}
+              variant={selectedCategory === "all" ? "default" : "outline"}
+              className={`${selectedCategory === "all" ? "btn-neon bg-gradient-to-r from-primary to-secondary" : "btn-neon border-border hover:border-primary"}`}
+              onClick={() => setSelectedCategory("all")}
               data-testid="button-filter-all"
             >
               Tous

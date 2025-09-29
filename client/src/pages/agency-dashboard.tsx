@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/use-auth";
+import { useLocation } from "wouter";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import Navbar from "@/components/navbar";
 import VehicleForm from "@/components/vehicle-form";
@@ -14,6 +15,7 @@ import type { Vehicle, Agency } from "@shared/schema";
 
 export default function AgencyDashboard() {
   const { user } = useAuth();
+  const [, setLocation] = useLocation();
   const { toast } = useToast();
   const [isVehicleFormOpen, setIsVehicleFormOpen] = useState(false);
   const [editingVehicle, setEditingVehicle] = useState<Vehicle | null>(null);
@@ -94,7 +96,10 @@ export default function AgencyDashboard() {
               <p className="text-muted-foreground mb-6">
                 Vous devez d'abord créer votre profil d'agence pour accéder au tableau de bord.
               </p>
-              <Button onClick={() => window.location.href = "/dashboard/agency/setup"}>
+              <Button 
+                onClick={() => setLocation("/dashboard/agency/setup")}
+                data-testid="button-create-agency-profile"
+              >
                 Créer mon profil d'agence
               </Button>
             </div>
