@@ -90,9 +90,35 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative overflow-x-hidden">
+      {/* Decorative Background Elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        {/* Palm Trees Left */}
+        <div className="absolute left-0 bottom-0 w-32 h-64 opacity-10">
+          <div className="text-8xl">🌴</div>
+        </div>
+        <div className="absolute left-16 bottom-20 w-32 h-64 opacity-10">
+          <div className="text-6xl">🌴</div>
+        </div>
+        
+        {/* Palm Trees Right */}
+        <div className="absolute right-0 bottom-0 w-32 h-64 opacity-10">
+          <div className="text-8xl">🌴</div>
+        </div>
+        <div className="absolute right-16 bottom-20 w-32 h-64 opacity-10">
+          <div className="text-6xl">🌴</div>
+        </div>
+
+        {/* Dubai Skyline Silhouette */}
+        <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-primary/5 to-transparent"></div>
+        
+        {/* Neon Glow Effects */}
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+      </div>
+
       {/* Header */}
-      <div className="flex items-center justify-between p-6">
+      <div className="flex items-center justify-between p-6 relative z-10">
         <Link href="/" className="flex items-center text-muted-foreground hover:text-primary transition-colors" data-testid="link-home">
           <ArrowLeft className="mr-2" size={20} />
           Retour à l'accueil
@@ -103,7 +129,7 @@ export default function AuthPage() {
         </h1>
       </div>
 
-      <div className="flex items-center justify-center min-h-[calc(100vh-80px)] px-4">
+      <div className="flex items-center justify-center min-h-[calc(100vh-80px)] px-4 relative z-10">
         <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           
           {/* Auth Forms */}

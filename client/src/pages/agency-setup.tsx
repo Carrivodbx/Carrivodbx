@@ -84,10 +84,27 @@ export default function AgencySetup() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative overflow-x-hidden">
+      {/* Decorative Background Elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-20 left-10 w-28 h-28 opacity-5">
+          <div className="text-8xl">🌴</div>
+        </div>
+        <div className="absolute bottom-20 right-10 w-32 h-32 opacity-5">
+          <div className="text-9xl">🌴</div>
+        </div>
+        <div className="absolute top-1/2 right-1/3 w-24 h-24 opacity-5">
+          <div className="text-7xl">🌴</div>
+        </div>
+        
+        {/* Neon Glow Effects */}
+        <div className="absolute top-1/4 left-1/3 w-96 h-96 bg-secondary/5 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/3 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+      </div>
+
       <Navbar />
       
-      <div className="pt-20">
+      <div className="pt-20 relative z-10">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="text-center mb-12">
             <div className="w-20 h-20 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-6">
