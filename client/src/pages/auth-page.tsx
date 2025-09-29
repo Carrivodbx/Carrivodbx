@@ -7,7 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Car, User, Building, ArrowLeft } from "lucide-react";
+import { User, Building, ArrowLeft } from "lucide-react";
+import logoPath from "@assets/Image 2_1759187802515.jpg";
 import { useToast } from "@/hooks/use-toast";
 import { insertUserSchema } from "@shared/schema";
 import { Link } from "wouter";
@@ -123,10 +124,7 @@ export default function AuthPage() {
           <ArrowLeft className="mr-2" size={20} />
           Retour à l'accueil
         </Link>
-        <h1 className="text-2xl font-orbitron font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-          <Car className="inline mr-2" size={24} />
-          CARIVOO
-        </h1>
+        <img src={logoPath} alt="Carivoo Logo" className="h-10 w-auto" />
       </div>
 
       <div className="flex items-center justify-center min-h-[calc(100vh-80px)] px-4 relative z-10">

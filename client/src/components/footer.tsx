@@ -1,5 +1,6 @@
 import { Link } from "wouter";
-import { Car, Instagram, Facebook, Twitter, Linkedin } from "lucide-react";
+import { Instagram, Facebook, Twitter, Linkedin } from "lucide-react";
+import logoPath from "@assets/Image 2_1759187802515.jpg";
 
 export default function Footer() {
   return (
@@ -8,10 +9,9 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="col-span-1 md:col-span-2">
-            <h3 className="text-2xl font-orbitron font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent mb-4">
-              <Car className="inline mr-2" size={24} />
-              CARIVOO
-            </h3>
+            <div className="mb-4">
+              <img src={logoPath} alt="Carivoo Logo" className="h-12 w-auto" />
+            </div>
             <p className="text-muted-foreground mb-6 max-w-md">
               La plateforme de référence pour la location de véhicules de luxe. 
               Connectons les passionnés d'automobile aux plus belles voitures du monde.
