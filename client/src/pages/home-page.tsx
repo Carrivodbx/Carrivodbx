@@ -7,6 +7,7 @@ import { Shield, Crown, Zap, ChartLine, Users, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
 import type { Vehicle } from "@shared/schema";
+import agencyBg from "@assets/stock_images/dubai_palm_jumeirah__1480bace.jpg";
 
 export default function HomePage() {
   const [, setLocation] = useLocation();
@@ -120,8 +121,8 @@ export default function HomePage() {
       <section className="py-20 relative overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
-            src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=2126&q=80" 
-            alt="Showroom de voitures de luxe moderne" 
+            src={agencyBg}
+            alt="Dubai Palm Jumeirah luxury resort" 
             className="w-full h-full object-cover" 
           />
           <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-secondary/20 to-accent/20"></div>
