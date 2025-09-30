@@ -38,7 +38,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-20 sm:h-24">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3 flex-shrink-0">
-            <img src={logoPath} alt="Carivoo Logo" className="h-16 sm:h-20 w-auto" style={{ mixBlendMode: 'screen', filter: 'brightness(2) contrast(2.5) saturate(1.5)' }} />
+            <img src={logoPath} alt="Carivoo Logo" className="h-16 sm:h-20 w-auto" style={{ mixBlendMode: 'multiply', filter: 'invert(1) brightness(2) contrast(1.5)' }} />
           </Link>
           
           {/* Navigation Links - Desktop */}
