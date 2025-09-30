@@ -42,7 +42,7 @@ export default function Navbar() {
           </Link>
           
           {/* Navigation Links - Desktop */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden lg:flex items-center space-x-6">
             <Link href="/">
               <span className={`font-medium transition-colors duration-200 ${
                 location === "/" ? "text-primary" : "text-muted-foreground hover:text-primary"
@@ -55,6 +55,36 @@ export default function Navbar() {
                 location === "/vehicles" ? "text-primary" : "text-muted-foreground hover:text-primary"
               }`}>
                 Véhicules
+              </span>
+            </Link>
+            <Link href="/vehicles?category=Sportive">
+              <span className={`font-medium text-sm transition-colors duration-200 text-muted-foreground hover:text-primary`}>
+                Sportive
+              </span>
+            </Link>
+            <Link href="/vehicles?category=Berline">
+              <span className={`font-medium text-sm transition-colors duration-200 text-muted-foreground hover:text-primary`}>
+                Berline
+              </span>
+            </Link>
+            <Link href="/vehicles?category=SUV Luxe">
+              <span className={`font-medium text-sm transition-colors duration-200 text-muted-foreground hover:text-primary`}>
+                SUV Luxe
+              </span>
+            </Link>
+            <Link href="/vehicles?category=Cabriolet">
+              <span className={`font-medium text-sm transition-colors duration-200 text-muted-foreground hover:text-primary`}>
+                Cabriolet
+              </span>
+            </Link>
+            <Link href="/vehicles?category=Électrique">
+              <span className={`font-medium text-sm transition-colors duration-200 text-muted-foreground hover:text-primary`}>
+                Électrique
+              </span>
+            </Link>
+            <Link href="/vehicles?category=Hybride">
+              <span className={`font-medium text-sm transition-colors duration-200 text-muted-foreground hover:text-primary`}>
+                Hybride
               </span>
             </Link>
           </div>
@@ -143,6 +173,69 @@ export default function Navbar() {
                     >
                       <Car className="mr-3" size={20} />
                       Véhicules
+                    </Button>
+                  </Link>
+
+                  <div className="h-px bg-border my-2" />
+                  <p className="text-xs font-semibold text-muted-foreground px-3 py-1">CATÉGORIES</p>
+                  
+                  <Link href="/vehicles?category=Sportive" onClick={handleNavClick}>
+                    <Button 
+                      variant="ghost" 
+                      className="w-full justify-start text-base text-foreground"
+                      data-testid="mobile-link-sportive"
+                    >
+                      Sportive
+                    </Button>
+                  </Link>
+                  
+                  <Link href="/vehicles?category=Berline" onClick={handleNavClick}>
+                    <Button 
+                      variant="ghost" 
+                      className="w-full justify-start text-base text-foreground"
+                      data-testid="mobile-link-berline"
+                    >
+                      Berline
+                    </Button>
+                  </Link>
+                  
+                  <Link href="/vehicles?category=SUV Luxe" onClick={handleNavClick}>
+                    <Button 
+                      variant="ghost" 
+                      className="w-full justify-start text-base text-foreground"
+                      data-testid="mobile-link-suv"
+                    >
+                      SUV Luxe
+                    </Button>
+                  </Link>
+                  
+                  <Link href="/vehicles?category=Cabriolet" onClick={handleNavClick}>
+                    <Button 
+                      variant="ghost" 
+                      className="w-full justify-start text-base text-foreground"
+                      data-testid="mobile-link-cabriolet"
+                    >
+                      Cabriolet
+                    </Button>
+                  </Link>
+                  
+                  <Link href="/vehicles?category=Électrique" onClick={handleNavClick}>
+                    <Button 
+                      variant="ghost" 
+                      className="w-full justify-start text-base text-foreground"
+                      data-testid="mobile-link-electrique"
+                    >
+                      Électrique
+                    </Button>
+                  </Link>
+                  
+                  <Link href="/vehicles?category=Hybride" onClick={handleNavClick}>
+                    <Button 
+                      variant="ghost" 
+                      className="w-full justify-start text-base text-foreground"
+                      data-testid="mobile-link-hybride"
+                    >
+                      Hybride
                     </Button>
                   </Link>
 

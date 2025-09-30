@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useSearch } from "wouter";
 import Navbar from "@/components/navbar";
 import VehicleCard from "@/components/vehicle-card";
 import Footer from "@/components/footer";
@@ -11,9 +12,21 @@ import type { Vehicle } from "@shared/schema";
 import luxuryCarBackground from "@assets/stock_images/black_luxury_sedan_b_24b4a2aa.jpg";
 
 export default function VehiclesPage() {
+  const searchParams = useSearch();
   const [searchRegion, setSearchRegion] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
+
+  // Update category when URL search params change
+  useEffect(() => {
+    const urlParams = new URLSearchParams(searchParams || "");
+    const categoryParam = urlParams.get("category");
+    if (categoryParam) {
+      setSelectedCategory(categoryParam);
+    } else {
+      setSelectedCategory("all");
+    }
+  }, [searchParams]);
 
   const { data: vehicles, isLoading } = useQuery<Vehicle[]>({
     queryKey: ["/api/vehicles", searchRegion, selectedCategory],
