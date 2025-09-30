@@ -16,14 +16,23 @@ export default function VehicleDetailPage() {
   const [, setLocation] = useLocation();
   const { user } = useAuth();
 
-  const { data: vehicle, isLoading: vehicleLoading } = useQuery<Vehicle>({
+  const { data: vehicle, isLoading: vehicleLoading, error } = useQuery<Vehicle>({
     queryKey: ["/api/vehicles", id],
     queryFn: async () => {
+      console.log("Fetching vehicle with ID:", id);
       const response = await fetch(`/api/vehicles/${id}`);
-      if (!response.ok) throw new Error("Failed to fetch vehicle");
-      return response.json();
+      console.log("Response status:", response.status);
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ message: "Unknown error" }));
+        console.error("Failed to fetch vehicle:", errorData);
+        throw new Error(errorData.message || "Failed to fetch vehicle");
+      }
+      const data = await response.json();
+      console.log("Vehicle fetched successfully:", data);
+      return data;
     },
     enabled: !!id,
+    retry: false,
   });
 
   const handleBooking = () => {
