@@ -37,7 +37,7 @@ export default function HeroSection() {
       <div className="relative z-10 text-center max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-orbitron font-black mb-6" data-testid="text-hero-title">
           <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-            SERVICE DE LOCATION PREMIUM
+            LE FUTUR DU RAFFINEMENT
           </span>
         </h1>
         <p className="text-xl md:text-2xl mb-8 text-gray-200 max-w-3xl mx-auto" data-testid="text-hero-subtitle">
