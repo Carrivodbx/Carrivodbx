@@ -212,7 +212,7 @@ export default function VehicleForm({ vehicle, onSuccess, onCancel }: VehicleFor
 
         <div>
           <Label htmlFor="category" className="text-foreground">Catégorie *</Label>
-          <Select value={formData.category} onValueChange={(value) => handleInputChange("category", value)}>
+          <Select value={formData.category} onValueChange={(value) => handleInputChange("category", value)} required>
             <SelectTrigger className="bg-muted border-border text-foreground" data-testid="select-vehicle-category">
               <SelectValue placeholder="Sélectionner une catégorie" />
             </SelectTrigger>
