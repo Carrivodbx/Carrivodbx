@@ -142,11 +142,19 @@ export default function AgencySetup() {
                     type="text"
                     placeholder="Ex: Luxury Cars Monaco"
                     value={formData.name}
-                    onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                    onChange={(e) => {
+                      console.log("Name changed to:", e.target.value);
+                      setFormData(prev => ({ ...prev, name: e.target.value }));
+                    }}
                     className="bg-muted border-border text-foreground"
                     required
                     data-testid="input-agency-name"
                   />
+                  {!formData.name && (
+                    <p className="text-sm text-yellow-500 mt-1">
+                      ⚠️ Le nom de l'agence est obligatoire
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -197,7 +205,8 @@ export default function AgencySetup() {
                   <Button
                     type="submit"
                     disabled={createAgencyMutation.isPending || !formData.name}
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-8 text-2xl font-bold rounded-xl shadow-lg"
+                    onClick={() => console.log("Button clicked!", { formData, disabled: !formData.name })}
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-8 text-2xl font-bold rounded-xl shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                     data-testid="button-create-agency"
                   >
                     {createAgencyMutation.isPending ? (
@@ -206,6 +215,11 @@ export default function AgencySetup() {
                       "CRÉER MON PROFIL D'AGENCE"
                     )}
                   </Button>
+                  {!formData.name && (
+                    <p className="text-sm text-center text-yellow-500 mt-2">
+                      Veuillez remplir le nom de l'agence pour continuer
+                    </p>
+                  )}
                 </div>
               </form>
             </CardContent>
