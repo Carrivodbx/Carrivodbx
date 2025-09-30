@@ -100,25 +100,26 @@ export default function AuthPage() {
       </div>
 
       {/* Header */}
-      <div className="flex items-center justify-between p-6 relative z-10">
-        <Link href="/" className="flex items-center text-muted-foreground hover:text-primary transition-colors" data-testid="link-home">
+      <div className="flex items-center justify-between p-4 sm:p-6 relative z-10">
+        <Link href="/" className="flex items-center text-sm sm:text-base text-muted-foreground hover:text-primary transition-colors" data-testid="link-home">
           <ArrowLeft className="mr-2" size={20} />
-          Retour à l'accueil
+          <span className="hidden sm:inline">Retour à l'accueil</span>
+          <span className="sm:hidden">Retour</span>
         </Link>
-        <img src={logoPath} alt="Carivoo Logo" className="h-10 w-auto" style={{ mixBlendMode: 'screen', filter: 'brightness(1.3) contrast(1.5) saturate(1.2)' }} />
+        <img src={logoPath} alt="Carivoo Logo" className="h-8 sm:h-10 w-auto" style={{ mixBlendMode: 'screen', filter: 'brightness(1.3) contrast(1.5) saturate(1.2)' }} />
       </div>
 
-      <div className="flex items-center justify-center min-h-[calc(100vh-80px)] px-4 relative z-10">
-        <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+      <div className="flex items-center justify-center min-h-[calc(100vh-80px)] px-4 relative z-10 py-6 sm:py-0">
+        <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-center">
           
           {/* Auth Forms */}
           <div className="w-full max-w-md mx-auto lg:mx-0">
             <Card className="glass-morphism neon-border">
-              <CardHeader className="text-center">
-                <CardTitle className="text-2xl font-orbitron font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              <CardHeader className="text-center p-4 sm:p-6">
+                <CardTitle className="text-xl sm:text-2xl font-orbitron font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                   Bienvenue sur Carivoo
                 </CardTitle>
-                <CardDescription className="text-muted-foreground">
+                <CardDescription className="text-sm sm:text-base text-muted-foreground">
                   Connectez-vous ou créez votre compte pour accéder aux véhicules de luxe
                 </CardDescription>
               </CardHeader>
