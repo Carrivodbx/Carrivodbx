@@ -92,30 +92,11 @@ export default function AuthPage() {
 
   return (
     <div className="min-h-screen bg-background relative overflow-x-hidden">
-      {/* Decorative Background Elements */}
-      <div className="absolute inset-0 pointer-events-none">
-        {/* Palm Trees Left */}
-        <div className="absolute left-0 bottom-0 w-32 h-64 opacity-10">
-          <div className="text-8xl">🌴</div>
-        </div>
-        <div className="absolute left-16 bottom-20 w-32 h-64 opacity-10">
-          <div className="text-6xl">🌴</div>
-        </div>
-        
-        {/* Palm Trees Right */}
-        <div className="absolute right-0 bottom-0 w-32 h-64 opacity-10">
-          <div className="text-8xl">🌴</div>
-        </div>
-        <div className="absolute right-16 bottom-20 w-32 h-64 opacity-10">
-          <div className="text-6xl">🌴</div>
-        </div>
-
-        {/* Dubai Skyline Silhouette */}
-        <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-primary/5 to-transparent"></div>
-        
-        {/* Neon Glow Effects */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+      {/* Subtle Decorative Elements */}
+      <div className="absolute inset-0 pointer-events-none opacity-20">
+        <div className="absolute top-20 left-20 w-px h-40 bg-gradient-to-b from-transparent via-border to-transparent"></div>
+        <div className="absolute top-1/2 right-20 w-px h-40 bg-gradient-to-b from-transparent via-border to-transparent"></div>
+        <div className="absolute bottom-20 left-1/3 w-40 h-px bg-gradient-to-r from-transparent via-border to-transparent"></div>
       </div>
 
       {/* Header */}

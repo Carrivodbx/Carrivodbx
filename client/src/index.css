@@ -77,15 +77,13 @@
 
 @layer components {
   .neon-border {
-    border: 2px solid transparent;
-    background: linear-gradient(hsl(240, 10%, 12%), hsl(240, 10%, 12%)) padding-box,
-                linear-gradient(45deg, var(--primary), var(--secondary), var(--accent)) border-box;
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
   
   .glass-morphism {
-    background: rgba(30, 30, 30, 0.7);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(30, 30, 30, 0.5);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
   }
   
   .hero-gradient {
@@ -103,7 +101,7 @@
   
   .btn-neon:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(255, 20, 147, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   }
   
   .btn-neon::before {

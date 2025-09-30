@@ -53,21 +53,10 @@ export default function VehicleDetailPage() {
           <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background"></div>
         </div>
 
-        {/* Decorative Background Elements */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-24 left-5 w-28 h-28 opacity-5 animate-pulse">
-            <div className="text-8xl">🌴</div>
-          </div>
-          <div className="absolute bottom-20 right-10 w-32 h-32 opacity-5 animate-pulse" style={{animationDelay: '1s'}}>
-            <div className="text-9xl">🌴</div>
-          </div>
-          <div className="absolute top-1/2 right-1/3 w-24 h-24 opacity-5 animate-pulse" style={{animationDelay: '2s'}}>
-            <div className="text-7xl">🌴</div>
-          </div>
-          
-          {/* Neon Glow Effects */}
-          <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-1/3 left-1/4 w-96 h-96 bg-accent/5 rounded-full blur-3xl animate-pulse" style={{animationDelay: '1.5s'}}></div>
+        {/* Subtle Decorative Elements */}
+        <div className="absolute inset-0 pointer-events-none opacity-20">
+          <div className="absolute top-20 right-20 w-px h-40 bg-gradient-to-b from-transparent via-border to-transparent"></div>
+          <div className="absolute bottom-40 left-20 w-px h-40 bg-gradient-to-b from-transparent via-border to-transparent"></div>
         </div>
 
         <Navbar />
@@ -102,21 +91,10 @@ export default function VehicleDetailPage() {
           <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background"></div>
         </div>
 
-        {/* Decorative Background Elements */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-24 left-5 w-28 h-28 opacity-5 animate-pulse">
-            <div className="text-8xl">🌴</div>
-          </div>
-          <div className="absolute bottom-20 right-10 w-32 h-32 opacity-5 animate-pulse" style={{animationDelay: '1s'}}>
-            <div className="text-9xl">🌴</div>
-          </div>
-          <div className="absolute top-1/2 right-1/3 w-24 h-24 opacity-5 animate-pulse" style={{animationDelay: '2s'}}>
-            <div className="text-7xl">🌴</div>
-          </div>
-          
-          {/* Neon Glow Effects */}
-          <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-1/3 left-1/4 w-96 h-96 bg-accent/5 rounded-full blur-3xl animate-pulse" style={{animationDelay: '1.5s'}}></div>
+        {/* Subtle Decorative Elements */}
+        <div className="absolute inset-0 pointer-events-none opacity-20">
+          <div className="absolute top-20 right-20 w-px h-40 bg-gradient-to-b from-transparent via-border to-transparent"></div>
+          <div className="absolute bottom-40 left-20 w-px h-40 bg-gradient-to-b from-transparent via-border to-transparent"></div>
         </div>
 
         <Navbar />
@@ -140,21 +118,20 @@ export default function VehicleDetailPage() {
 
   return (
     <div className="min-h-screen relative overflow-x-hidden">
-      {/* Decorative Background Elements */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-24 left-5 w-28 h-28 opacity-5">
-          <div className="text-8xl">🌴</div>
-        </div>
-        <div className="absolute bottom-20 right-10 w-32 h-32 opacity-5">
-          <div className="text-9xl">🌴</div>
-        </div>
-        <div className="absolute top-1/2 right-1/3 w-24 h-24 opacity-5">
-          <div className="text-7xl">🌴</div>
-        </div>
-        
-        {/* Neon Glow Effects */}
-        <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/3 left-1/4 w-96 h-96 bg-accent/5 rounded-full blur-3xl"></div>
+      {/* Background Image */}
+      <div className="fixed inset-0 z-0">
+        <img 
+          src={palmBackground}
+          alt="Dubai luxury architecture" 
+          className="w-full h-full object-cover opacity-5" 
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background"></div>
+      </div>
+
+      {/* Subtle Decorative Elements */}
+      <div className="absolute inset-0 pointer-events-none opacity-20">
+        <div className="absolute top-20 right-20 w-px h-40 bg-gradient-to-b from-transparent via-border to-transparent"></div>
+        <div className="absolute bottom-40 left-20 w-px h-40 bg-gradient-to-b from-transparent via-border to-transparent"></div>
       </div>
 
       <Navbar />

@@ -241,21 +241,10 @@ export default function BookingPage() {
   if (vehicleLoading) {
     return (
       <div className="min-h-screen relative overflow-x-hidden">
-        {/* Decorative Background Elements */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-32 right-10 w-28 h-28 opacity-5">
-            <div className="text-8xl">🌴</div>
-          </div>
-          <div className="absolute bottom-40 left-10 w-24 h-24 opacity-5">
-            <div className="text-7xl">🌴</div>
-          </div>
-          <div className="absolute top-2/3 right-1/4 w-32 h-32 opacity-5">
-            <div className="text-9xl">🌴</div>
-          </div>
-          
-          {/* Neon Glow Effects */}
-          <div className="absolute top-1/4 left-1/3 w-96 h-96 bg-accent/5 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-1/4 right-1/3 w-96 h-96 bg-secondary/5 rounded-full blur-3xl"></div>
+        {/* Subtle Decorative Elements */}
+        <div className="absolute inset-0 pointer-events-none opacity-20">
+          <div className="absolute top-20 right-20 w-px h-40 bg-gradient-to-b from-transparent via-border to-transparent"></div>
+          <div className="absolute bottom-40 left-20 w-px h-40 bg-gradient-to-b from-transparent via-border to-transparent"></div>
         </div>
 
         <Navbar />
@@ -275,21 +264,10 @@ export default function BookingPage() {
   if (!vehicle) {
     return (
       <div className="min-h-screen relative overflow-x-hidden">
-        {/* Decorative Background Elements */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-32 right-10 w-28 h-28 opacity-5">
-            <div className="text-8xl">🌴</div>
-          </div>
-          <div className="absolute bottom-40 left-10 w-24 h-24 opacity-5">
-            <div className="text-7xl">🌴</div>
-          </div>
-          <div className="absolute top-2/3 right-1/4 w-32 h-32 opacity-5">
-            <div className="text-9xl">🌴</div>
-          </div>
-          
-          {/* Neon Glow Effects */}
-          <div className="absolute top-1/4 left-1/3 w-96 h-96 bg-accent/5 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-1/4 right-1/3 w-96 h-96 bg-secondary/5 rounded-full blur-3xl"></div>
+        {/* Subtle Decorative Elements */}
+        <div className="absolute inset-0 pointer-events-none opacity-20">
+          <div className="absolute top-20 right-20 w-px h-40 bg-gradient-to-b from-transparent via-border to-transparent"></div>
+          <div className="absolute bottom-40 left-20 w-px h-40 bg-gradient-to-b from-transparent via-border to-transparent"></div>
         </div>
 
         <Navbar />
@@ -308,21 +286,10 @@ export default function BookingPage() {
   if (step === "success") {
     return (
       <div className="min-h-screen relative overflow-x-hidden">
-        {/* Decorative Background Elements */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-32 right-10 w-28 h-28 opacity-5">
-            <div className="text-8xl">🌴</div>
-          </div>
-          <div className="absolute bottom-40 left-10 w-24 h-24 opacity-5">
-            <div className="text-7xl">🌴</div>
-          </div>
-          <div className="absolute top-2/3 right-1/4 w-32 h-32 opacity-5">
-            <div className="text-9xl">🌴</div>
-          </div>
-          
-          {/* Neon Glow Effects */}
-          <div className="absolute top-1/4 left-1/3 w-96 h-96 bg-accent/5 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-1/4 right-1/3 w-96 h-96 bg-secondary/5 rounded-full blur-3xl"></div>
+        {/* Subtle Decorative Elements */}
+        <div className="absolute inset-0 pointer-events-none opacity-20">
+          <div className="absolute top-20 right-20 w-px h-40 bg-gradient-to-b from-transparent via-border to-transparent"></div>
+          <div className="absolute bottom-40 left-20 w-px h-40 bg-gradient-to-b from-transparent via-border to-transparent"></div>
         </div>
 
         <Navbar />
@@ -373,21 +340,10 @@ export default function BookingPage() {
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background"></div>
       </div>
 
-      {/* Decorative Background Elements */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-32 right-10 w-28 h-28 opacity-5 animate-pulse">
-          <div className="text-8xl">🌴</div>
-        </div>
-        <div className="absolute bottom-40 left-10 w-24 h-24 opacity-5 animate-pulse" style={{animationDelay: '1s'}}>
-          <div className="text-7xl">🌴</div>
-        </div>
-        <div className="absolute top-2/3 right-1/4 w-32 h-32 opacity-5 animate-pulse" style={{animationDelay: '2s'}}>
-          <div className="text-9xl">🌴</div>
-        </div>
-        
-        {/* Neon Glow Effects */}
-        <div className="absolute top-1/4 left-1/3 w-96 h-96 bg-accent/5 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/3 w-96 h-96 bg-secondary/5 rounded-full blur-3xl animate-pulse" style={{animationDelay: '1.5s'}}></div>
+      {/* Subtle Decorative Elements */}
+      <div className="absolute inset-0 pointer-events-none opacity-20">
+        <div className="absolute top-20 right-20 w-px h-40 bg-gradient-to-b from-transparent via-border to-transparent"></div>
+        <div className="absolute bottom-40 left-20 w-px h-40 bg-gradient-to-b from-transparent via-border to-transparent"></div>
       </div>
 
       <Navbar />
