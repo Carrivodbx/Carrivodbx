@@ -51,17 +51,32 @@ export default function AgencySetup() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
+    console.log("=== FORM SUBMIT ===");
     console.log("Form data:", formData);
 
+    if (!formData.name || formData.name.trim() === "") {
+      toast({
+        title: "Nom requis",
+        description: "Veuillez entrer un nom pour votre agence",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
-      const agencyData = insertAgencySchema.omit({ userId: true }).parse(formData);
-      console.log("Validated agency data:", agencyData);
+      const agencyData = {
+        name: formData.name,
+        description: formData.description || null,
+        address: formData.address || null,
+        logo: formData.logo || null,
+      };
+      console.log("Sending agency data:", agencyData);
       createAgencyMutation.mutate(agencyData);
     } catch (error: any) {
-      console.error("Validation error:", error);
+      console.error("Error:", error);
       toast({
-        title: "Erreur de validation",
-        description: error.message || "Les données du formulaire ne sont pas valides",
+        title: "Erreur",
+        description: error.message || "Une erreur est survenue",
         variant: "destructive",
       });
     }
@@ -204,22 +219,23 @@ export default function AgencySetup() {
                 <div className="pt-6 border-t border-border">
                   <Button
                     type="submit"
-                    disabled={createAgencyMutation.isPending || !formData.name}
-                    onClick={() => console.log("Button clicked!", { formData, disabled: !formData.name })}
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-8 text-2xl font-bold rounded-xl shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled={createAgencyMutation.isPending}
+                    onClick={() => console.log("=== BUTTON CLICKED ===", formData)}
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-8 text-2xl font-bold rounded-xl shadow-lg transition-all hover:scale-105"
                     data-testid="button-create-agency"
                   >
                     {createAgencyMutation.isPending ? (
-                      "Création en cours..."
+                      <span className="flex items-center justify-center">
+                        <span className="animate-spin mr-2">⏳</span>
+                        Création en cours...
+                      </span>
                     ) : (
-                      "CRÉER MON PROFIL D'AGENCE"
+                      <span className="flex items-center justify-center">
+                        <ArrowRight className="mr-3" size={32} />
+                        CRÉER MON PROFIL D'AGENCE
+                      </span>
                     )}
                   </Button>
-                  {!formData.name && (
-                    <p className="text-sm text-center text-yellow-500 mt-2">
-                      Veuillez remplir le nom de l'agence pour continuer
-                    </p>
-                  )}
                 </div>
               </form>
             </CardContent>
