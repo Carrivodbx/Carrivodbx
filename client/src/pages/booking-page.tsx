@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Calendar, ArrowLeft, CreditCard, Shield, Check, Building2 } from "lucide-react";
+import palmBackground from "@assets/stock_images/dubai_luxury_archite_b6373efe.jpg";
 import { useToast } from "@/hooks/use-toast";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements, PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
@@ -362,21 +363,31 @@ export default function BookingPage() {
 
   return (
     <div className="min-h-screen relative overflow-x-hidden">
+      {/* Background Image */}
+      <div className="fixed inset-0 z-0">
+        <img 
+          src={palmBackground}
+          alt="Dubai luxury architecture" 
+          className="w-full h-full object-cover opacity-5" 
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background"></div>
+      </div>
+
       {/* Decorative Background Elements */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-32 right-10 w-28 h-28 opacity-5">
+        <div className="absolute top-32 right-10 w-28 h-28 opacity-5 animate-pulse">
           <div className="text-8xl">🌴</div>
         </div>
-        <div className="absolute bottom-40 left-10 w-24 h-24 opacity-5">
+        <div className="absolute bottom-40 left-10 w-24 h-24 opacity-5 animate-pulse" style={{animationDelay: '1s'}}>
           <div className="text-7xl">🌴</div>
         </div>
-        <div className="absolute top-2/3 right-1/4 w-32 h-32 opacity-5">
+        <div className="absolute top-2/3 right-1/4 w-32 h-32 opacity-5 animate-pulse" style={{animationDelay: '2s'}}>
           <div className="text-9xl">🌴</div>
         </div>
         
         {/* Neon Glow Effects */}
-        <div className="absolute top-1/4 left-1/3 w-96 h-96 bg-accent/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/4 right-1/3 w-96 h-96 bg-secondary/5 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/4 left-1/3 w-96 h-96 bg-accent/5 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/3 w-96 h-96 bg-secondary/5 rounded-full blur-3xl animate-pulse" style={{animationDelay: '1.5s'}}></div>
       </div>
 
       <Navbar />

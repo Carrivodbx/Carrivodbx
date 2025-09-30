@@ -124,7 +124,7 @@ export default function AuthPage() {
           <ArrowLeft className="mr-2" size={20} />
           Retour à l'accueil
         </Link>
-        <img src={logoPath} alt="Carivoo Logo" className="h-10 w-auto mix-blend-lighten" style={{ filter: 'brightness(1.1) contrast(1.2)' }} />
+        <img src={logoPath} alt="Carivoo Logo" className="h-10 w-auto" style={{ mixBlendMode: 'screen', filter: 'brightness(1.3) contrast(1.5) saturate(1.2)' }} />
       </div>
 
       <div className="flex items-center justify-center min-h-[calc(100vh-80px)] px-4 relative z-10">

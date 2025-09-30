@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Search, Car, Building } from "lucide-react";
-import heroBackground from "@assets/stock_images/minimalist_luxury_ca_c8e9db1a.jpg";
+import heroBackground from "@assets/stock_images/palm_jumeirah_dubai__c99d0f82.jpg";
 
 export default function HeroSection() {
   const [, setLocation] = useLocation();
@@ -27,7 +27,7 @@ export default function HeroSection() {
       <div className="absolute inset-0 z-0">
         <img 
           src={heroBackground}
-          alt="Dubai skyline at night with luxury cars" 
+          alt="Palm Jumeirah Dubai luxury" 
           className="w-full h-full object-cover" 
         />
         <div className="absolute inset-0 hero-gradient"></div>
