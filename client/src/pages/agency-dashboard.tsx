@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { Plus, Car, Edit, Trash2, Eye, TrendingUp } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import type { Vehicle, Agency } from "@shared/schema";
+import porscheNightBackground from "@assets/stock_images/porsche_rear_view_ba_b54491f8.jpg";
 
 export default function AgencyDashboard() {
   const { user } = useAuth();
@@ -88,6 +89,16 @@ export default function AgencyDashboard() {
   if (!agency) {
     return (
       <div className="min-h-screen relative overflow-x-hidden">
+        {/* Background Image */}
+        <div className="fixed inset-0 z-0">
+          <img 
+            src={porscheNightBackground}
+            alt="Porsche rear view night city" 
+            className="w-full h-full object-cover opacity-5" 
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background"></div>
+        </div>
+
         {/* Subtle Decorative Elements */}
         <div className="absolute inset-0 pointer-events-none opacity-20">
           <div className="absolute top-20 right-20 w-px h-40 bg-gradient-to-b from-transparent via-border to-transparent"></div>
@@ -117,6 +128,16 @@ export default function AgencyDashboard() {
 
   return (
     <div className="min-h-screen relative overflow-x-hidden">
+      {/* Background Image */}
+      <div className="fixed inset-0 z-0">
+        <img 
+          src={porscheNightBackground}
+          alt="Porsche rear view night city" 
+          className="w-full h-full object-cover opacity-5" 
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background"></div>
+      </div>
+
       {/* Subtle Decorative Elements */}
       <div className="absolute inset-0 pointer-events-none opacity-20">
         <div className="absolute top-20 right-20 w-px h-40 bg-gradient-to-b from-transparent via-border to-transparent"></div>
