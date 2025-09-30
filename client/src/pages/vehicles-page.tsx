@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search, Filter } from "lucide-react";
 import type { Vehicle } from "@shared/schema";
-import racingCarsBackground from "@assets/stock_images/two_luxury_sports_ca_818417ae.jpg";
+import miamiNightBackground from "@assets/stock_images/luxury_car_driving_m_1bc66938.jpg";
 
 export default function VehiclesPage() {
   const [searchRegion, setSearchRegion] = useState("");
@@ -51,8 +51,8 @@ export default function VehiclesPage() {
       {/* Background Image */}
       <div className="fixed inset-0 z-0">
         <img 
-          src={racingCarsBackground}
-          alt="Two luxury sports cars racing" 
+          src={miamiNightBackground}
+          alt="Luxury car driving Miami night" 
           className="w-full h-full object-cover opacity-5" 
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background"></div>
