@@ -41,8 +41,7 @@ export default function HeroSection() {
           </span>
         </h1>
         <p className="text-xl md:text-2xl mb-8 text-gray-200 max-w-3xl mx-auto" data-testid="text-hero-subtitle">
-          Découvrez notre collection exclusive de véhicules premium. 
-          De Dubaï à votre ville, vivez l'expérience ultime du luxe automobile.
+          Découvrez le meilleur pour vous, l'alliance parfaite entre design et exclusivité basé en France.
         </p>
         
         {/* Search Bar */}
