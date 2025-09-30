@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MapPin, Users, Star, ArrowLeft, Calendar, Shield, Zap } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { Vehicle, Agency } from "@shared/schema";
-import darkCityBackground from "@assets/stock_images/dubai_city_skyline_n_f37d3aa7.jpg";
+import racingCarsBackground from "@assets/stock_images/two_luxury_sports_ca_818417ae.jpg";
 
 export default function VehicleDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -46,8 +46,8 @@ export default function VehicleDetailPage() {
         {/* Background Image */}
         <div className="fixed inset-0 z-0">
           <img 
-            src={darkCityBackground}
-            alt="Dubai night skyline" 
+            src={racingCarsBackground}
+            alt="Two luxury sports cars racing" 
             className="w-full h-full object-cover opacity-5" 
           />
           <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background"></div>
@@ -84,8 +84,8 @@ export default function VehicleDetailPage() {
         {/* Background Image */}
         <div className="fixed inset-0 z-0">
           <img 
-            src={darkCityBackground}
-            alt="Dubai night skyline" 
+            src={racingCarsBackground}
+            alt="Two luxury sports cars racing" 
             className="w-full h-full object-cover opacity-5" 
           />
           <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background"></div>
@@ -121,8 +121,8 @@ export default function VehicleDetailPage() {
       {/* Background Image */}
       <div className="fixed inset-0 z-0">
         <img 
-          src={darkCityBackground}
-          alt="Dubai night skyline" 
+          src={racingCarsBackground}
+          alt="Two luxury sports cars racing" 
           className="w-full h-full object-cover opacity-5" 
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background"></div>
