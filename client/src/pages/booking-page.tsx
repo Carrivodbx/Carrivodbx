@@ -631,14 +631,100 @@ export default function BookingPage() {
                     </Button>
                   </CardContent>
                 </Card>
-              ) : step === "payment" && clientSecret ? (
-                <Elements stripe={stripePromise} options={{ clientSecret }}>
-                  <CheckoutForm
-                    reservationId={reservationId}
-                    total={total}
-                    onSuccess={handlePaymentSuccess}
-                  />
-                </Elements>
+              ) : step === "payment" ? (
+                clientSecret && stripePromise ? (
+                  <Elements stripe={stripePromise} options={{ clientSecret }}>
+                    <CheckoutForm
+                      reservationId={reservationId}
+                      total={total}
+                      onSuccess={handlePaymentSuccess}
+                    />
+                  </Elements>
+                ) : (
+                  <Card className="bg-gradient-to-br from-zinc-950 via-black to-zinc-900 rounded-xl border border-zinc-700/50">
+                    <CardHeader>
+                      <CardTitle className="text-2xl font-bold text-zinc-100 text-center">
+                        Configuration Stripe Requise
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-6 p-8">
+                      <div className="text-center text-zinc-400 space-y-4">
+                        <p>Les clés Stripe ne sont pas configurées.</p>
+                        <p className="text-sm">Pour activer les paiements, veuillez configurer vos clés Stripe dans les variables d'environnement :</p>
+                        <div className="bg-zinc-900/50 rounded-lg p-4 text-left">
+                          <p className="text-xs font-mono text-zinc-500">VITE_STRIPE_PUBLIC_KEY</p>
+                          <p className="text-xs font-mono text-zinc-500">STRIPE_SECRET_KEY</p>
+                        </div>
+                      </div>
+                      
+                      {/* Preview du formulaire de paiement */}
+                      <div className="relative opacity-50 pointer-events-none">
+                        <div className="absolute -top-2 -left-2 w-16 h-16 border-l-2 border-t-2 border-zinc-400/30"></div>
+                        <div className="absolute -top-2 -right-2 w-16 h-16 border-r-2 border-t-2 border-zinc-400/30"></div>
+                        <div className="absolute -bottom-2 -left-2 w-16 h-16 border-l-2 border-b-2 border-zinc-400/30"></div>
+                        <div className="absolute -bottom-2 -right-2 w-16 h-16 border-r-2 border-b-2 border-zinc-400/30"></div>
+                        
+                        <div className="bg-gradient-to-br from-zinc-950 via-black to-zinc-900 rounded-xl p-8 border border-zinc-700/50">
+                          <div className="flex items-center justify-between mb-6">
+                            <h3 className="text-xl font-bold text-zinc-100 tracking-wide">
+                              PAIEMENT SÉCURISÉ
+                            </h3>
+                            <div className="flex items-center gap-2 text-xs text-zinc-400">
+                              <Shield className="w-4 h-4" />
+                              <span>SSL 256-bit</span>
+                            </div>
+                          </div>
+                          
+                          <div className="bg-zinc-900/50 rounded-lg p-6 border border-zinc-800 mb-6">
+                            <div className="space-y-4">
+                              <div className="h-10 bg-zinc-800 rounded"></div>
+                              <div className="grid grid-cols-2 gap-4">
+                                <div className="h-10 bg-zinc-800 rounded"></div>
+                                <div className="h-10 bg-zinc-800 rounded"></div>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div className="flex items-center justify-center gap-6 text-xs text-zinc-500 mb-6">
+                            <div className="flex items-center gap-2">
+                              <CreditCard className="w-4 h-4" />
+                              <span>Carte bancaire</span>
+                            </div>
+                            <div className="h-4 w-px bg-zinc-700"></div>
+                            <div className="flex items-center gap-2">
+                              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+                              </svg>
+                              <span>Apple Pay</span>
+                            </div>
+                          </div>
+                          
+                          <div className="bg-gradient-to-br from-zinc-950 via-black to-zinc-900 rounded-xl p-6 border border-zinc-700/50">
+                            <div className="flex items-center justify-between mb-2">
+                              <span className="text-lg font-medium text-zinc-300">Montant total</span>
+                              <span className="text-3xl font-bold text-zinc-100">€{total.toFixed(2)}</span>
+                            </div>
+                            <div className="h-px bg-gradient-to-r from-transparent via-zinc-700 to-transparent mb-4"></div>
+                            <Button
+                              disabled
+                              className="w-full bg-zinc-100 text-black font-bold py-6 text-lg rounded-lg"
+                            >
+                              Confirmer le paiement de €{total.toFixed(2)}
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <Button
+                        onClick={() => setStep("booking")}
+                        variant="outline"
+                        className="w-full border-zinc-700 text-zinc-300 hover:bg-zinc-800"
+                      >
+                        Retour à la réservation
+                      </Button>
+                    </CardContent>
+                  </Card>
+                )
               ) : (
                 <Card className="glass-morphism neon-border">
                   <CardContent className="p-6 text-center">
