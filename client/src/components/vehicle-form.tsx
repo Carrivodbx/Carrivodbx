@@ -339,6 +339,23 @@ export default function VehicleForm({ vehicle, onSuccess, onCancel }: VehicleFor
         <p className="text-sm text-muted-foreground mt-1">
           Ajoutez l'URL d'une image haute qualité de votre véhicule
         </p>
+        
+        {/* Image Preview */}
+        {formData.photo && (
+          <div className="mt-4">
+            <Label className="text-foreground mb-2 block">Aperçu de la photo</Label>
+            <div className="relative rounded-lg overflow-hidden border-2 border-border">
+              <img
+                src={formData.photo}
+                alt="Aperçu du véhicule"
+                className="w-full h-64 object-cover"
+                onError={(e) => {
+                  e.currentTarget.src = "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1074&q=80";
+                }}
+              />
+            </div>
+          </div>
+        )}
       </div>
 
       <div>
