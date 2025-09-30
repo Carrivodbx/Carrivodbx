@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Calendar, ArrowLeft, CreditCard, Shield, Check, Building2 } from "lucide-react";
-import racingCarsBackground from "@assets/stock_images/two_luxury_sports_ca_818417ae.jpg";
+import porscheNightBackground from "@assets/stock_images/porsche_rear_view_ba_b54491f8.jpg";
 import { useToast } from "@/hooks/use-toast";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements, PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
@@ -333,8 +333,8 @@ export default function BookingPage() {
       {/* Background Image */}
       <div className="fixed inset-0 z-0">
         <img 
-          src={racingCarsBackground}
-          alt="Two luxury sports cars racing" 
+          src={porscheNightBackground}
+          alt="Porsche rear view night city" 
           className="w-full h-full object-cover opacity-5" 
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background"></div>
