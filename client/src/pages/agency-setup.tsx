@@ -51,13 +51,17 @@ export default function AgencySetup() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
+    console.log("Form data:", formData);
+
     try {
       const agencyData = insertAgencySchema.omit({ userId: true }).parse(formData);
+      console.log("Validated agency data:", agencyData);
       createAgencyMutation.mutate(agencyData);
     } catch (error: any) {
+      console.error("Validation error:", error);
       toast({
         title: "Erreur de validation",
-        description: error.message,
+        description: error.message || "Les données du formulaire ne sont pas valides",
         variant: "destructive",
       });
     }
