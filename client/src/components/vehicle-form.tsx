@@ -28,6 +28,7 @@ export default function VehicleForm({ vehicle, onSuccess, onCancel }: VehicleFor
     category: "",
     pricePerDay: "",
     depositAmount: "",
+    cashDepositAllowed: false,
     region: "",
     description: "",
     photo: "",
@@ -45,6 +46,7 @@ export default function VehicleForm({ vehicle, onSuccess, onCancel }: VehicleFor
         category: vehicle.category,
         pricePerDay: vehicle.pricePerDay,
         depositAmount: vehicle.depositAmount || "",
+        cashDepositAllowed: vehicle.cashDepositAllowed ?? false,
         region: vehicle.region,
         description: vehicle.description || "",
         photo: vehicle.photo || "",
@@ -109,6 +111,7 @@ export default function VehicleForm({ vehicle, onSuccess, onCancel }: VehicleFor
         category: formData.category,
         pricePerDay: formData.pricePerDay,
         depositAmount: formData.depositAmount || null,
+        cashDepositAllowed: formData.cashDepositAllowed,
         region: formData.region,
         description: formData.description,
         photo: formData.photo,
@@ -251,6 +254,17 @@ export default function VehicleForm({ vehicle, onSuccess, onCancel }: VehicleFor
           <p className="text-sm text-muted-foreground mt-1">
             Montant de la caution qui sera rendu à la fin de la location
           </p>
+          <div className="flex items-center space-x-2 mt-3">
+            <Switch
+              id="cashDeposit"
+              checked={formData.cashDepositAllowed}
+              onCheckedChange={(checked) => handleInputChange("cashDepositAllowed", checked)}
+              data-testid="switch-cash-deposit"
+            />
+            <Label htmlFor="cashDeposit" className="text-foreground text-sm">
+              Possibilité de donner la caution en espèces
+            </Label>
+          </div>
         </div>
       </div>
 
