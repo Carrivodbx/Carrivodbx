@@ -82,38 +82,97 @@ function CheckoutForm({ reservationId, total, onSuccess }: CheckoutFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="glass-morphism rounded-2xl p-6 neon-border">
-        <h3 className="text-lg font-orbitron font-bold mb-4 text-foreground">
-          Informations de paiement
-        </h3>
-        <PaymentElement />
-      </div>
-      
-      <div className="glass-morphism rounded-2xl p-6 neon-border">
-        <div className="flex items-center justify-between mb-4">
-          <span className="text-lg font-medium text-foreground">Total à payer</span>
-          <span className="text-2xl font-orbitron font-bold text-primary">€{total}</span>
+    <form onSubmit={handleSubmit} className="space-y-8">
+      {/* Premium Payment Card */}
+      <div className="relative">
+        {/* Elegant decorative corner elements */}
+        <div className="absolute -top-2 -left-2 w-16 h-16 border-l-2 border-t-2 border-zinc-400/30"></div>
+        <div className="absolute -top-2 -right-2 w-16 h-16 border-r-2 border-t-2 border-zinc-400/30"></div>
+        <div className="absolute -bottom-2 -left-2 w-16 h-16 border-l-2 border-b-2 border-zinc-400/30"></div>
+        <div className="absolute -bottom-2 -right-2 w-16 h-16 border-r-2 border-b-2 border-zinc-400/30"></div>
+        
+        <div className="bg-gradient-to-br from-zinc-950 via-black to-zinc-900 rounded-xl p-8 border border-zinc-700/50 shadow-2xl">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-xl font-bold text-zinc-100 tracking-wide">
+              PAIEMENT SÉCURISÉ
+            </h3>
+            <div className="flex items-center gap-2 text-xs text-zinc-400">
+              <Shield className="w-4 h-4" />
+              <span>SSL 256-bit</span>
+            </div>
+          </div>
+          
+          {/* Payment Element with custom styling */}
+          <div className="bg-zinc-900/50 rounded-lg p-6 border border-zinc-800">
+            <PaymentElement 
+              options={{
+                layout: "tabs",
+              }}
+            />
+          </div>
+          
+          {/* Payment methods badges */}
+          <div className="mt-6 flex items-center justify-center gap-6 text-xs text-zinc-500">
+            <div className="flex items-center gap-2">
+              <CreditCard className="w-4 h-4" />
+              <span>Carte bancaire</span>
+            </div>
+            <div className="h-4 w-px bg-zinc-700"></div>
+            <div className="flex items-center gap-2">
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+              </svg>
+              <span>Apple Pay</span>
+            </div>
+          </div>
         </div>
-        <p className="text-sm text-muted-foreground mb-4">
-          Commission Carivoo (10%) incluse • Paiement sécurisé par Stripe
+      </div>
+
+      {/* Total and Confirm */}
+      <div className="bg-gradient-to-br from-zinc-950 via-black to-zinc-900 rounded-xl p-6 border border-zinc-700/50">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-lg font-medium text-zinc-300">Montant total</span>
+          <span className="text-3xl font-bold text-zinc-100">€{total.toFixed(2)}</span>
+        </div>
+        <div className="h-px bg-gradient-to-r from-transparent via-zinc-700 to-transparent mb-4"></div>
+        <p className="text-sm text-zinc-500 mb-6 text-center">
+          Commission plateforme incluse • Paiement traité par Stripe
         </p>
         
         <Button
           type="submit"
           disabled={!stripe || isProcessing || confirmPaymentMutation.isPending}
-          className="btn-neon w-full bg-gradient-to-r from-primary to-secondary text-primary-foreground py-4 text-lg font-bold"
+          className="w-full bg-zinc-100 hover:bg-white text-black font-bold py-6 text-lg rounded-lg transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
           data-testid="button-confirm-payment"
         >
           {isProcessing || confirmPaymentMutation.isPending ? (
-            "Traitement en cours..."
+            <div className="flex items-center justify-center">
+              <div className="animate-spin w-5 h-5 border-3 border-black border-t-transparent rounded-full mr-3" />
+              Traitement en cours...
+            </div>
           ) : (
             <>
-              <CreditCard className="mr-2" size={20} />
-              Confirmer le paiement
+              <CreditCard className="mr-3" size={20} />
+              Confirmer le paiement de €{total.toFixed(2)}
             </>
           )}
         </Button>
+        
+        {/* Security badges */}
+        <div className="mt-6 flex items-center justify-center gap-4 text-xs text-zinc-600">
+          <div className="flex items-center gap-1">
+            <Check className="w-3 h-3" />
+            <span>Remboursable</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <Check className="w-3 h-3" />
+            <span>Crypté</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <Check className="w-3 h-3" />
+            <span>Sécurisé</span>
+          </div>
+        </div>
       </div>
     </form>
   );
