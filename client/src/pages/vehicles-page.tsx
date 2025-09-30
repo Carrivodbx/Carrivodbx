@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search, Filter } from "lucide-react";
 import type { Vehicle } from "@shared/schema";
-import luxuryCarBackground from "@assets/stock_images/black_luxury_car_nig_c769044b.jpg";
+import luxuryCarBackground from "@assets/stock_images/black_luxury_sports__9fde6513.jpg";
 
 export default function VehiclesPage() {
   const [searchRegion, setSearchRegion] = useState("");
