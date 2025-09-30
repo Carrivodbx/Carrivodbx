@@ -167,7 +167,7 @@ export default function PremiumSubscription() {
         </div>
 
         <Navbar />
-        <div className="pt-20 bg-background">
+        <div className="pt-24 sm:pt-28 bg-background">
           <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
             <div className="glass-morphism rounded-2xl p-12 neon-border">
               <div className="w-20 h-20 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-6">

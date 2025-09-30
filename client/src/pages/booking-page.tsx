@@ -301,7 +301,7 @@ export default function BookingPage() {
         </div>
 
         <Navbar />
-        <div className="pt-20 bg-background">
+        <div className="pt-24 sm:pt-28 bg-background">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <Skeleton className="h-8 w-32 mb-8" />
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -346,7 +346,7 @@ export default function BookingPage() {
         </div>
 
         <Navbar />
-        <div className="pt-20 bg-background">
+        <div className="pt-24 sm:pt-28 bg-background">
           <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
             <div className="glass-morphism rounded-2xl p-12 neon-border">
               <div className="w-20 h-20 bg-gradient-to-r from-green-400 to-green-600 rounded-full flex items-center justify-center mx-auto mb-6">

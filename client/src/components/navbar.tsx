@@ -35,10 +35,10 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 w-full z-50 glass-morphism">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-20 sm:h-24">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3 flex-shrink-0">
-            <img src={logoPath} alt="Carivoo Logo" className="h-10 sm:h-12 w-auto" style={{ mixBlendMode: 'screen', filter: 'brightness(1.3) contrast(1.5) saturate(1.2)' }} />
+            <img src={logoPath} alt="Carivoo Logo" className="h-16 sm:h-20 w-auto" style={{ mixBlendMode: 'screen', filter: 'brightness(2) contrast(2.5) saturate(1.5)' }} />
           </Link>
           
           {/* Navigation Links - Desktop */}

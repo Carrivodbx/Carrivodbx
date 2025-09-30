@@ -123,7 +123,7 @@ export default function AgencySetup() {
 
       <Navbar />
       
-      <div className="pt-20 relative z-10">
+      <div className="pt-24 sm:pt-28 relative z-10">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="text-center mb-12">
             <div className="w-20 h-20 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-6">
