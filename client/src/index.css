@@ -97,11 +97,16 @@
     position: relative;
     overflow: hidden;
     transition: all 0.3s ease;
+    -webkit-tap-highlight-color: transparent;
   }
   
   .btn-neon:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .btn-neon:active {
+    transform: translateY(0);
   }
   
   .btn-neon::before {
@@ -117,6 +122,21 @@
   
   .btn-neon:hover::before {
     left: 100%;
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+  
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  button, a, input, select, textarea {
+    touch-action: manipulation;
   }
 }
 

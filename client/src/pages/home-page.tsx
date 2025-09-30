@@ -29,47 +29,47 @@ export default function HomePage() {
       <HeroSection />
       
       {/* Features Section */}
-      <section className="py-20 bg-muted">
+      <section className="py-12 sm:py-20 bg-muted">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-orbitron font-bold mb-6">
+          <div className="text-center mb-10 sm:mb-16">
+            <h2 className="text-2xl sm:text-3xl md:text-5xl font-orbitron font-bold mb-4 sm:mb-6 px-4">
               <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                 Pourquoi Choisir Carivoo ?
               </span>
             </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            <p className="text-base sm:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
               La plateforme de référence pour la location de véhicules de luxe. 
               Simplicité, sécurité et style premium.
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="glass-morphism rounded-2xl p-8 text-center neon-border hover:scale-105 transition-transform duration-300">
-              <div className="w-16 h-16 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-6">
-                <Shield className="text-2xl text-white" size={24} />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+            <div className="glass-morphism rounded-2xl p-6 sm:p-8 text-center neon-border hover:scale-105 transition-transform duration-300">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                <Shield className="text-white" size={24} />
               </div>
-              <h3 className="text-2xl font-orbitron font-bold mb-4 text-foreground">Sécurité Garantie</h3>
-              <p className="text-muted-foreground">
+              <h3 className="text-xl sm:text-2xl font-orbitron font-bold mb-3 sm:mb-4 text-foreground">Sécurité Garantie</h3>
+              <p className="text-sm sm:text-base text-muted-foreground">
                 Toutes nos agences sont vérifiées. Assurance complète et assistance 24h/24.
               </p>
             </div>
             
-            <div className="glass-morphism rounded-2xl p-8 text-center neon-border hover:scale-105 transition-transform duration-300">
-              <div className="w-16 h-16 bg-gradient-to-r from-secondary to-accent rounded-full flex items-center justify-center mx-auto mb-6">
-                <Crown className="text-2xl text-white" size={24} />
+            <div className="glass-morphism rounded-2xl p-6 sm:p-8 text-center neon-border hover:scale-105 transition-transform duration-300">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-r from-secondary to-accent rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                <Crown className="text-white" size={24} />
               </div>
-              <h3 className="text-2xl font-orbitron font-bold mb-4 text-foreground">Véhicules Premium</h3>
-              <p className="text-muted-foreground">
+              <h3 className="text-xl sm:text-2xl font-orbitron font-bold mb-3 sm:mb-4 text-foreground">Véhicules Premium</h3>
+              <p className="text-sm sm:text-base text-muted-foreground">
                 Collection exclusive de voitures de luxe, sportives et SUV haut de gamme.
               </p>
             </div>
             
-            <div className="glass-morphism rounded-2xl p-8 text-center neon-border hover:scale-105 transition-transform duration-300">
-              <div className="w-16 h-16 bg-gradient-to-r from-accent to-primary rounded-full flex items-center justify-center mx-auto mb-6">
-                <Zap className="text-2xl text-white" size={24} />
+            <div className="glass-morphism rounded-2xl p-6 sm:p-8 text-center neon-border hover:scale-105 transition-transform duration-300">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-r from-accent to-primary rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                <Zap className="text-white" size={24} />
               </div>
-              <h3 className="text-2xl font-orbitron font-bold mb-4 text-foreground">Réservation Instant</h3>
-              <p className="text-muted-foreground">
+              <h3 className="text-xl sm:text-2xl font-orbitron font-bold mb-3 sm:mb-4 text-foreground">Réservation Instant</h3>
+              <p className="text-sm sm:text-base text-muted-foreground">
                 Réservez en quelques clics avec paiement sécurisé et confirmation immédiate.
               </p>
             </div>
@@ -78,37 +78,37 @@ export default function HomePage() {
       </section>
 
       {/* Featured Vehicles */}
-      <section className="py-20 bg-background">
+      <section className="py-12 sm:py-20 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-orbitron font-bold mb-6">
+          <div className="text-center mb-10 sm:mb-16">
+            <h2 className="text-2xl sm:text-3xl md:text-5xl font-orbitron font-bold mb-4 sm:mb-6 px-4">
               <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                 Véhicules en Vedette
               </span>
             </h2>
-            <p className="text-xl text-muted-foreground">
+            <p className="text-base sm:text-xl text-muted-foreground px-4">
               Découvrez notre sélection de véhicules d'exception
             </p>
           </div>
           
           {isLoading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
               {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="glass-morphism rounded-2xl h-96 animate-pulse" />
+                <div key={i} className="glass-morphism rounded-2xl h-80 sm:h-96 animate-pulse" />
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
               {featuredVehicles.map((vehicle) => (
                 <VehicleCard key={vehicle.id} vehicle={vehicle} />
               ))}
             </div>
           )}
           
-          <div className="text-center mt-12">
+          <div className="text-center mt-8 sm:mt-12 px-4">
             <Button
               onClick={() => setLocation("/vehicles")}
-              className="btn-neon bg-transparent border-2 border-primary text-primary px-8 py-4 rounded-lg font-bold text-lg hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+              className="btn-neon w-full sm:w-auto bg-transparent border-2 border-primary text-primary px-6 sm:px-8 py-4 rounded-lg font-bold text-base sm:text-lg hover:bg-primary hover:text-primary-foreground transition-all duration-300 min-h-[48px]"
               data-testid="button-view-more-vehicles"
             >
               Voir plus de véhicules

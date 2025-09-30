@@ -7,15 +7,29 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { User, LogOut, Menu } from "lucide-react";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { User, LogOut, Menu, Home, Car, LayoutDashboard, Crown } from "lucide-react";
 import logoPath from "@assets/Image 2_1759187802515.jpg";
+import { useState } from "react";
 
 export default function Navbar() {
   const [location] = useLocation();
   const { user, logoutMutation } = useAuth();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleLogout = () => {
     logoutMutation.mutate();
+    setMobileMenuOpen(false);
+  };
+
+  const handleNavClick = () => {
+    setMobileMenuOpen(false);
   };
 
   return (
@@ -23,11 +37,11 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-3">
-            <img src={logoPath} alt="Carivoo Logo" className="h-12 w-auto" style={{ mixBlendMode: 'screen', filter: 'brightness(1.3) contrast(1.5) saturate(1.2)' }} />
+          <Link href="/" className="flex items-center space-x-3 flex-shrink-0">
+            <img src={logoPath} alt="Carivoo Logo" className="h-10 sm:h-12 w-auto" style={{ mixBlendMode: 'screen', filter: 'brightness(1.3) contrast(1.5) saturate(1.2)' }} />
           </Link>
           
-          {/* Navigation Links */}
+          {/* Navigation Links - Desktop */}
           <div className="hidden md:flex items-center space-x-8">
             <Link href="/">
               <span className={`font-medium transition-colors duration-200 ${
@@ -45,14 +59,14 @@ export default function Navbar() {
             </Link>
           </div>
           
-          {/* Auth Section */}
-          <div className="flex items-center space-x-4">
+          {/* Auth Section - Desktop */}
+          <div className="hidden md:flex items-center space-x-4">
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="flex items-center space-x-2" data-testid="user-menu">
                     <User size={20} />
-                    <span>{user.username}</span>
+                    <span className="hidden lg:inline">{user.username}</span>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="glass-morphism border-border">
@@ -88,13 +102,128 @@ export default function Navbar() {
                 </Link>
               </>
             )}
-            
-            {/* Mobile menu button */}
-            <div className="md:hidden">
-              <Button variant="ghost" size="sm" data-testid="button-mobile-menu">
-                <Menu size={20} />
-              </Button>
-            </div>
+          </div>
+          
+          {/* Mobile menu button */}
+          <div className="md:hidden">
+            <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="sm" data-testid="button-mobile-menu">
+                  <Menu size={24} />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-[280px] glass-morphism border-l border-border">
+                <SheetHeader>
+                  <SheetTitle className="text-left font-orbitron bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                    Menu
+                  </SheetTitle>
+                </SheetHeader>
+                <div className="flex flex-col space-y-4 mt-8">
+                  {/* Navigation Links */}
+                  <Link href="/" onClick={handleNavClick}>
+                    <Button 
+                      variant="ghost" 
+                      className={`w-full justify-start text-lg ${
+                        location === "/" ? "text-primary bg-primary/10" : "text-foreground"
+                      }`}
+                      data-testid="mobile-link-home"
+                    >
+                      <Home className="mr-3" size={20} />
+                      Accueil
+                    </Button>
+                  </Link>
+                  
+                  <Link href="/vehicles" onClick={handleNavClick}>
+                    <Button 
+                      variant="ghost" 
+                      className={`w-full justify-start text-lg ${
+                        location === "/vehicles" ? "text-primary bg-primary/10" : "text-foreground"
+                      }`}
+                      data-testid="mobile-link-vehicles"
+                    >
+                      <Car className="mr-3" size={20} />
+                      Véhicules
+                    </Button>
+                  </Link>
+
+                  {/* User Section */}
+                  {user ? (
+                    <>
+                      <div className="h-px bg-border my-4" />
+                      
+                      <Link href={user.role === "agency" ? "/dashboard/agency" : "/dashboard/client"} onClick={handleNavClick}>
+                        <Button 
+                          variant="ghost" 
+                          className="w-full justify-start text-lg text-foreground"
+                          data-testid="mobile-link-dashboard"
+                        >
+                          <LayoutDashboard className="mr-3" size={20} />
+                          Dashboard
+                        </Button>
+                      </Link>
+
+                      {user.role === "agency" && (
+                        <Link href="/premium" onClick={handleNavClick}>
+                          <Button 
+                            variant="ghost" 
+                            className="w-full justify-start text-lg text-foreground"
+                            data-testid="mobile-link-premium"
+                          >
+                            <Crown className="mr-3" size={20} />
+                            Premium
+                          </Button>
+                        </Link>
+                      )}
+
+                      <Button 
+                        variant="ghost" 
+                        onClick={handleLogout} 
+                        className="w-full justify-start text-lg text-destructive"
+                        data-testid="mobile-button-logout"
+                      >
+                        <LogOut className="mr-3" size={20} />
+                        Déconnexion
+                      </Button>
+
+                      <div className="mt-4 p-4 bg-muted/50 rounded-lg">
+                        <div className="flex items-center space-x-3">
+                          <div className="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center">
+                            <User size={20} className="text-white" />
+                          </div>
+                          <div>
+                            <p className="font-semibold text-foreground">{user.username}</p>
+                            <p className="text-xs text-muted-foreground capitalize">{user.role}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="h-px bg-border my-4" />
+                      
+                      <Link href="/auth" onClick={handleNavClick}>
+                        <Button 
+                          variant="outline" 
+                          className="w-full text-lg border-border"
+                          data-testid="mobile-button-login"
+                        >
+                          Connexion
+                        </Button>
+                      </Link>
+                      
+                      <Link href="/auth" onClick={handleNavClick}>
+                        <Button 
+                          className="w-full btn-neon bg-gradient-to-r from-primary to-secondary text-primary-foreground text-lg"
+                          data-testid="mobile-button-signup"
+                        >
+                          Inscription
+                        </Button>
+                      </Link>
+                    </>
+                  )}
+                </div>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
       </div>
