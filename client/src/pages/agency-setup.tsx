@@ -197,16 +197,13 @@ export default function AgencySetup() {
                   <Button
                     type="submit"
                     disabled={createAgencyMutation.isPending || !formData.name}
-                    className="btn-neon w-full bg-gradient-to-r from-primary to-secondary text-primary-foreground py-4 text-lg font-bold"
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-8 text-2xl font-bold rounded-xl shadow-lg"
                     data-testid="button-create-agency"
                   >
                     {createAgencyMutation.isPending ? (
                       "Création en cours..."
                     ) : (
-                      <>
-                        <ArrowRight className="mr-2" size={20} />
-                        Créer mon agence
-                      </>
+                      "CRÉER MON PROFIL D'AGENCE"
                     )}
                   </Button>
                 </div>
