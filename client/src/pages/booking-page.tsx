@@ -212,7 +212,6 @@ export default function BookingPage() {
     onSuccess: (reservation) => {
       setReservationId(reservation.id);
       createPaymentIntentMutation.mutate({
-        amount: total,
         reservationId: reservation.id,
       });
     },
@@ -226,7 +225,7 @@ export default function BookingPage() {
   });
 
   const createPaymentIntentMutation = useMutation({
-    mutationFn: async (paymentData: any) => {
+    mutationFn: async (paymentData: { reservationId: string }) => {
       const response = await apiRequest("POST", "/api/create-payment-intent", paymentData);
       return response.json();
     },
@@ -275,12 +274,7 @@ export default function BookingPage() {
       vehicleId,
       startDate,
       endDate,
-      days,
-      total: total.toString(),
-      status: "pending",
-      depositAmount: depositAmount.toString(),
       depositMethod,
-      depositStatus: "pending",
     });
   };
 

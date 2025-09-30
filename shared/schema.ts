@@ -57,6 +57,7 @@ export const reservations = pgTable("reservations", {
   depositAmount: decimal("deposit_amount", { precision: 10, scale: 2 }),
   depositMethod: text("deposit_method", { enum: ["credit_card", "bank_transfer"] }),
   depositStatus: text("deposit_status", { enum: ["pending", "held", "refunded"] }).default("pending"),
+  stripePaymentIntentId: text("stripe_payment_intent_id"),
   userId: varchar("user_id").notNull().references(() => users.id),
   vehicleId: varchar("vehicle_id").notNull().references(() => vehicles.id),
   createdAt: timestamp("created_at").defaultNow(),

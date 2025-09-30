@@ -51,6 +51,7 @@ export interface IStorage {
   getReservationsByVehicle(vehicleId: string): Promise<Reservation[]>;
   createReservation(reservation: InsertReservation): Promise<Reservation>;
   updateReservationStatus(id: string, status: string): Promise<Reservation>;
+  updateReservationPaymentIntent(id: string, paymentIntentId: string): Promise<Reservation>;
 
   // Subscription operations
   getSubscriptionByAgency(agencyId: string): Promise<Subscription | undefined>;
@@ -197,6 +198,15 @@ export class DatabaseStorage implements IStorage {
     const [reservation] = await db
       .update(reservations)
       .set({ status: status as any })
+      .where(eq(reservations.id, id))
+      .returning();
+    return reservation;
+  }
+
+  async updateReservationPaymentIntent(id: string, paymentIntentId: string): Promise<Reservation> {
+    const [reservation] = await db
+      .update(reservations)
+      .set({ stripePaymentIntentId: paymentIntentId })
       .where(eq(reservations.id, id))
       .returning();
     return reservation;

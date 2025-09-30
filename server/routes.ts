@@ -198,8 +198,38 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(403).json({ message: "Only clients can create reservations" });
       }
 
+      const { vehicleId, startDate, endDate, depositMethod } = req.body;
+
+      // Fetch vehicle to get accurate pricing
+      const vehicle = await storage.getVehicle(vehicleId);
+      if (!vehicle) {
+        return res.status(404).json({ message: "Vehicle not found" });
+      }
+
+      // Calculate days and total server-side
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+      const diffTime = Math.abs(end.getTime() - start.getTime());
+      const days = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+      if (days <= 0) {
+        return res.status(400).json({ message: "Invalid date range" });
+      }
+
+      const pricePerDay = parseFloat(vehicle.pricePerDay);
+      const total = days * pricePerDay;
+      const depositAmount = total * 0.2;
+
       const reservationData = insertReservationSchema.parse({
-        ...req.body,
+        vehicleId,
+        startDate,
+        endDate,
+        days,
+        total: total.toString(),
+        depositAmount: depositAmount.toString(),
+        depositMethod: depositMethod || "credit_card",
+        depositStatus: "pending",
+        status: "pending",
         userId: user.id,
       });
 
@@ -221,15 +251,37 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
 
     try {
-      const { amount, reservationId } = req.body;
+      const { reservationId } = req.body;
+      const user = req.user!;
+      
+      // Fetch reservation and verify ownership
+      const reservation = await storage.getReservation(reservationId);
+      if (!reservation) {
+        return res.status(404).json({ message: "Reservation not found" });
+      }
+      
+      if (reservation.userId !== user.id) {
+        return res.status(403).json({ message: "Unauthorized: This reservation does not belong to you" });
+      }
+      
+      // Use the actual reservation amount from the database
+      const amount = parseFloat(reservation.total);
+      
+      if (isNaN(amount) || amount <= 0) {
+        return res.status(400).json({ message: "Invalid reservation amount" });
+      }
+      
       const paymentIntent = await stripe.paymentIntents.create({
         amount: Math.round(amount * 100), // Convert to cents
         currency: "eur",
         metadata: {
           reservationId,
-          userId: req.user!.id,
+          userId: user.id,
         },
       });
+
+      // Store PaymentIntent ID with reservation
+      await storage.updateReservationPaymentIntent(reservationId, paymentIntent.id);
 
       res.json({ clientSecret: paymentIntent.client_secret });
     } catch (error: any) {
@@ -242,8 +294,49 @@ export async function registerRoutes(app: Express): Promise<Server> {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
+    if (!stripe) {
+      return res.status(500).json({ message: "Stripe not configured. Please add STRIPE_SECRET_KEY." });
+    }
+
     try {
       const { reservationId } = req.body;
+      const user = req.user!;
+      
+      // Verify reservation ownership
+      const reservation = await storage.getReservation(reservationId);
+      if (!reservation) {
+        return res.status(404).json({ message: "Reservation not found" });
+      }
+      
+      if (reservation.userId !== user.id) {
+        return res.status(403).json({ message: "Unauthorized: This reservation does not belong to you" });
+      }
+
+      // Verify we have a PaymentIntent ID stored
+      if (!reservation.stripePaymentIntentId) {
+        return res.status(400).json({ message: "No payment intent found for this reservation" });
+      }
+      
+      // Retrieve the specific PaymentIntent from Stripe
+      const paymentIntent = await stripe.paymentIntents.retrieve(reservation.stripePaymentIntentId);
+      
+      // Verify payment succeeded and amount matches
+      if (paymentIntent.status !== 'succeeded') {
+        return res.status(400).json({ message: "Payment has not succeeded yet" });
+      }
+
+      const expectedAmountInCents = Math.round(parseFloat(reservation.total) * 100);
+      if (paymentIntent.amount !== expectedAmountInCents) {
+        return res.status(400).json({ message: "Payment amount mismatch" });
+      }
+
+      // Verify metadata matches
+      if (paymentIntent.metadata.reservationId !== reservationId || 
+          paymentIntent.metadata.userId !== user.id) {
+        return res.status(400).json({ message: "Payment metadata mismatch" });
+      }
+      
+      // Update reservation status only if all checks pass
       await storage.updateReservationStatus(reservationId, "paid");
       res.json({ success: true });
     } catch (error: any) {
