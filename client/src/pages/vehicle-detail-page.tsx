@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MapPin, Users, Star, ArrowLeft, Calendar, Shield, Zap } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { Vehicle, Agency } from "@shared/schema";
-import palmBackground from "@assets/stock_images/dubai_luxury_archite_5959a287.jpg";
+import elegantBackground from "@assets/stock_images/minimalist_luxury_ar_008b600b.jpg";
 
 export default function VehicleDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -46,8 +46,8 @@ export default function VehicleDetailPage() {
         {/* Background Image */}
         <div className="fixed inset-0 z-0">
           <img 
-            src={palmBackground}
-            alt="Dubai luxury architecture" 
+            src={elegantBackground}
+            alt="Luxury minimalist architecture" 
             className="w-full h-full object-cover opacity-5" 
           />
           <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background"></div>
@@ -84,8 +84,8 @@ export default function VehicleDetailPage() {
         {/* Background Image */}
         <div className="fixed inset-0 z-0">
           <img 
-            src={palmBackground}
-            alt="Dubai luxury architecture" 
+            src={elegantBackground}
+            alt="Luxury minimalist architecture" 
             className="w-full h-full object-cover opacity-5" 
           />
           <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background"></div>
@@ -121,8 +121,8 @@ export default function VehicleDetailPage() {
       {/* Background Image */}
       <div className="fixed inset-0 z-0">
         <img 
-          src={palmBackground}
-          alt="Dubai luxury architecture" 
+          src={elegantBackground}
+          alt="Luxury minimalist architecture" 
           className="w-full h-full object-cover opacity-5" 
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background"></div>

@@ -7,7 +7,7 @@ import { Shield, Crown, Zap, ChartLine, Users, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
 import type { Vehicle } from "@shared/schema";
-import agencyBg from "@assets/stock_images/palm_jumeirah_dubai__85166ba5.jpg";
+import agencyBg from "@assets/stock_images/minimalist_luxury_ar_008b600b.jpg";
 
 export default function HomePage() {
   const [, setLocation] = useLocation();
@@ -122,7 +122,7 @@ export default function HomePage() {
         <div className="absolute inset-0 z-0">
           <img 
             src={agencyBg}
-            alt="Dubai Palm Jumeirah luxury resort" 
+            alt="Luxury minimalist architecture" 
             className="w-full h-full object-cover" 
           />
           <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-secondary/20 to-accent/20"></div>

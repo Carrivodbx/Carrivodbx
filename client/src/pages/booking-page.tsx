@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Calendar, ArrowLeft, CreditCard, Shield, Check, Building2 } from "lucide-react";
-import palmBackground from "@assets/stock_images/dubai_luxury_archite_b6373efe.jpg";
+import elegantBackground from "@assets/stock_images/minimalist_luxury_ar_008b600b.jpg";
 import { useToast } from "@/hooks/use-toast";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements, PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
@@ -333,8 +333,8 @@ export default function BookingPage() {
       {/* Background Image */}
       <div className="fixed inset-0 z-0">
         <img 
-          src={palmBackground}
-          alt="Dubai luxury architecture" 
+          src={elegantBackground}
+          alt="Luxury minimalist architecture" 
           className="w-full h-full object-cover opacity-5" 
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background"></div>
