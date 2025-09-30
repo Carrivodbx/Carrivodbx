@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Search, Car, Building } from "lucide-react";
-import heroBackground from "@assets/stock_images/aerial_view_night_ci_a1219c8a.jpg";
+import heroBackground from "@assets/stock_images/dark_luxury_car_inte_dba01025.jpg";
 
 export default function HeroSection() {
   const [, setLocation] = useLocation();
@@ -27,7 +27,7 @@ export default function HeroSection() {
       <div className="absolute inset-0 z-0">
         <img 
           src={heroBackground}
-          alt="Night city aerial view with cars" 
+          alt="Luxury car interior" 
           className="w-full h-full object-cover" 
         />
         <div className="absolute inset-0 hero-gradient"></div>
