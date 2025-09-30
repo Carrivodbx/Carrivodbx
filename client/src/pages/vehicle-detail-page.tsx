@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MapPin, Users, Star, ArrowLeft, Calendar, Shield, Zap } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { Vehicle, Agency } from "@shared/schema";
-import elegantBackground from "@assets/stock_images/minimalist_luxury_ar_008b600b.jpg";
+import nightCityBackground from "@assets/stock_images/aerial_view_night_ci_a1219c8a.jpg";
 
 export default function VehicleDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -46,8 +46,8 @@ export default function VehicleDetailPage() {
         {/* Background Image */}
         <div className="fixed inset-0 z-0">
           <img 
-            src={elegantBackground}
-            alt="Luxury minimalist architecture" 
+            src={nightCityBackground}
+            alt="Night city aerial view with cars" 
             className="w-full h-full object-cover opacity-5" 
           />
           <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background"></div>
@@ -84,8 +84,8 @@ export default function VehicleDetailPage() {
         {/* Background Image */}
         <div className="fixed inset-0 z-0">
           <img 
-            src={elegantBackground}
-            alt="Luxury minimalist architecture" 
+            src={nightCityBackground}
+            alt="Night city aerial view with cars" 
             className="w-full h-full object-cover opacity-5" 
           />
           <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background"></div>
@@ -121,8 +121,8 @@ export default function VehicleDetailPage() {
       {/* Background Image */}
       <div className="fixed inset-0 z-0">
         <img 
-          src={elegantBackground}
-          alt="Luxury minimalist architecture" 
+          src={nightCityBackground}
+          alt="Night city aerial view with cars" 
           className="w-full h-full object-cover opacity-5" 
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background"></div>
