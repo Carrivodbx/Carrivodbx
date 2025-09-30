@@ -337,7 +337,7 @@ export default function AgencyDashboard() {
 
       {/* Vehicle Form Dialog */}
       <Dialog open={isVehicleFormOpen} onOpenChange={setIsVehicleFormOpen}>
-        <DialogContent className="max-w-2xl glass-morphism border-border">
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto glass-morphism border-border">
           <DialogHeader>
             <DialogTitle className="text-2xl font-orbitron font-bold text-foreground">
               {editingVehicle ? "Modifier le véhicule" : "Ajouter un véhicule"}
