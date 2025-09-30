@@ -51,8 +51,8 @@ export default function VehiclesPage() {
       {/* Background Image */}
       <div className="fixed inset-0 z-0">
         <img 
-          src={porscheNightBackground}
-          alt="Porsche rear view night city" 
+          src={luxuryCarBackground}
+          alt="Luxury car in motion" 
           className="w-full h-full object-cover opacity-5" 
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background"></div>
