@@ -335,18 +335,6 @@ export default function VehicleForm({ vehicle, onSuccess, onCancel }: VehicleFor
         />
       </div>
 
-      <div className="flex items-center space-x-3">
-        <Switch
-          id="available"
-          checked={formData.available}
-          onCheckedChange={(checked) => handleInputChange("available", checked)}
-          data-testid="switch-vehicle-available"
-        />
-        <Label htmlFor="available" className="text-foreground">
-          Véhicule disponible à la location
-        </Label>
-      </div>
-
       {/* Action Buttons */}
       <div className="flex gap-4 pt-6 border-t border-border">
         <Button
