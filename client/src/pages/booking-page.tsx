@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Calendar, ArrowLeft, CreditCard, Shield, Check, Building2 } from "lucide-react";
-import subtleBackground from "@assets/stock_images/dark_luxury_car_inte_dba01025.jpg";
+import darkCityBackground from "@assets/stock_images/dubai_city_skyline_n_f37d3aa7.jpg";
 import { useToast } from "@/hooks/use-toast";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements, PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
@@ -333,8 +333,8 @@ export default function BookingPage() {
       {/* Background Image */}
       <div className="fixed inset-0 z-0">
         <img 
-          src={subtleBackground}
-          alt="Luxury car interior" 
+          src={darkCityBackground}
+          alt="Dubai night skyline" 
           className="w-full h-full object-cover opacity-5" 
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background"></div>

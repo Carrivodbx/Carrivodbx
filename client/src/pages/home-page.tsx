@@ -7,7 +7,7 @@ import { Shield, Crown, Zap, ChartLine, Users, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
 import type { Vehicle } from "@shared/schema";
-import agencyBg from "@assets/stock_images/dark_luxury_car_inte_dba01025.jpg";
+import agencyBg from "@assets/stock_images/dubai_city_skyline_n_f37d3aa7.jpg";
 
 export default function HomePage() {
   const [, setLocation] = useLocation();
@@ -122,7 +122,7 @@ export default function HomePage() {
         <div className="absolute inset-0 z-0">
           <img 
             src={agencyBg}
-            alt="Luxury car interior" 
+            alt="Dubai night skyline" 
             className="w-full h-full object-cover" 
           />
           <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-secondary/20 to-accent/20"></div>
