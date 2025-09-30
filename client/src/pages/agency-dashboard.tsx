@@ -106,20 +106,77 @@ export default function AgencyDashboard() {
         </div>
 
         <Navbar />
-        <div className="pt-20 bg-background">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div className="text-center">
-              <h1 className="text-2xl font-bold mb-4">Profil agence requis</h1>
-              <p className="text-muted-foreground mb-6">
-                Vous devez d'abord créer votre profil d'agence pour accéder au tableau de bord.
-              </p>
-              <Button 
-                onClick={() => setLocation("/dashboard/agency/setup")}
-                data-testid="button-create-agency-profile"
-              >
-                Créer mon profil d'agence
-              </Button>
-            </div>
+        <div className="pt-32 relative z-10">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <Card className="glass-morphism neon-border p-8 md:p-12">
+              <div className="text-center">
+                {/* Icon */}
+                <div className="w-24 h-24 bg-gradient-to-r from-blue-500 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-8 shadow-lg">
+                  <Car className="text-white" size={48} />
+                </div>
+
+                {/* Title */}
+                <h1 className="text-4xl md:text-5xl font-orbitron font-bold mb-6 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 bg-clip-text text-transparent">
+                  Bienvenue dans votre espace agence
+                </h1>
+
+                {/* Description */}
+                <div className="space-y-4 mb-10 text-lg text-foreground">
+                  <p className="leading-relaxed">
+                    Pour commencer à proposer vos véhicules de luxe sur la plateforme Carivoo,
+                    vous devez d'abord <strong className="text-blue-500">créer votre profil d'agence</strong>.
+                  </p>
+                  
+                  <p className="leading-relaxed text-muted-foreground">
+                    Ce profil permettra à vos clients de découvrir votre agence, 
+                    vos services et votre expertise dans la location de véhicules haut de gamme.
+                  </p>
+
+                  <div className="bg-blue-50 dark:bg-blue-950/30 border-2 border-blue-200 dark:border-blue-800 rounded-xl p-6 mt-6">
+                    <p className="text-blue-900 dark:text-blue-100 font-semibold text-xl">
+                      Une fois votre profil créé, vous pourrez :
+                    </p>
+                    <ul className="mt-4 space-y-2 text-left text-blue-800 dark:text-blue-200">
+                      <li className="flex items-start">
+                        <span className="mr-3 text-2xl">✓</span>
+                        <span>Ajouter et gérer votre flotte de véhicules</span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="mr-3 text-2xl">✓</span>
+                        <span>Recevoir des demandes de réservation</span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="mr-3 text-2xl">✓</span>
+                        <span>Suivre vos revenus et statistiques</span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="mr-3 text-2xl">✓</span>
+                        <span>Accéder à la gestion complète de votre activité</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                {/* Big Blue Button */}
+                <div className="mt-10">
+                  <Button 
+                    onClick={() => {
+                      console.log("=== NAVIGATION TO SETUP ===");
+                      setLocation("/dashboard/agency/setup");
+                    }}
+                    className="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white px-16 py-8 text-2xl font-bold rounded-xl shadow-2xl transition-all hover:scale-105 hover:shadow-blue-500/50"
+                    data-testid="button-create-agency-profile"
+                  >
+                    <Car className="mr-4" size={32} />
+                    CRÉER MON PROFIL D'AGENCE
+                  </Button>
+                  
+                  <p className="mt-6 text-sm text-muted-foreground">
+                    Cela ne prendra que quelques minutes
+                  </p>
+                </div>
+              </div>
+            </Card>
           </div>
         </div>
       </div>
