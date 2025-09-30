@@ -35,6 +35,7 @@ export const vehicles = pgTable("vehicles", {
   model: text("model").notNull(),
   category: text("category").notNull(),
   pricePerDay: decimal("price_per_day", { precision: 10, scale: 2 }).notNull(),
+  depositAmount: decimal("deposit_amount", { precision: 10, scale: 2 }),
   region: text("region").notNull(),
   description: text("description"),
   photo: text("photo"),

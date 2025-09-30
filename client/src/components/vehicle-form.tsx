@@ -27,6 +27,7 @@ export default function VehicleForm({ vehicle, onSuccess, onCancel }: VehicleFor
     model: "",
     category: "",
     pricePerDay: "",
+    depositAmount: "",
     region: "",
     description: "",
     photo: "",
@@ -43,6 +44,7 @@ export default function VehicleForm({ vehicle, onSuccess, onCancel }: VehicleFor
         model: vehicle.model,
         category: vehicle.category,
         pricePerDay: vehicle.pricePerDay,
+        depositAmount: vehicle.depositAmount || "",
         region: vehicle.region,
         description: vehicle.description || "",
         photo: vehicle.photo || "",
@@ -106,6 +108,7 @@ export default function VehicleForm({ vehicle, onSuccess, onCancel }: VehicleFor
         model: formData.model,
         category: formData.category,
         pricePerDay: formData.pricePerDay,
+        depositAmount: formData.depositAmount || null,
         region: formData.region,
         description: formData.description,
         photo: formData.photo,
@@ -215,7 +218,7 @@ export default function VehicleForm({ vehicle, onSuccess, onCancel }: VehicleFor
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <Label htmlFor="price" className="text-foreground">Prix par jour (€) *</Label>
           <Input
@@ -232,6 +235,26 @@ export default function VehicleForm({ vehicle, onSuccess, onCancel }: VehicleFor
           />
         </div>
 
+        <div>
+          <Label htmlFor="deposit" className="text-foreground">Caution (€)</Label>
+          <Input
+            id="deposit"
+            type="number"
+            step="0.01"
+            min="0"
+            placeholder="Ex: 500.00"
+            value={formData.depositAmount}
+            onChange={(e) => handleInputChange("depositAmount", e.target.value)}
+            className="bg-muted border-border text-foreground"
+            data-testid="input-vehicle-deposit"
+          />
+          <p className="text-sm text-muted-foreground mt-1">
+            Montant de la caution qui sera rendu à la fin de la location
+          </p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <Label htmlFor="seats" className="text-foreground">Nombre de places</Label>
           <Input
