@@ -56,7 +56,8 @@ export default function VehiclesPage() {
     "Berline",
     "Cabriolet",
     "Électrique",
-    "Hybride"
+    "Hybride",
+    "Supercar"
   ];
 
   return (

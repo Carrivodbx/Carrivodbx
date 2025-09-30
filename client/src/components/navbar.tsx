@@ -87,6 +87,11 @@ export default function Navbar() {
                 Hybride
               </span>
             </Link>
+            <Link href="/vehicles?category=Supercar">
+              <span className={`font-medium text-sm transition-colors duration-200 text-muted-foreground hover:text-primary`}>
+                Supercar
+              </span>
+            </Link>
           </div>
           
           {/* Auth Section - Desktop */}
@@ -236,6 +241,16 @@ export default function Navbar() {
                       data-testid="mobile-link-hybride"
                     >
                       Hybride
+                    </Button>
+                  </Link>
+                  
+                  <Link href="/vehicles?category=Supercar" onClick={handleNavClick}>
+                    <Button 
+                      variant="ghost" 
+                      className="w-full justify-start text-base text-foreground"
+                      data-testid="mobile-link-supercar"
+                    >
+                      Supercar
                     </Button>
                   </Link>
 
