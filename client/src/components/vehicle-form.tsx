@@ -248,17 +248,25 @@ export default function VehicleForm({ vehicle, onSuccess, onCancel }: VehicleFor
             placeholder="Ex: 500.00"
             value={formData.depositAmount}
             onChange={(e) => handleInputChange("depositAmount", e.target.value)}
-            className="bg-muted border-border text-foreground"
+            disabled={formData.cashDepositAllowed}
+            className={`border-border text-foreground ${formData.cashDepositAllowed ? 'bg-gray-300 dark:bg-gray-700 cursor-not-allowed opacity-50' : 'bg-muted'}`}
             data-testid="input-vehicle-deposit"
           />
           <p className="text-sm text-muted-foreground mt-1">
-            Montant de la caution qui sera rendu à la fin de la location
+            {formData.cashDepositAllowed 
+              ? "Le montant sera défini lors de la prise du véhicule en espèces" 
+              : "Montant de la caution qui sera rendu à la fin de la location"}
           </p>
           <div className="flex items-center space-x-2 mt-3">
             <Switch
               id="cashDeposit"
               checked={formData.cashDepositAllowed}
-              onCheckedChange={(checked) => handleInputChange("cashDepositAllowed", checked)}
+              onCheckedChange={(checked) => {
+                handleInputChange("cashDepositAllowed", checked);
+                if (checked) {
+                  handleInputChange("depositAmount", "");
+                }
+              }}
               data-testid="switch-cash-deposit"
             />
             <Label htmlFor="cashDeposit" className="text-foreground text-sm">
