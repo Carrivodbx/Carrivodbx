@@ -146,6 +146,39 @@ export default function VehicleForm({ vehicle, onSuccess, onCancel }: VehicleFor
     }));
   };
 
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Check file type
+    if (!file.type.startsWith('image/')) {
+      toast({
+        title: "Erreur",
+        description: "Veuillez sélectionner un fichier image",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Check file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast({
+        title: "Erreur",
+        description: "L'image ne doit pas dépasser 5MB",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Convert to base64
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64String = reader.result as string;
+      handleInputChange("photo", base64String);
+    };
+    reader.readAsDataURL(file);
+  };
+
   const categories = [
     "Sportive",
     "SUV Luxe",
@@ -326,32 +359,53 @@ export default function VehicleForm({ vehicle, onSuccess, onCancel }: VehicleFor
       </div>
 
       <div>
-        <Label htmlFor="photo" className="text-foreground">URL de la photo</Label>
-        <Input
-          id="photo"
-          type="url"
-          placeholder="https://example.com/image.jpg"
-          value={formData.photo}
-          onChange={(e) => handleInputChange("photo", e.target.value)}
-          className="bg-muted border-border text-foreground"
-          data-testid="input-vehicle-photo"
-        />
-        <p className="text-sm text-muted-foreground mt-1">
-          Ajoutez l'URL d'une image haute qualité de votre véhicule
-        </p>
+        <Label htmlFor="photo" className="text-foreground">Photo du véhicule</Label>
+        <div className="mt-2">
+          <div className="flex items-center gap-4">
+            <label
+              htmlFor="photo-upload"
+              className="cursor-pointer inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-zinc-800 to-zinc-900 hover:from-zinc-700 hover:to-zinc-800 text-zinc-100 font-medium rounded-lg border border-zinc-700 transition-all duration-200"
+              data-testid="button-upload-photo"
+            >
+              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              Choisir une image
+            </label>
+            <input
+              id="photo-upload"
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              className="hidden"
+              data-testid="input-vehicle-photo-file"
+            />
+            {formData.photo && (
+              <button
+                type="button"
+                onClick={() => handleInputChange("photo", "")}
+                className="px-4 py-2 text-sm text-zinc-400 hover:text-zinc-200 border border-zinc-700 rounded-lg hover:bg-zinc-800 transition-colors"
+                data-testid="button-remove-photo"
+              >
+                Supprimer
+              </button>
+            )}
+          </div>
+          <p className="text-sm text-muted-foreground mt-2">
+            Téléchargez une image haute qualité de votre véhicule (max 5MB)
+          </p>
+        </div>
         
         {/* Image Preview */}
         {formData.photo && (
           <div className="mt-4">
             <Label className="text-foreground mb-2 block">Aperçu de la photo</Label>
-            <div className="relative rounded-lg overflow-hidden border-2 border-border">
+            <div className="relative rounded-lg overflow-hidden border-2 border-zinc-700">
               <img
                 src={formData.photo}
                 alt="Aperçu du véhicule"
                 className="w-full h-64 object-cover"
-                onError={(e) => {
-                  e.currentTarget.src = "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1074&q=80";
-                }}
+                data-testid="img-vehicle-preview"
               />
             </div>
           </div>
