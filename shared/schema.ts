@@ -33,6 +33,7 @@ export const vehicles = pgTable("vehicles", {
   title: text("title").notNull(),
   brand: text("brand").notNull(),
   model: text("model").notNull(),
+  year: integer("year"),
   category: text("category").notNull(),
   pricePerDay: decimal("price_per_day", { precision: 10, scale: 2 }).notNull(),
   depositAmount: decimal("deposit_amount", { precision: 10, scale: 2 }),

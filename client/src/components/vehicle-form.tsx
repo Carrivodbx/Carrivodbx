@@ -25,6 +25,7 @@ export default function VehicleForm({ vehicle, onSuccess, onCancel }: VehicleFor
     title: "",
     brand: "",
     model: "",
+    year: "",
     category: "",
     pricePerDay: "",
     depositAmount: "",
@@ -43,6 +44,7 @@ export default function VehicleForm({ vehicle, onSuccess, onCancel }: VehicleFor
         title: vehicle.title,
         brand: vehicle.brand,
         model: vehicle.model,
+        year: vehicle.year?.toString() || "",
         category: vehicle.category,
         pricePerDay: vehicle.pricePerDay,
         depositAmount: vehicle.depositAmount || "",
@@ -108,6 +110,7 @@ export default function VehicleForm({ vehicle, onSuccess, onCancel }: VehicleFor
         title: formData.title,
         brand: formData.brand,
         model: formData.model,
+        year: formData.year ? parseInt(formData.year) : null,
         category: formData.category,
         pricePerDay: formData.pricePerDay,
         depositAmount: formData.depositAmount || null,
@@ -191,7 +194,7 @@ export default function VehicleForm({ vehicle, onSuccess, onCancel }: VehicleFor
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
           <Label htmlFor="brand" className="text-foreground">Marque *</Label>
           <Input
@@ -217,6 +220,21 @@ export default function VehicleForm({ vehicle, onSuccess, onCancel }: VehicleFor
             className="bg-muted border-border text-foreground"
             required
             data-testid="input-vehicle-model"
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="year" className="text-foreground">Année</Label>
+          <Input
+            id="year"
+            type="number"
+            min="1900"
+            max="2030"
+            placeholder="Ex: 2023"
+            value={formData.year}
+            onChange={(e) => handleInputChange("year", e.target.value)}
+            className="bg-muted border-border text-foreground"
+            data-testid="input-vehicle-year"
           />
         </div>
       </div>
