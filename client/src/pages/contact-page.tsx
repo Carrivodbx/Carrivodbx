@@ -124,15 +124,13 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <CardTitle>Téléphone</CardTitle>
-                      <CardDescription className="text-base mt-1">+33 1 84 80 99 99</CardDescription>
+                      <CardDescription className="text-base mt-1">06 81 18 88 52</CardDescription>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
-                    Lundi - Vendredi: 9h00 - 19h00<br />
-                    Samedi: 10h00 - 18h00<br />
-                    Dimanche: Fermé
+                    Disponible 7j/7 - 24h/24
                   </p>
                 </CardContent>
               </Card>

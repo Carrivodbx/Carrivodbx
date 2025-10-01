@@ -122,7 +122,7 @@ export default function HelpCenterPage() {
                 <CardDescription className="mb-4">
                   Appelez-nous directement
                 </CardDescription>
-                <p className="text-sm font-medium">+33 1 84 80 99 99</p>
+                <p className="text-sm font-medium">06 81 18 88 52</p>
               </CardContent>
             </Card>
 
