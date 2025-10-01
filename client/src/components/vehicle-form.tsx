@@ -36,6 +36,7 @@ export default function VehicleForm({ vehicle, onSuccess, onCancel }: VehicleFor
     photos: [] as string[],
     available: true,
     seats: "",
+    horsepower: "",
   });
 
   // Populate form when editing
@@ -56,6 +57,7 @@ export default function VehicleForm({ vehicle, onSuccess, onCancel }: VehicleFor
         photos: vehicle.photos || [],
         available: vehicle.available ?? true,
         seats: vehicle.seats?.toString() || "",
+        horsepower: vehicle.horsepower?.toString() || "",
       });
     }
   }, [vehicle]);
@@ -123,6 +125,7 @@ export default function VehicleForm({ vehicle, onSuccess, onCancel }: VehicleFor
         photos: formData.photos.length > 0 ? formData.photos : null,
         available: formData.available,
         seats: formData.seats ? parseInt(formData.seats) : null,
+        horsepower: formData.horsepower ? parseInt(formData.horsepower) : null,
       };
 
       // Validate using schema (excluding agencyId as it's added server-side)
@@ -352,6 +355,22 @@ export default function VehicleForm({ vehicle, onSuccess, onCancel }: VehicleFor
           />
         </div>
 
+        <div>
+          <Label htmlFor="horsepower" className="text-foreground">Chevaux (CV)</Label>
+          <Input
+            id="horsepower"
+            type="number"
+            min="1"
+            placeholder="Ex: 450"
+            value={formData.horsepower}
+            onChange={(e) => handleInputChange("horsepower", e.target.value)}
+            className="bg-muted border-border text-foreground"
+            data-testid="input-vehicle-horsepower"
+          />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4">
         <div>
           <Label htmlFor="region" className="text-foreground">Région *</Label>
           <Input
