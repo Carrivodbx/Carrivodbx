@@ -48,6 +48,39 @@ export default function AgencySetup() {
     },
   });
 
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Check file type
+    if (!file.type.startsWith('image/')) {
+      toast({
+        title: "Erreur",
+        description: "Veuillez sélectionner un fichier image",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Check file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast({
+        title: "Erreur",
+        description: "L'image ne doit pas dépasser 5MB",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Convert to base64
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64String = reader.result as string;
+      setFormData(prev => ({ ...prev, logo: base64String }));
+    };
+    reader.readAsDataURL(file);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -186,19 +219,58 @@ export default function AgencySetup() {
                 </div>
 
                 <div>
-                  <Label htmlFor="logo" className="text-foreground">Logo (URL)</Label>
-                  <Input
-                    id="logo"
-                    type="url"
-                    placeholder="https://example.com/logo.png"
-                    value={formData.logo}
-                    onChange={(e) => setFormData(prev => ({ ...prev, logo: e.target.value }))}
-                    className="bg-muted border-border text-foreground"
-                    data-testid="input-agency-logo"
-                  />
-                  <p className="text-sm text-muted-foreground mt-1">
-                    URL d'une image pour le logo de votre agence
-                  </p>
+                  <Label htmlFor="logo" className="text-foreground font-semibold text-lg mb-3 block">Logo de l'agence</Label>
+                  <div className="mt-2">
+                    {!formData.logo ? (
+                      <label
+                        htmlFor="logo-upload"
+                        className="cursor-pointer flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-zinc-700 rounded-xl bg-zinc-900/50 hover:bg-zinc-800/50 transition-all duration-200"
+                        data-testid="button-upload-logo"
+                      >
+                        <div className="flex flex-col items-center gap-3">
+                          <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center">
+                            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                            </svg>
+                          </div>
+                          <div className="text-center">
+                            <p className="text-zinc-100 font-medium text-lg">Ajouter un logo</p>
+                            <p className="text-zinc-400 text-sm mt-1">Cliquez pour sélectionner depuis votre galerie ou fichiers</p>
+                          </div>
+                        </div>
+                      </label>
+                    ) : (
+                      <div className="relative">
+                        <div className="relative rounded-xl overflow-hidden border-2 border-zinc-700 bg-zinc-900/50 p-4">
+                          <img
+                            src={formData.logo}
+                            alt="Logo de l'agence"
+                            className="w-full h-48 object-contain"
+                            data-testid="img-agency-logo-preview"
+                          />
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => setFormData(prev => ({ ...prev, logo: "" }))}
+                          className="absolute top-4 right-4 px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors shadow-lg"
+                          data-testid="button-remove-logo"
+                        >
+                          ✕ Supprimer
+                        </button>
+                      </div>
+                    )}
+                    <input
+                      id="logo-upload"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      className="hidden"
+                      data-testid="input-agency-logo-file"
+                    />
+                    <p className="text-sm text-muted-foreground mt-3 text-center">
+                      📷 Logo de votre agence (max 5MB) • JPG, PNG
+                    </p>
+                  </div>
                 </div>
 
                 <div>
