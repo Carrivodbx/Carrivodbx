@@ -18,6 +18,10 @@ export const users = pgTable("users", {
   emailVerified: boolean("email_verified").default(false).notNull(),
   verificationTokenHash: text("verification_token_hash"),
   verificationTokenExpires: timestamp("verification_token_expires"),
+  resetTokenHash: text("reset_token_hash"),
+  resetTokenExpires: timestamp("reset_token_expires"),
+  resetChannel: text("reset_channel", { enum: ["email", "sms"] }),
+  resetTarget: text("reset_target"),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -134,6 +138,10 @@ export const insertUserSchema = createInsertSchema(users).omit({
   emailVerified: true,
   verificationTokenHash: true,
   verificationTokenExpires: true,
+  resetTokenHash: true,
+  resetTokenExpires: true,
+  resetChannel: true,
+  resetTarget: true,
 });
 
 export const insertAgencySchema = createInsertSchema(agencies).omit({
