@@ -189,14 +189,14 @@ export default function VehicleDetailPage() {
             {/* Vehicle Image Gallery */}
             <div className="relative group">
               <div 
-                className="relative rounded-2xl cursor-pointer bg-muted/30 flex items-center justify-center"
-                style={{ minHeight: '384px', maxHeight: '600px' }}
+                className="relative rounded-2xl cursor-pointer bg-muted/30 flex items-center justify-center overflow-hidden"
+                style={{ minHeight: '384px', height: '600px' }}
                 onClick={openLightbox}
               >
                 <img
                   src={photos[currentImageIndex]}
                   alt={`${vehicle.brand} ${vehicle.model} - Photo ${currentImageIndex + 1}`}
-                  className="w-full h-auto max-h-[384px] lg:max-h-[600px] object-cover lg:object-contain rounded-2xl transition-transform duration-500 hover:scale-105"
+                  className="max-w-full max-h-full object-cover lg:object-contain rounded-2xl transition-transform duration-500 hover:scale-105"
                   data-testid="img-vehicle-main"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
