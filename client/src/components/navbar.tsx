@@ -54,7 +54,7 @@ export default function Navbar() {
               <span className={`font-medium transition-colors duration-200 ${
                 location === "/vehicles" ? "text-primary" : "text-muted-foreground hover:text-primary"
               }`}>
-                Véhicules
+                Tous les véhicules
               </span>
             </Link>
             <Link href="/vehicles?category=Sportive">
@@ -177,7 +177,7 @@ export default function Navbar() {
                       data-testid="mobile-link-vehicles"
                     >
                       <Car className="mr-3" size={20} />
-                      Véhicules
+                      Tous les véhicules
                     </Button>
                   </Link>
 
