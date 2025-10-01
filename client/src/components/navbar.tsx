@@ -15,7 +15,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { User, LogOut, Menu, Home, Car, LayoutDashboard, Crown } from "lucide-react";
-import logoPath from "@assets/imafe 3_1759282435961.jpg";
+import logoPath from "@assets/Image4_1759292728996.jpg";
 import { useState } from "react";
 
 export default function Navbar() {
@@ -38,7 +38,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-20 sm:h-24">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3 flex-shrink-0">
-            <img src={logoPath} alt="Carivoo Logo" className="h-16 sm:h-20 w-auto" style={{ mixBlendMode: 'lighten', filter: 'brightness(1.2) contrast(1.3) saturate(1.2) invert(0.05)' }} />
+            <img src={logoPath} alt="Carivoo Logo" className="h-16 sm:h-20 w-auto" />
           </Link>
           
           {/* Navigation Links - Desktop */}

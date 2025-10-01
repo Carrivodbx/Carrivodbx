@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { User, Building, ArrowLeft } from "lucide-react";
-import logoPath from "@assets/imafe 3_1759282435961.jpg";
+import logoPath from "@assets/Image4_1759292728996.jpg";
 import { useToast } from "@/hooks/use-toast";
 import { insertUserSchema } from "@shared/schema";
 import { Link } from "wouter";
@@ -125,7 +125,7 @@ export default function AuthPage() {
           <span className="hidden sm:inline">Retour à l'accueil</span>
           <span className="sm:hidden">Retour</span>
         </Link>
-        <img src={logoPath} alt="Carivoo Logo" className="h-8 sm:h-10 w-auto" style={{ mixBlendMode: 'lighten', filter: 'brightness(1.2) contrast(1.3) saturate(1.2) invert(0.05)' }} />
+        <img src={logoPath} alt="Carivoo Logo" className="h-8 sm:h-10 w-auto" />
       </div>
 
       <div className="flex items-center justify-center min-h-[calc(100vh-80px)] px-4 relative z-10 py-6 sm:py-0">

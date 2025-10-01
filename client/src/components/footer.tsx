@@ -1,7 +1,7 @@
 import { Link } from "wouter";
 import { Instagram, Twitter } from "lucide-react";
 import { SiTiktok } from "react-icons/si";
-import logoPath from "@assets/imafe 3_1759282435961.jpg";
+import logoPath from "@assets/Image4_1759292728996.jpg";
 
 export default function Footer() {
   return (
@@ -11,7 +11,7 @@ export default function Footer() {
           {/* Company Info */}
           <div className="col-span-1 md:col-span-2">
             <div className="mb-4">
-              <img src={logoPath} alt="Carivoo Logo" className="h-12 w-auto" style={{ mixBlendMode: 'lighten', filter: 'brightness(1.2) contrast(1.3) saturate(1.2) invert(0.05)' }} />
+              <img src={logoPath} alt="Carivoo Logo" className="h-12 w-auto" />
             </div>
             <p className="text-muted-foreground mb-6 max-w-md">
               La plateforme de référence pour la location de véhicules de luxe. 
