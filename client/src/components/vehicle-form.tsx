@@ -359,57 +359,58 @@ export default function VehicleForm({ vehicle, onSuccess, onCancel }: VehicleFor
       </div>
 
       <div>
-        <Label htmlFor="photo" className="text-foreground">Photo du véhicule</Label>
+        <Label htmlFor="photo" className="text-foreground font-semibold text-lg mb-3 block">Photo du véhicule *</Label>
         <div className="mt-2">
-          <div className="flex items-center gap-4">
+          {!formData.photo ? (
             <label
               htmlFor="photo-upload"
-              className="cursor-pointer inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-zinc-800 to-zinc-900 hover:from-zinc-700 hover:to-zinc-800 text-zinc-100 font-medium rounded-lg border border-zinc-700 transition-all duration-200"
+              className="cursor-pointer flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-zinc-700 rounded-xl bg-zinc-900/50 hover:bg-zinc-800/50 transition-all duration-200"
               data-testid="button-upload-photo"
             >
-              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-              Choisir une image
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center">
+                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                  </svg>
+                </div>
+                <div className="text-center">
+                  <p className="text-zinc-100 font-medium text-lg">Ajouter une photo</p>
+                  <p className="text-zinc-400 text-sm mt-1">Cliquez pour sélectionner depuis votre galerie ou fichiers</p>
+                </div>
+              </div>
             </label>
-            <input
-              id="photo-upload"
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-              className="hidden"
-              data-testid="input-vehicle-photo-file"
-            />
-            {formData.photo && (
+          ) : (
+            <div className="relative">
+              <div className="relative rounded-xl overflow-hidden border-2 border-zinc-700">
+                <img
+                  src={formData.photo}
+                  alt="Aperçu du véhicule"
+                  className="w-full h-64 object-cover"
+                  data-testid="img-vehicle-preview"
+                />
+              </div>
               <button
                 type="button"
                 onClick={() => handleInputChange("photo", "")}
-                className="px-4 py-2 text-sm text-zinc-400 hover:text-zinc-200 border border-zinc-700 rounded-lg hover:bg-zinc-800 transition-colors"
+                className="absolute top-4 right-4 px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors shadow-lg"
                 data-testid="button-remove-photo"
               >
-                Supprimer
+                ✕ Supprimer
               </button>
-            )}
-          </div>
-          <p className="text-sm text-muted-foreground mt-2">
-            Téléchargez une image haute qualité de votre véhicule (max 5MB)
+            </div>
+          )}
+          <input
+            id="photo-upload"
+            type="file"
+            accept="image/*"
+            onChange={handleImageUpload}
+            className="hidden"
+            data-testid="input-vehicle-photo-file"
+          />
+          <p className="text-sm text-muted-foreground mt-3 text-center">
+            📷 Téléchargez une image haute qualité (max 5MB) • JPG, PNG
           </p>
         </div>
-        
-        {/* Image Preview */}
-        {formData.photo && (
-          <div className="mt-4">
-            <Label className="text-foreground mb-2 block">Aperçu de la photo</Label>
-            <div className="relative rounded-lg overflow-hidden border-2 border-zinc-700">
-              <img
-                src={formData.photo}
-                alt="Aperçu du véhicule"
-                className="w-full h-64 object-cover"
-                data-testid="img-vehicle-preview"
-              />
-            </div>
-          </div>
-        )}
       </div>
 
       <div>
