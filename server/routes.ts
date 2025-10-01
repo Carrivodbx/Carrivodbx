@@ -198,7 +198,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(403).json({ message: "Only clients can create reservations" });
       }
 
-      const { vehicleId, startDate, endDate, depositMethod } = req.body;
+      const { vehicleId, startDate, endDate } = req.body;
 
       // Fetch vehicle to get accurate pricing
       const vehicle = await storage.getVehicle(vehicleId);
@@ -218,7 +218,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const pricePerDay = parseFloat(vehicle.pricePerDay);
       const total = days * pricePerDay;
-      const depositAmount = total * 0.2;
 
       const reservationData = insertReservationSchema.parse({
         vehicleId,
@@ -226,8 +225,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         endDate,
         days,
         total: total.toString(),
-        depositAmount: depositAmount.toString(),
-        depositMethod: depositMethod || "credit_card",
+        depositAmount: "0",
+        depositMethod: "credit_card",
         depositStatus: "pending",
         status: "pending",
         userId: user.id,

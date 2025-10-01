@@ -191,8 +191,6 @@ export default function BookingPage() {
   const [clientSecret, setClientSecret] = useState("");
   const [reservationId, setReservationId] = useState("");
   const [step, setStep] = useState<"booking" | "payment" | "success">("booking");
-  const [depositMethod, setDepositMethod] = useState<"credit_card" | "bank_transfer">("credit_card");
-  const depositAmount = total * 0.2;
 
   const { data: vehicle, isLoading: vehicleLoading } = useQuery<Vehicle>({
     queryKey: ["/api/vehicles", vehicleId],
@@ -274,7 +272,6 @@ export default function BookingPage() {
       vehicleId,
       startDate,
       endDate,
-      depositMethod,
     });
   };
 
@@ -461,10 +458,6 @@ export default function BookingPage() {
                           <span className="text-muted-foreground">Commission Carivoo (10%)</span>
                           <span className="font-medium text-foreground">€{(total * 0.1).toFixed(2)}</span>
                         </div>
-                        <div className="flex justify-between text-accent">
-                          <span className="text-muted-foreground">Caution (20%)</span>
-                          <span className="font-medium text-accent">€{(total * 0.2).toFixed(2)}</span>
-                        </div>
                         <div className="flex justify-between border-t border-border pt-3">
                           <span className="text-lg font-bold text-foreground">Total</span>
                           <span className="text-2xl font-orbitron font-bold text-primary" data-testid="text-total-price">
@@ -540,75 +533,19 @@ export default function BookingPage() {
                           </p>
                         </div>
 
-                        {/* Deposit Section */}
+                        {/* Deposit Information */}
                         <div className="border-t border-border pt-6">
-                          <Label className="text-lg font-orbitron font-bold text-foreground mb-4 block">
-                            Caution de garantie
+                          <Label className="text-lg font-orbitron font-bold text-foreground mb-4 block flex items-center gap-2">
+                            <Shield className="w-5 h-5 text-primary" />
+                            Dépôt de garantie
                           </Label>
-                          <p className="text-sm text-muted-foreground mb-4">
-                            Une caution de 20% du montant total est requise (€{depositAmount.toFixed(2)})
-                          </p>
-                          
-                          <div className="grid grid-cols-1 gap-4">
-                            <button
-                              type="button"
-                              onClick={() => setDepositMethod("credit_card")}
-                              className={`p-4 rounded-lg border-2 transition-all duration-200 ${
-                                depositMethod === "credit_card"
-                                  ? "border-primary bg-primary/10"
-                                  : "border-border hover:border-primary/50"
-                              }`}
-                              data-testid="button-deposit-credit-card"
-                            >
-                              <div className="flex items-center space-x-4">
-                                <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
-                                  depositMethod === "credit_card"
-                                    ? "bg-gradient-to-r from-primary to-secondary"
-                                    : "bg-muted"
-                                }`}>
-                                  <CreditCard className="text-white" size={24} />
-                                </div>
-                                <div className="text-left flex-1">
-                                  <h4 className="font-bold text-foreground">Carte bancaire</h4>
-                                  <p className="text-sm text-muted-foreground">
-                                    Caution bloquée puis restituée à la fin de la location
-                                  </p>
-                                </div>
-                                {depositMethod === "credit_card" && (
-                                  <Check className="text-primary" size={24} />
-                                )}
-                              </div>
-                            </button>
-
-                            <button
-                              type="button"
-                              onClick={() => setDepositMethod("bank_transfer")}
-                              className={`p-4 rounded-lg border-2 transition-all duration-200 ${
-                                depositMethod === "bank_transfer"
-                                  ? "border-primary bg-primary/10"
-                                  : "border-border hover:border-primary/50"
-                              }`}
-                              data-testid="button-deposit-bank-transfer"
-                            >
-                              <div className="flex items-center space-x-4">
-                                <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
-                                  depositMethod === "bank_transfer"
-                                    ? "bg-gradient-to-r from-primary to-secondary"
-                                    : "bg-muted"
-                                }`}>
-                                  <Building2 className="text-white" size={24} />
-                                </div>
-                                <div className="text-left flex-1">
-                                  <h4 className="font-bold text-foreground">Virement bancaire</h4>
-                                  <p className="text-sm text-muted-foreground">
-                                    Caution versée par virement, restituée sous 72h
-                                  </p>
-                                </div>
-                                {depositMethod === "bank_transfer" && (
-                                  <Check className="text-primary" size={24} />
-                                )}
-                              </div>
-                            </button>
+                          <div className="bg-muted/50 rounded-lg p-4 border border-border">
+                            <p className="text-sm text-foreground">
+                              Le dépôt de garantie se fera <span className="font-semibold text-primary">directement sur place avec l'agence</span> au moment de la prise du véhicule.
+                            </p>
+                            <p className="text-sm text-muted-foreground mt-2">
+                              Selon les agences : empreinte bancaire, espèces ou dépôt d'un véhicule.
+                            </p>
                           </div>
                         </div>
                       </>
