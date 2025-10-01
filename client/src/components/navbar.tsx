@@ -147,13 +147,13 @@ export default function Navbar() {
                   <Menu size={24} />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[280px] glass-morphism border-l border-border">
+              <SheetContent side="right" className="w-[280px] glass-morphism border-l border-border overflow-y-auto">
                 <SheetHeader>
                   <SheetTitle className="text-left font-orbitron bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                     Menu
                   </SheetTitle>
                 </SheetHeader>
-                <div className="flex flex-col space-y-4 mt-8">
+                <div className="flex flex-col space-y-4 mt-8 pb-8">
                   {/* Navigation Links */}
                   <Link href="/" onClick={handleNavClick}>
                     <Button 
