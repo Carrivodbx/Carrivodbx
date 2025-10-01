@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useParams, useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/use-auth";
@@ -6,7 +7,8 @@ import Footer from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { MapPin, Users, Star, ArrowLeft, Calendar, Shield, Zap } from "lucide-react";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { MapPin, Users, Star, ArrowLeft, Calendar, Shield, Zap, ChevronLeft, ChevronRight, X } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { Vehicle, Agency } from "@shared/schema";
 import porscheNightBackground from "@assets/stock_images/porsche_rear_view_ba_b54491f8.jpg";
@@ -15,6 +17,8 @@ export default function VehicleDetailPage() {
   const { id } = useParams<{ id: string }>();
   const [, setLocation] = useLocation();
   const { user } = useAuth();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
 
   const { data: vehicle, isLoading: vehicleLoading, error } = useQuery<Vehicle>({
     queryKey: ["/api/vehicles", id],
@@ -125,6 +129,27 @@ export default function VehicleDetailPage() {
     { icon: Calendar, label: "Annulation flexible" },
   ];
 
+  // Get all photos (use photos array if available, otherwise fallback to single photo)
+  const photos = vehicle && vehicle.photos && vehicle.photos.length > 0 
+    ? vehicle.photos 
+    : vehicle && vehicle.photo 
+    ? [vehicle.photo] 
+    : ["https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1074&q=80"];
+
+  const hasMultiplePhotos = photos.length > 1;
+
+  const nextImage = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % photos.length);
+  };
+
+  const prevImage = () => {
+    setCurrentImageIndex((prev) => (prev - 1 + photos.length) % photos.length);
+  };
+
+  const openLightbox = () => {
+    setLightboxOpen(true);
+  };
+
   return (
     <div className="min-h-screen relative overflow-x-hidden">
       {/* Background Image */}
@@ -161,24 +186,96 @@ export default function VehicleDetailPage() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
             
-            {/* Vehicle Image */}
-            <div className="relative">
-              <img
-                src={vehicle.photo || "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1074&q=80"}
-                alt={`${vehicle.brand} ${vehicle.model}`}
-                className="w-full h-96 lg:h-[500px] object-cover rounded-2xl"
-                data-testid="img-vehicle-main"
-              />
-              <div className="absolute top-4 left-4">
-                <Badge className="bg-gradient-to-r from-accent to-secondary text-accent-foreground">
-                  {vehicle.category}
-                </Badge>
-              </div>
-              {vehicle.available && (
-                <div className="absolute top-4 right-4">
-                  <Badge className="bg-green-500 text-white">
-                    Disponible
+            {/* Vehicle Image Gallery */}
+            <div className="relative group">
+              <div 
+                className="relative overflow-hidden rounded-2xl cursor-pointer"
+                onClick={openLightbox}
+              >
+                <img
+                  src={photos[currentImageIndex]}
+                  alt={`${vehicle.brand} ${vehicle.model} - Photo ${currentImageIndex + 1}`}
+                  className="w-full h-96 lg:h-[500px] object-cover transition-transform duration-500 hover:scale-105"
+                  data-testid="img-vehicle-main"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                
+                {/* Carousel Controls - Only show if multiple photos */}
+                {hasMultiplePhotos && (
+                  <>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        prevImage();
+                      }}
+                      className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/70 hover:bg-black/90 text-white p-3 rounded-full transition-all"
+                      data-testid="button-prev-photo"
+                    >
+                      <ChevronLeft size={24} />
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        nextImage();
+                      }}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/70 hover:bg-black/90 text-white p-3 rounded-full transition-all"
+                      data-testid="button-next-photo"
+                    >
+                      <ChevronRight size={24} />
+                    </button>
+                    
+                    {/* Photo Indicators */}
+                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+                      {photos.map((_, index) => (
+                        <div
+                          key={index}
+                          className={`h-2 rounded-full transition-all cursor-pointer ${
+                            index === currentImageIndex ? 'bg-accent w-8' : 'bg-white/50 w-2'
+                          }`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setCurrentImageIndex(index);
+                          }}
+                          data-testid={`indicator-photo-${index}`}
+                        />
+                      ))}
+                    </div>
+                  </>
+                )}
+
+                <div className="absolute top-4 left-4">
+                  <Badge className="bg-gradient-to-r from-accent to-secondary text-accent-foreground">
+                    {vehicle.category}
                   </Badge>
+                </div>
+                {vehicle.available && (
+                  <div className="absolute top-4 right-4">
+                    <Badge className="bg-green-500 text-white">
+                      Disponible
+                    </Badge>
+                  </div>
+                )}
+              </div>
+
+              {/* Thumbnail Gallery */}
+              {hasMultiplePhotos && (
+                <div className="flex gap-2 mt-4 overflow-x-auto pb-2">
+                  {photos.map((photo, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentImageIndex(index)}
+                      className={`relative flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden transition-all ${
+                        index === currentImageIndex ? 'ring-2 ring-accent scale-105' : 'opacity-60 hover:opacity-100'
+                      }`}
+                      data-testid={`thumbnail-${index}`}
+                    >
+                      <img
+                        src={photo}
+                        alt={`Thumbnail ${index + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                    </button>
+                  ))}
                 </div>
               )}
             </div>
@@ -294,6 +391,55 @@ export default function VehicleDetailPage() {
           </Card>
         </div>
       </div>
+
+      {/* Lightbox Modal */}
+      <Dialog open={lightboxOpen} onOpenChange={setLightboxOpen}>
+        <DialogContent className="max-w-7xl w-full h-[90vh] p-0 bg-black/95 border-none">
+          <div className="relative w-full h-full flex items-center justify-center">
+            {/* Close Button */}
+            <button
+              onClick={() => setLightboxOpen(false)}
+              className="absolute top-4 right-4 z-50 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-all"
+              data-testid="button-close-lightbox"
+            >
+              <X size={24} />
+            </button>
+
+            {/* Main Image */}
+            <img
+              src={photos[currentImageIndex]}
+              alt={`${vehicle.brand} ${vehicle.model} - Photo ${currentImageIndex + 1}`}
+              className="max-w-full max-h-full object-contain"
+              data-testid="img-lightbox"
+            />
+
+            {/* Navigation Controls */}
+            {hasMultiplePhotos && (
+              <>
+                <button
+                  onClick={prevImage}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/70 hover:bg-black/90 text-white p-4 rounded-full transition-all z-40"
+                  data-testid="button-lightbox-prev"
+                >
+                  <ChevronLeft size={32} />
+                </button>
+                <button
+                  onClick={nextImage}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/70 hover:bg-black/90 text-white p-4 rounded-full transition-all z-40"
+                  data-testid="button-lightbox-next"
+                >
+                  <ChevronRight size={32} />
+                </button>
+
+                {/* Photo Counter */}
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/70 text-white px-4 py-2 rounded-full text-sm">
+                  {currentImageIndex + 1} / {photos.length}
+                </div>
+              </>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
       
       <Footer />
     </div>
