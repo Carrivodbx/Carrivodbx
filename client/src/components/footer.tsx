@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { Instagram, Twitter, Linkedin } from "lucide-react";
+import { Instagram, Twitter } from "lucide-react";
 import { SiTiktok } from "react-icons/si";
 import logoPath from "@assets/Image 2_1759187802515.jpg";
 
@@ -26,9 +26,6 @@ export default function Footer() {
               </a>
               <a href="#" className="text-muted-foreground hover:text-primary transition-colors duration-200" data-testid="link-twitter">
                 <Twitter size={20} />
-              </a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors duration-200" data-testid="link-linkedin">
-                <Linkedin size={20} />
               </a>
             </div>
           </div>
