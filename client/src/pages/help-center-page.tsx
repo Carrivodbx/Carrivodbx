@@ -61,7 +61,7 @@ export default function HelpCenterPage() {
                   Quels sont les documents requis ?
                 </AccordionTrigger>
                 <AccordionContent className="text-muted-foreground">
-                  Pour louer un véhicule, vous devez fournir : une pièce d'identité valide, un permis de conduire en cours de validité (ancienneté de 2 ans ou moins selon les agences), et une carte de crédit pour la caution.
+                  Pour louer un véhicule, vous devez fournir : une pièce d'identité valide et un permis de conduire en cours de validité (ancienneté de 2 ans ou moins selon les agences).
                 </AccordionContent>
               </AccordionItem>
 
@@ -76,10 +76,10 @@ export default function HelpCenterPage() {
 
               <AccordionItem value="item-4" className="glass-morphism neon-border px-6 rounded-lg">
                 <AccordionTrigger className="text-lg font-semibold">
-                  Comment fonctionne la caution ?
+                  Comment se passe le dépôt de garantie ?
                 </AccordionTrigger>
                 <AccordionContent className="text-muted-foreground">
-                  Une caution est prélevée sur votre carte de crédit au moment de la prise du véhicule. Elle est restituée sous 7 jours ouvrés après la restitution du véhicule, sous réserve de l'absence de dommages.
+                  Le dépôt de garantie se fait directement sur place avec l'agence au moment de la prise du véhicule. Selon les agences, il peut se faire par empreinte bancaire, en espèces ou par dépôt d'un véhicule.
                 </AccordionContent>
               </AccordionItem>
 
