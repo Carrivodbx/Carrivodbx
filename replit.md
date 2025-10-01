@@ -42,6 +42,8 @@ Preferred communication style: Simple, everyday language.
 - **User Roles**: Two-tier system (client and agency) with route-level protection
 - **Protected Routes**: ProtectedRoute component wrapper checks authentication before rendering
 - **Session Security**: HTTP-only cookies, configurable session secrets, trust proxy settings for production
+- **Email Verification**: Token-based email verification with hashed tokens (emailVerified, verificationTokenHash, verificationTokenExpires fields)
+- **Password Reset**: Dual-channel reset (email and SMS) with dedicated token fields (resetTokenHash, resetTokenExpires, resetChannel, resetTarget)
 
 ### Payment Integration
 - **Provider**: Stripe with support for card payments and Apple Pay
@@ -58,6 +60,8 @@ Preferred communication style: Simple, everyday language.
 - **Neon Database**: Serverless PostgreSQL hosting with WebSocket support
 - **Stripe**: Payment processing for bookings and subscriptions
 - **Replit Services**: Development tooling (cartographer, dev banner, runtime error overlay)
+- **Email Service**: NOT CONFIGURED - Resend integration was dismissed. Need credentials for email verification and password reset
+- **SMS Service**: NOT CONFIGURED - Need Twilio or Vonage credentials for SMS password reset (user mentioned VONAGE_API_KEY/SECRET)
 
 ### Key NPM Packages
 - **UI/UX**: @radix-ui/* components, class-variance-authority for component variants, cmdk for command palette
