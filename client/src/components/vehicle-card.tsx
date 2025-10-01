@@ -48,7 +48,7 @@ export default function VehicleCard({ vehicle, isPremium = false }: VehicleCardP
         </div>
       )}
       
-      <div className="relative overflow-hidden">
+      <div className="relative overflow-hidden cursor-pointer" onClick={handleViewDetails}>
         <img 
           src={photos[currentImageIndex]} 
           alt={`${vehicle.brand} ${vehicle.model} - Photo ${currentImageIndex + 1}`}
