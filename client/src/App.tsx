@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/hooks/use-auth";
 import { ProtectedRoute } from "@/lib/protected-route";
+import ScrollToTop from "@/components/scroll-to-top";
 import HomePage from "@/pages/home-page";
 import AuthPage from "@/pages/auth-page";
 import VehiclesPage from "@/pages/vehicles-page";
@@ -51,6 +52,7 @@ function App() {
       <AuthProvider>
         <TooltipProvider>
           <div className="min-h-screen bg-background text-foreground font-sans">
+            <ScrollToTop />
             <Toaster />
             <Router />
           </div>
