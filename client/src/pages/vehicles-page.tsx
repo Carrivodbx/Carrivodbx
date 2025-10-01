@@ -7,7 +7,8 @@ import Footer from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, Filter } from "lucide-react";
+import { Slider } from "@/components/ui/slider";
+import { Search, Filter, Euro } from "lucide-react";
 import type { Vehicle } from "@shared/schema";
 import backgroundVideo from "@assets/5309319-hd_1920_1080_25fps_1759286936761.mp4";
 
@@ -16,6 +17,7 @@ export default function VehiclesPage() {
   const [searchRegion, setSearchRegion] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const [priceRange, setPriceRange] = useState([0, 2000]);
 
   // Update category when URL search params change
   useEffect(() => {
@@ -41,14 +43,19 @@ export default function VehiclesPage() {
     },
   });
 
-  // Filter vehicles based on search query
-  const filteredVehicles = vehicles?.filter(vehicle => 
-    !searchQuery || 
-    vehicle.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    vehicle.brand.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    vehicle.model.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    vehicle.region.toLowerCase().includes(searchQuery.toLowerCase())
-  ) || [];
+  // Filter vehicles based on search query and price range
+  const filteredVehicles = vehicles?.filter(vehicle => {
+    const matchesSearch = !searchQuery || 
+      vehicle.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      vehicle.brand.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      vehicle.model.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      vehicle.region.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    const price = Number(vehicle.pricePerDay);
+    const matchesPrice = price >= priceRange[0] && price <= priceRange[1];
+    
+    return matchesSearch && matchesPrice;
+  }) || [];
 
   const categories = [
     "Sportive",
@@ -102,7 +109,7 @@ export default function VehiclesPage() {
 
           {/* Search and Filters */}
           <div className="glass-morphism rounded-2xl p-4 sm:p-6 mb-6 sm:mb-8 neon-border">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-3 sm:gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-3 sm:gap-4 mb-6">
               <div className="md:col-span-2">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={20} />
@@ -142,6 +149,33 @@ export default function VehiclesPage() {
                     ))}
                   </SelectContent>
                 </Select>
+              </div>
+            </div>
+
+            {/* Price Range Filter */}
+            <div className="border-t border-border pt-6">
+              <div className="flex items-center gap-2 mb-4">
+                <Euro className="text-primary" size={20} />
+                <h3 className="text-sm font-semibold text-foreground">Fourchette de Prix (par jour)</h3>
+              </div>
+              <div className="space-y-4">
+                <Slider
+                  value={priceRange}
+                  onValueChange={setPriceRange}
+                  max={2000}
+                  min={0}
+                  step={50}
+                  className="w-full"
+                  data-testid="slider-price-range"
+                />
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-muted-foreground">
+                    Min: <span className="text-primary font-semibold">{priceRange[0]}€</span>
+                  </span>
+                  <span className="text-muted-foreground">
+                    Max: <span className="text-primary font-semibold">{priceRange[1]}€</span>
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -196,6 +230,7 @@ export default function VehiclesPage() {
                     setSearchQuery("");
                     setSearchRegion("");
                     setSelectedCategory("");
+                    setPriceRange([0, 2000]);
                   }}
                   className="btn-neon w-full sm:w-auto bg-gradient-to-r from-primary to-secondary text-primary-foreground min-h-[44px]"
                   data-testid="button-clear-filters"
