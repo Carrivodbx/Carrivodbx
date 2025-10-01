@@ -14,7 +14,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { User, LogOut, Menu, Home, Car, LayoutDashboard, Crown } from "lucide-react";
+import { User, LogOut, Menu, Home, Car, LayoutDashboard, Crown, Zap, Building2, Mountain, Wind, Leaf, Plug, Flame } from "lucide-react";
 import logoPath from "@assets/Image4_1759292728996.jpg";
 import { useState } from "react";
 
@@ -58,39 +58,46 @@ export default function Navbar() {
               </span>
             </Link>
             <Link href="/vehicles?category=Sportive">
-              <span className={`font-medium text-sm transition-colors duration-200 text-muted-foreground hover:text-primary`}>
-                Sportive
-              </span>
+              <div className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors duration-200">
+                <Zap size={16} />
+                <span className="font-medium text-xs">Sportive</span>
+              </div>
             </Link>
             <Link href="/vehicles?category=Berline">
-              <span className={`font-medium text-sm transition-colors duration-200 text-muted-foreground hover:text-primary`}>
-                Berline
-              </span>
+              <div className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors duration-200">
+                <Building2 size={16} />
+                <span className="font-medium text-xs">Berline</span>
+              </div>
             </Link>
             <Link href="/vehicles?category=SUV Luxe">
-              <span className={`font-medium text-sm transition-colors duration-200 text-muted-foreground hover:text-primary`}>
-                SUV Luxe
-              </span>
+              <div className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors duration-200">
+                <Mountain size={16} />
+                <span className="font-medium text-xs">SUV Luxe</span>
+              </div>
             </Link>
             <Link href="/vehicles?category=Cabriolet">
-              <span className={`font-medium text-sm transition-colors duration-200 text-muted-foreground hover:text-primary`}>
-                Cabriolet
-              </span>
+              <div className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors duration-200">
+                <Wind size={16} />
+                <span className="font-medium text-xs">Cabriolet</span>
+              </div>
             </Link>
             <Link href="/vehicles?category=Électrique">
-              <span className={`font-medium text-sm transition-colors duration-200 text-muted-foreground hover:text-primary`}>
-                Électrique
-              </span>
+              <div className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors duration-200">
+                <Plug size={16} />
+                <span className="font-medium text-xs">Électrique</span>
+              </div>
             </Link>
             <Link href="/vehicles?category=Hybride">
-              <span className={`font-medium text-sm transition-colors duration-200 text-muted-foreground hover:text-primary`}>
-                Hybride
-              </span>
+              <div className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors duration-200">
+                <Leaf size={16} />
+                <span className="font-medium text-xs">Hybride</span>
+              </div>
             </Link>
             <Link href="/vehicles?category=Supercar">
-              <span className={`font-medium text-sm transition-colors duration-200 text-muted-foreground hover:text-primary`}>
-                Supercar
-              </span>
+              <div className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors duration-200">
+                <Flame size={16} />
+                <span className="font-medium text-xs">Supercar</span>
+              </div>
             </Link>
           </div>
           
@@ -190,6 +197,7 @@ export default function Navbar() {
                       className="w-full justify-start text-base text-foreground"
                       data-testid="mobile-link-sportive"
                     >
+                      <Zap className="mr-3" size={18} />
                       Sportive
                     </Button>
                   </Link>
@@ -200,6 +208,7 @@ export default function Navbar() {
                       className="w-full justify-start text-base text-foreground"
                       data-testid="mobile-link-berline"
                     >
+                      <Building2 className="mr-3" size={18} />
                       Berline
                     </Button>
                   </Link>
@@ -210,6 +219,7 @@ export default function Navbar() {
                       className="w-full justify-start text-base text-foreground"
                       data-testid="mobile-link-suv"
                     >
+                      <Mountain className="mr-3" size={18} />
                       SUV Luxe
                     </Button>
                   </Link>
@@ -220,6 +230,7 @@ export default function Navbar() {
                       className="w-full justify-start text-base text-foreground"
                       data-testid="mobile-link-cabriolet"
                     >
+                      <Wind className="mr-3" size={18} />
                       Cabriolet
                     </Button>
                   </Link>
@@ -230,6 +241,7 @@ export default function Navbar() {
                       className="w-full justify-start text-base text-foreground"
                       data-testid="mobile-link-electrique"
                     >
+                      <Plug className="mr-3" size={18} />
                       Électrique
                     </Button>
                   </Link>
@@ -240,6 +252,7 @@ export default function Navbar() {
                       className="w-full justify-start text-base text-foreground"
                       data-testid="mobile-link-hybride"
                     >
+                      <Leaf className="mr-3" size={18} />
                       Hybride
                     </Button>
                   </Link>
@@ -250,6 +263,7 @@ export default function Navbar() {
                       className="w-full justify-start text-base text-foreground"
                       data-testid="mobile-link-supercar"
                     >
+                      <Flame className="mr-3" size={18} />
                       Supercar
                     </Button>
                   </Link>
