@@ -1,5 +1,6 @@
 import { Link } from "wouter";
-import { Instagram, Facebook, Twitter, Linkedin } from "lucide-react";
+import { Instagram, Twitter, Linkedin } from "lucide-react";
+import { SiTiktok } from "react-icons/si";
 import logoPath from "@assets/Image 2_1759187802515.jpg";
 
 export default function Footer() {
@@ -20,8 +21,8 @@ export default function Footer() {
               <a href="https://www.instagram.com/carivoo_officiel" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors duration-200" data-testid="link-instagram">
                 <Instagram size={20} />
               </a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors duration-200" data-testid="link-facebook">
-                <Facebook size={20} />
+              <a href="#" className="text-muted-foreground hover:text-primary transition-colors duration-200" data-testid="link-tiktok">
+                <SiTiktok size={20} />
               </a>
               <a href="#" className="text-muted-foreground hover:text-primary transition-colors duration-200" data-testid="link-twitter">
                 <Twitter size={20} />
