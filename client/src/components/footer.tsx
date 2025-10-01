@@ -54,9 +54,11 @@ export default function Footer() {
                 </span>
               </li>
               <li>
-                <span className="text-muted-foreground hover:text-primary transition-colors duration-200 cursor-pointer">
-                  Assurance premium
-                </span>
+                <Link href="/insurance">
+                  <span className="text-muted-foreground hover:text-primary transition-colors duration-200">
+                    Assurance premium
+                  </span>
+                </Link>
               </li>
             </ul>
           </div>
@@ -66,24 +68,32 @@ export default function Footer() {
             <h4 className="text-lg font-orbitron font-bold text-foreground mb-4">Support</h4>
             <ul className="space-y-3">
               <li>
-                <span className="text-muted-foreground hover:text-primary transition-colors duration-200 cursor-pointer">
-                  Centre d'aide
-                </span>
+                <Link href="/help">
+                  <span className="text-muted-foreground hover:text-primary transition-colors duration-200">
+                    Centre d'aide
+                  </span>
+                </Link>
               </li>
               <li>
-                <span className="text-muted-foreground hover:text-primary transition-colors duration-200 cursor-pointer">
-                  Contact
-                </span>
+                <Link href="/contact">
+                  <span className="text-muted-foreground hover:text-primary transition-colors duration-200">
+                    Contact
+                  </span>
+                </Link>
               </li>
               <li>
-                <span className="text-muted-foreground hover:text-primary transition-colors duration-200 cursor-pointer">
-                  Conditions d'utilisation
-                </span>
+                <Link href="/terms">
+                  <span className="text-muted-foreground hover:text-primary transition-colors duration-200">
+                    Conditions d'utilisation
+                  </span>
+                </Link>
               </li>
               <li>
-                <span className="text-muted-foreground hover:text-primary transition-colors duration-200 cursor-pointer">
-                  Politique de confidentialité
-                </span>
+                <Link href="/privacy">
+                  <span className="text-muted-foreground hover:text-primary transition-colors duration-200">
+                    Politique de confidentialité
+                  </span>
+                </Link>
               </li>
             </ul>
           </div>
