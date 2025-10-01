@@ -69,6 +69,25 @@ export default function AuthPage() {
       return;
     }
 
+    // Validate password requirements
+    if (registerData.password.length < 8) {
+      toast({
+        title: "Mot de passe trop court",
+        description: "Le mot de passe doit contenir au moins 8 caractères",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!/\d/.test(registerData.password)) {
+      toast({
+        title: "Mot de passe invalide",
+        description: "Le mot de passe doit contenir au moins un chiffre",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
       const userData = insertUserSchema.parse({
         username: registerData.username,
@@ -282,6 +301,9 @@ export default function AuthPage() {
                             className="bg-muted border-border"
                             data-testid="input-register-password"
                           />
+                          <p className="text-xs text-muted-foreground mt-1">
+                            Minimum 8 caractères avec au moins 1 chiffre
+                          </p>
                         </div>
                         
                         <div>
