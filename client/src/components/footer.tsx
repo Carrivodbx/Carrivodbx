@@ -49,9 +49,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <span className="text-muted-foreground hover:text-primary transition-colors duration-200 cursor-pointer">
-                  Conciergerie
-                </span>
+                <Link href="/concierge">
+                  <span className="text-muted-foreground hover:text-primary transition-colors duration-200">
+                    Conciergerie
+                  </span>
+                </Link>
               </li>
               <li>
                 <Link href="/insurance">

@@ -15,6 +15,7 @@ import ClientDashboard from "@/pages/client-dashboard";
 import BookingPage from "@/pages/booking-page";
 import PremiumSubscription from "@/pages/premium-subscription";
 import InsurancePage from "@/pages/insurance-page";
+import ConciergePage from "@/pages/concierge-page";
 import HelpCenterPage from "@/pages/help-center-page";
 import ContactPage from "@/pages/contact-page";
 import TermsPage from "@/pages/terms-page";
@@ -34,6 +35,7 @@ function Router() {
       <ProtectedRoute path="/booking/:vehicleId" component={BookingPage} />
       <ProtectedRoute path="/premium" component={PremiumSubscription} />
       <Route path="/insurance" component={InsurancePage} />
+      <Route path="/concierge" component={ConciergePage} />
       <Route path="/help" component={HelpCenterPage} />
       <Route path="/contact" component={ContactPage} />
       <Route path="/terms" component={TermsPage} />
