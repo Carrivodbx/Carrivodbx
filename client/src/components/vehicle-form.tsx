@@ -157,34 +157,14 @@ export default function VehicleForm({ vehicle, onSuccess, onCancel }: VehicleFor
     if (!files || files.length === 0) return;
 
     Array.from(files).forEach(file => {
-      // Check file type
-      if (!file.type.startsWith('image/')) {
-        toast({
-          title: "Erreur",
-          description: "Veuillez sélectionner uniquement des fichiers image",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      // Check file size (max 20MB)
-      if (file.size > 20 * 1024 * 1024) {
-        toast({
-          title: "Erreur",
-          description: "Chaque image ne doit pas dépasser 20MB",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      // Convert to base64
+      // Convert to base64 without any restrictions
       const reader = new FileReader();
       reader.onloadend = () => {
         const base64String = reader.result as string;
         setFormData(prev => ({
           ...prev,
           photos: [...prev.photos, base64String],
-          photo: prev.photo || base64String, // Keep first photo as main photo for backwards compatibility
+          photo: prev.photo || base64String,
         }));
       };
       reader.readAsDataURL(file);
@@ -455,7 +435,7 @@ export default function VehicleForm({ vehicle, onSuccess, onCancel }: VehicleFor
             data-testid="input-vehicle-photo-file"
           />
           <p className="text-sm text-muted-foreground mt-3 text-center">
-            📷 Ajoutez plusieurs photos (max 20MB par photo) • JPG, PNG • La première sera la photo principale
+            📷 Ajoutez autant de photos que vous voulez • La première sera la photo principale
           </p>
         </div>
       </div>

@@ -52,27 +52,7 @@ export default function AgencySetup() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Check file type
-    if (!file.type.startsWith('image/')) {
-      toast({
-        title: "Erreur",
-        description: "Veuillez sélectionner un fichier image",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    // Check file size (max 20MB)
-    if (file.size > 20 * 1024 * 1024) {
-      toast({
-        title: "Erreur",
-        description: "L'image ne doit pas dépasser 20MB",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    // Convert to base64
+    // Convert to base64 without any restrictions
     const reader = new FileReader();
     reader.onloadend = () => {
       const base64String = reader.result as string;
@@ -268,7 +248,7 @@ export default function AgencySetup() {
                       data-testid="input-agency-logo-file"
                     />
                     <p className="text-sm text-muted-foreground mt-3 text-center">
-                      📷 Logo de votre agence (max 20MB) • JPG, PNG
+                      📷 Logo de votre agence
                     </p>
                   </div>
                 </div>
