@@ -17,7 +17,7 @@ export default function Footer() {
               Connectons les passionnés d'automobile aux plus belles voitures du monde.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors duration-200" data-testid="link-instagram">
+              <a href="https://www.instagram.com/carivoo_officiel" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors duration-200" data-testid="link-instagram">
                 <Instagram size={20} />
               </a>
               <a href="#" className="text-muted-foreground hover:text-primary transition-colors duration-200" data-testid="link-facebook">
