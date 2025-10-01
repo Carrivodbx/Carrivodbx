@@ -61,7 +61,7 @@ export default function HelpCenterPage() {
                   Quels sont les documents requis ?
                 </AccordionTrigger>
                 <AccordionContent className="text-muted-foreground">
-                  Pour louer un véhicule, vous devez fournir : une pièce d'identité valide, un permis de conduire en cours de validité (depuis plus de 2 ans), et une carte de crédit pour la caution.
+                  Pour louer un véhicule, vous devez fournir : une pièce d'identité valide, un permis de conduire en cours de validité (ancienneté de 2 ans ou moins selon les agences), et une carte de crédit pour la caution.
                 </AccordionContent>
               </AccordionItem>
 
