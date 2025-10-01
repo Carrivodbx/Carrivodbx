@@ -34,7 +34,7 @@ export default function HeroSection() {
         <div className="absolute inset-0 bg-black bg-opacity-40"></div>
       </div>
       
-      <div className="relative z-10 text-center max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-16 pb-8">
+      <div className="relative z-10 text-center max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-32 pb-8">
         <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-orbitron font-black mb-4 sm:mb-6 leading-tight" data-testid="text-hero-title">
           <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
             LE FUTUR DU RAFFINEMENT
