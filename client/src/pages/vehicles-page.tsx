@@ -154,27 +154,80 @@ export default function VehiclesPage() {
 
             {/* Price Range Filter */}
             <div className="border-t border-border pt-6">
-              <div className="flex items-center gap-2 mb-4">
-                <Euro className="text-primary" size={20} />
-                <h3 className="text-sm font-semibold text-foreground">Fourchette de Prix (par jour)</h3>
+              <div className="flex items-center gap-2 mb-6">
+                <Euro className="text-accent" size={24} />
+                <h3 className="text-base md:text-lg font-semibold text-foreground">Fourchette de Prix (par jour)</h3>
               </div>
-              <div className="space-y-4">
-                <Slider
-                  value={priceRange}
-                  onValueChange={setPriceRange}
-                  max={2000}
-                  min={0}
-                  step={50}
-                  className="w-full"
-                  data-testid="slider-price-range"
-                />
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">
-                    Min: <span className="text-primary font-semibold">{priceRange[0]}€</span>
-                  </span>
-                  <span className="text-muted-foreground">
-                    Max: <span className="text-primary font-semibold">{priceRange[1]}€</span>
-                  </span>
+              <div className="space-y-6">
+                {/* Desktop: Enhanced slider with visual markers */}
+                <div className="hidden md:block">
+                  <div className="bg-muted/30 rounded-xl p-6 border border-border/50">
+                    <Slider
+                      value={priceRange}
+                      onValueChange={setPriceRange}
+                      max={2000}
+                      min={0}
+                      step={50}
+                      className="w-full mb-6"
+                      data-testid="slider-price-range"
+                    />
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="flex-1">
+                        <label className="text-xs text-muted-foreground mb-2 block">Prix minimum</label>
+                        <div className="flex items-center gap-2 bg-background border border-border rounded-lg px-4 py-3">
+                          <Input
+                            type="number"
+                            value={priceRange[0]}
+                            onChange={(e) => {
+                              const val = Math.max(0, Math.min(Number(e.target.value), priceRange[1]));
+                              setPriceRange([val, priceRange[1]]);
+                            }}
+                            className="border-0 bg-transparent p-0 h-auto text-lg font-bold text-accent focus-visible:ring-0 focus-visible:ring-offset-0"
+                            data-testid="input-price-min"
+                          />
+                          <span className="text-lg font-semibold text-muted-foreground">€</span>
+                        </div>
+                      </div>
+                      <div className="text-muted-foreground pt-6">—</div>
+                      <div className="flex-1">
+                        <label className="text-xs text-muted-foreground mb-2 block">Prix maximum</label>
+                        <div className="flex items-center gap-2 bg-background border border-border rounded-lg px-4 py-3">
+                          <Input
+                            type="number"
+                            value={priceRange[1]}
+                            onChange={(e) => {
+                              const val = Math.max(priceRange[0], Math.min(Number(e.target.value), 2000));
+                              setPriceRange([priceRange[0], val]);
+                            }}
+                            className="border-0 bg-transparent p-0 h-auto text-lg font-bold text-accent focus-visible:ring-0 focus-visible:ring-offset-0"
+                            data-testid="input-price-max"
+                          />
+                          <span className="text-lg font-semibold text-muted-foreground">€</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Mobile: Compact version */}
+                <div className="block md:hidden">
+                  <Slider
+                    value={priceRange}
+                    onValueChange={setPriceRange}
+                    max={2000}
+                    min={0}
+                    step={50}
+                    className="w-full mb-4"
+                    data-testid="slider-price-range-mobile"
+                  />
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">
+                      Min: <span className="text-accent font-semibold">{priceRange[0]}€</span>
+                    </span>
+                    <span className="text-muted-foreground">
+                      Max: <span className="text-accent font-semibold">{priceRange[1]}€</span>
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
