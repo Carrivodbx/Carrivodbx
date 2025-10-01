@@ -15,7 +15,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { User, LogOut, Menu, Home, Car, LayoutDashboard, Crown } from "lucide-react";
-import logoPath from "@assets/Image 2_1759187802515.jpg";
+import logoPath from "@assets/imafe 3_1759282435961.jpg";
 import { useState } from "react";
 
 export default function Navbar() {

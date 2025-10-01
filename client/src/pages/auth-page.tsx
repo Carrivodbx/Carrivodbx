@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { User, Building, ArrowLeft } from "lucide-react";
-import logoPath from "@assets/Image 2_1759187802515.jpg";
+import logoPath from "@assets/imafe 3_1759282435961.jpg";
 import { useToast } from "@/hooks/use-toast";
 import { insertUserSchema } from "@shared/schema";
 import { Link } from "wouter";

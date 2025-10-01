@@ -1,7 +1,7 @@
 import { Link } from "wouter";
 import { Instagram, Twitter } from "lucide-react";
 import { SiTiktok } from "react-icons/si";
-import logoPath from "@assets/Image 2_1759187802515.jpg";
+import logoPath from "@assets/imafe 3_1759282435961.jpg";
 
 export default function Footer() {
   return (
