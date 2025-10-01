@@ -45,56 +45,56 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center space-x-6">
             <Link href="/">
               <span className={`font-medium transition-colors duration-200 ${
-                location === "/" ? "text-primary" : "text-muted-foreground hover:text-primary"
+                location === "/" ? "text-accent" : "text-muted-foreground hover:text-accent"
               }`}>
                 Accueil
               </span>
             </Link>
             <Link href="/vehicles">
               <span className={`font-medium transition-colors duration-200 ${
-                location === "/vehicles" ? "text-primary" : "text-muted-foreground hover:text-primary"
+                location === "/vehicles" ? "text-accent" : "text-muted-foreground hover:text-accent"
               }`}>
                 Tous les véhicules
               </span>
             </Link>
             <Link href="/vehicles?category=Sportive">
-              <div className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors duration-200">
+              <div className="flex flex-col items-center gap-1 text-muted-foreground hover:text-accent transition-colors duration-200">
                 <Zap size={16} />
                 <span className="font-medium text-xs">Sportive</span>
               </div>
             </Link>
             <Link href="/vehicles?category=Berline">
-              <div className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors duration-200">
+              <div className="flex flex-col items-center gap-1 text-muted-foreground hover:text-accent transition-colors duration-200">
                 <Building2 size={16} />
                 <span className="font-medium text-xs">Berline</span>
               </div>
             </Link>
             <Link href="/vehicles?category=SUV Luxe">
-              <div className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors duration-200">
+              <div className="flex flex-col items-center gap-1 text-muted-foreground hover:text-accent transition-colors duration-200">
                 <Mountain size={16} />
                 <span className="font-medium text-xs">SUV Luxe</span>
               </div>
             </Link>
             <Link href="/vehicles?category=Cabriolet">
-              <div className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors duration-200">
+              <div className="flex flex-col items-center gap-1 text-muted-foreground hover:text-accent transition-colors duration-200">
                 <Wind size={16} />
                 <span className="font-medium text-xs">Cabriolet</span>
               </div>
             </Link>
             <Link href="/vehicles?category=Électrique">
-              <div className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors duration-200">
+              <div className="flex flex-col items-center gap-1 text-muted-foreground hover:text-accent transition-colors duration-200">
                 <Plug size={16} />
                 <span className="font-medium text-xs">Électrique</span>
               </div>
             </Link>
             <Link href="/vehicles?category=Hybride">
-              <div className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors duration-200">
+              <div className="flex flex-col items-center gap-1 text-muted-foreground hover:text-accent transition-colors duration-200">
                 <Leaf size={16} />
                 <span className="font-medium text-xs">Hybride</span>
               </div>
             </Link>
             <Link href="/vehicles?category=Supercar">
-              <div className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors duration-200">
+              <div className="flex flex-col items-center gap-1 text-muted-foreground hover:text-accent transition-colors duration-200">
                 <Flame size={16} />
                 <span className="font-medium text-xs">Supercar</span>
               </div>
@@ -133,7 +133,7 @@ export default function Navbar() {
             ) : (
               <>
                 <Link href="/auth">
-                  <Button variant="ghost" className="text-foreground hover:text-primary" data-testid="button-login">
+                  <Button variant="ghost" className="text-foreground hover:text-accent" data-testid="button-login">
                     Connexion
                   </Button>
                 </Link>
@@ -166,7 +166,7 @@ export default function Navbar() {
                     <Button 
                       variant="ghost" 
                       className={`w-full justify-start text-lg ${
-                        location === "/" ? "text-primary bg-primary/10" : "text-foreground"
+                        location === "/" ? "text-accent bg-accent/10" : "text-foreground"
                       }`}
                       data-testid="mobile-link-home"
                     >
@@ -179,7 +179,7 @@ export default function Navbar() {
                     <Button 
                       variant="ghost" 
                       className={`w-full justify-start text-lg ${
-                        location === "/vehicles" ? "text-primary bg-primary/10" : "text-foreground"
+                        location === "/vehicles" ? "text-accent bg-accent/10" : "text-foreground"
                       }`}
                       data-testid="mobile-link-vehicles"
                     >
