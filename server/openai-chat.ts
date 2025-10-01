@@ -1,8 +1,5 @@
 import OpenAI from "openai";
 
-// the newest OpenAI model is "gpt-5" which was released August 7, 2025. do not change this unless explicitly requested by the user
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-
 interface ChatMessage {
   role: "user" | "assistant" | "system";
   content: string;
@@ -10,6 +7,13 @@ interface ChatMessage {
 
 export async function getChatResponse(messages: ChatMessage[]): Promise<string> {
   try {
+    // Initialize OpenAI client only when needed (lazy initialization)
+    if (!process.env.OPENAI_API_KEY) {
+      throw new Error("Clé API OpenAI non configurée. Veuillez contacter l'administrateur.");
+    }
+
+    // the newest OpenAI model is "gpt-5" which was released August 7, 2025. do not change this unless explicitly requested by the user
+    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
     // System prompt pour configurer l'agent Carivoo
     const systemPrompt: ChatMessage = {
       role: "system",
@@ -47,11 +51,6 @@ Reste concis et utile. Si tu ne connais pas la réponse exacte, suggère de cont
     return response.choices[0].message.content || "Désolé, je n'ai pas pu générer une réponse.";
   } catch (error: any) {
     console.error("OpenAI API error:", error);
-    
-    if (!process.env.OPENAI_API_KEY) {
-      throw new Error("Clé API OpenAI non configurée. Veuillez contacter l'administrateur.");
-    }
-    
     throw new Error("Erreur lors de la communication avec l'assistant IA. Veuillez réessayer.");
   }
 }
