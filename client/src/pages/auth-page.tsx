@@ -106,7 +106,7 @@ export default function AuthPage() {
           <span className="hidden sm:inline">Retour à l'accueil</span>
           <span className="sm:hidden">Retour</span>
         </Link>
-        <img src={logoPath} alt="Carivoo Logo" className="h-8 sm:h-10 w-auto" style={{ mixBlendMode: 'screen', filter: 'brightness(1.3) contrast(1.5) saturate(1.2)' }} />
+        <img src={logoPath} alt="Carivoo Logo" className="h-8 sm:h-10 w-auto" style={{ mixBlendMode: 'lighten', filter: 'brightness(1.2) contrast(1.3) saturate(1.2) invert(0.05)' }} />
       </div>
 
       <div className="flex items-center justify-center min-h-[calc(100vh-80px)] px-4 relative z-10 py-6 sm:py-0">

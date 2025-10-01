@@ -11,7 +11,7 @@ export default function Footer() {
           {/* Company Info */}
           <div className="col-span-1 md:col-span-2">
             <div className="mb-4">
-              <img src={logoPath} alt="Carivoo Logo" className="h-12 w-auto" style={{ mixBlendMode: 'screen', filter: 'brightness(1.3) contrast(1.5) saturate(1.2)' }} />
+              <img src={logoPath} alt="Carivoo Logo" className="h-12 w-auto" style={{ mixBlendMode: 'lighten', filter: 'brightness(1.2) contrast(1.3) saturate(1.2) invert(0.05)' }} />
             </div>
             <p className="text-muted-foreground mb-6 max-w-md">
               La plateforme de référence pour la location de véhicules de luxe. 
