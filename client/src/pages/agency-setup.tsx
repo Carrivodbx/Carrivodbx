@@ -62,11 +62,11 @@ export default function AgencySetup() {
       return;
     }
 
-    // Check file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
+    // Check file size (max 20MB)
+    if (file.size > 20 * 1024 * 1024) {
       toast({
         title: "Erreur",
-        description: "L'image ne doit pas dépasser 5MB",
+        description: "L'image ne doit pas dépasser 20MB",
         variant: "destructive",
       });
       return;
@@ -268,7 +268,7 @@ export default function AgencySetup() {
                       data-testid="input-agency-logo-file"
                     />
                     <p className="text-sm text-muted-foreground mt-3 text-center">
-                      📷 Logo de votre agence (max 5MB) • JPG, PNG
+                      📷 Logo de votre agence (max 20MB) • JPG, PNG
                     </p>
                   </div>
                 </div>

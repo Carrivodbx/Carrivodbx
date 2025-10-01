@@ -41,6 +41,7 @@ export const vehicles = pgTable("vehicles", {
   region: text("region").notNull(),
   description: text("description"),
   photo: text("photo"),
+  photos: text("photos").array(),
   available: boolean("available").default(true),
   seats: integer("seats"),
   agencyId: varchar("agency_id").notNull().references(() => agencies.id),

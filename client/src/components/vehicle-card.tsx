@@ -1,7 +1,8 @@
+import { useState } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Users, Star } from "lucide-react";
+import { MapPin, Users, Star, ChevronLeft, ChevronRight } from "lucide-react";
 import type { Vehicle } from "@shared/schema";
 
 interface VehicleCardProps {
@@ -11,9 +12,29 @@ interface VehicleCardProps {
 
 export default function VehicleCard({ vehicle, isPremium = false }: VehicleCardProps) {
   const [, setLocation] = useLocation();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const handleViewDetails = () => {
     setLocation(`/vehicles/${vehicle.id}`);
+  };
+
+  // Get all photos (use photos array if available, otherwise fallback to single photo)
+  const photos = vehicle.photos && vehicle.photos.length > 0 
+    ? vehicle.photos 
+    : vehicle.photo 
+    ? [vehicle.photo] 
+    : ["https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1074&q=80"];
+
+  const hasMultiplePhotos = photos.length > 1;
+
+  const nextImage = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCurrentImageIndex((prev) => (prev + 1) % photos.length);
+  };
+
+  const prevImage = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCurrentImageIndex((prev) => (prev - 1 + photos.length) % photos.length);
   };
 
   return (
@@ -29,12 +50,45 @@ export default function VehicleCard({ vehicle, isPremium = false }: VehicleCardP
       
       <div className="relative overflow-hidden">
         <img 
-          src={vehicle.photo || "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1074&q=80"} 
-          alt={`${vehicle.brand} ${vehicle.model}`}
+          src={photos[currentImageIndex]} 
+          alt={`${vehicle.brand} ${vehicle.model} - Photo ${currentImageIndex + 1}`}
           className="w-full h-48 sm:h-64 object-cover group-hover:scale-110 transition-transform duration-500"
           data-testid={`img-vehicle-${vehicle.id}`}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+        
+        {/* Carousel Controls - Only show if multiple photos */}
+        {hasMultiplePhotos && (
+          <>
+            <button
+              onClick={prevImage}
+              className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-all opacity-0 group-hover:opacity-100"
+              data-testid={`button-prev-photo-${vehicle.id}`}
+            >
+              <ChevronLeft size={20} />
+            </button>
+            <button
+              onClick={nextImage}
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-all opacity-0 group-hover:opacity-100"
+              data-testid={`button-next-photo-${vehicle.id}`}
+            >
+              <ChevronRight size={20} />
+            </button>
+            
+            {/* Photo Indicators */}
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+              {photos.map((_, index) => (
+                <div
+                  key={index}
+                  className={`w-1.5 h-1.5 rounded-full transition-all ${
+                    index === currentImageIndex ? 'bg-primary w-4' : 'bg-white/50'
+                  }`}
+                  data-testid={`indicator-photo-${index}-${vehicle.id}`}
+                />
+              ))}
+            </div>
+          </>
+        )}
       </div>
       
       <div className="p-4 sm:p-6">

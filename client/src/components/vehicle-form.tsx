@@ -33,6 +33,7 @@ export default function VehicleForm({ vehicle, onSuccess, onCancel }: VehicleFor
     region: "",
     description: "",
     photo: "",
+    photos: [] as string[],
     available: true,
     seats: "",
   });
@@ -52,6 +53,7 @@ export default function VehicleForm({ vehicle, onSuccess, onCancel }: VehicleFor
         region: vehicle.region,
         description: vehicle.description || "",
         photo: vehicle.photo || "",
+        photos: vehicle.photos || [],
         available: vehicle.available ?? true,
         seats: vehicle.seats?.toString() || "",
       });
@@ -118,6 +120,7 @@ export default function VehicleForm({ vehicle, onSuccess, onCancel }: VehicleFor
         region: formData.region,
         description: formData.description,
         photo: formData.photo,
+        photos: formData.photos.length > 0 ? formData.photos : null,
         available: formData.available,
         seats: formData.seats ? parseInt(formData.seats) : null,
       };
@@ -147,36 +150,42 @@ export default function VehicleForm({ vehicle, onSuccess, onCancel }: VehicleFor
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
 
-    // Check file type
-    if (!file.type.startsWith('image/')) {
-      toast({
-        title: "Erreur",
-        description: "Veuillez sélectionner un fichier image",
-        variant: "destructive",
-      });
-      return;
-    }
+    Array.from(files).forEach(file => {
+      // Check file type
+      if (!file.type.startsWith('image/')) {
+        toast({
+          title: "Erreur",
+          description: "Veuillez sélectionner uniquement des fichiers image",
+          variant: "destructive",
+        });
+        return;
+      }
 
-    // Check file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      toast({
-        title: "Erreur",
-        description: "L'image ne doit pas dépasser 5MB",
-        variant: "destructive",
-      });
-      return;
-    }
+      // Check file size (max 20MB)
+      if (file.size > 20 * 1024 * 1024) {
+        toast({
+          title: "Erreur",
+          description: "Chaque image ne doit pas dépasser 20MB",
+          variant: "destructive",
+        });
+        return;
+      }
 
-    // Convert to base64
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const base64String = reader.result as string;
-      handleInputChange("photo", base64String);
-    };
-    reader.readAsDataURL(file);
+      // Convert to base64
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result as string;
+        setFormData(prev => ({
+          ...prev,
+          photos: [...prev.photos, base64String],
+          photo: prev.photo || base64String, // Keep first photo as main photo for backwards compatibility
+        }));
+      };
+      reader.readAsDataURL(file);
+    });
   };
 
   const categories = [
@@ -359,56 +368,75 @@ export default function VehicleForm({ vehicle, onSuccess, onCancel }: VehicleFor
       </div>
 
       <div>
-        <Label htmlFor="photo" className="text-foreground font-semibold text-lg mb-3 block">Photo du véhicule *</Label>
+        <Label htmlFor="photo" className="text-foreground font-semibold text-lg mb-3 block">Photos du véhicule *</Label>
         <div className="mt-2">
-          {!formData.photo ? (
-            <label
-              htmlFor="photo-upload"
-              className="cursor-pointer flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-zinc-700 rounded-xl bg-zinc-900/50 hover:bg-zinc-800/50 transition-all duration-200"
-              data-testid="button-upload-photo"
-            >
-              <div className="flex flex-col items-center gap-3">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center">
-                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                  </svg>
+          {/* Photo Gallery */}
+          {formData.photos.length > 0 && (
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
+              {formData.photos.map((photo, index) => (
+                <div key={index} className="relative group">
+                  <div className="relative rounded-xl overflow-hidden border-2 border-zinc-700">
+                    <img
+                      src={photo}
+                      alt={`Photo ${index + 1}`}
+                      className="w-full h-40 object-cover"
+                      data-testid={`img-vehicle-preview-${index}`}
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const newPhotos = formData.photos.filter((_, i) => i !== index);
+                      setFormData(prev => ({
+                        ...prev,
+                        photos: newPhotos,
+                        photo: newPhotos[0] || "",
+                      }));
+                    }}
+                    className="absolute top-2 right-2 px-3 py-1 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg transition-colors shadow-lg opacity-0 group-hover:opacity-100"
+                    data-testid={`button-remove-photo-${index}`}
+                  >
+                    ✕
+                  </button>
+                  {index === 0 && (
+                    <div className="absolute bottom-2 left-2 px-2 py-1 bg-primary/90 text-white text-xs font-medium rounded">
+                      Photo principale
+                    </div>
+                  )}
                 </div>
-                <div className="text-center">
-                  <p className="text-zinc-100 font-medium text-lg">Ajouter une photo</p>
-                  <p className="text-zinc-400 text-sm mt-1">Cliquez pour sélectionner depuis votre galerie ou fichiers</p>
-                </div>
-              </div>
-            </label>
-          ) : (
-            <div className="relative">
-              <div className="relative rounded-xl overflow-hidden border-2 border-zinc-700">
-                <img
-                  src={formData.photo}
-                  alt="Aperçu du véhicule"
-                  className="w-full h-64 object-cover"
-                  data-testid="img-vehicle-preview"
-                />
-              </div>
-              <button
-                type="button"
-                onClick={() => handleInputChange("photo", "")}
-                className="absolute top-4 right-4 px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors shadow-lg"
-                data-testid="button-remove-photo"
-              >
-                ✕ Supprimer
-              </button>
+              ))}
             </div>
           )}
+          
+          {/* Add Photo Button */}
+          <label
+            htmlFor="photo-upload"
+            className="cursor-pointer flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-zinc-700 rounded-xl bg-zinc-900/50 hover:bg-zinc-800/50 transition-all duration-200"
+            data-testid="button-upload-photo"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                </svg>
+              </div>
+              <div className="text-center">
+                <p className="text-zinc-100 font-medium">{formData.photos.length > 0 ? 'Ajouter d\'autres photos' : 'Ajouter des photos'}</p>
+                <p className="text-zinc-400 text-sm">Sélectionnez plusieurs images</p>
+              </div>
+            </div>
+          </label>
           <input
             id="photo-upload"
             type="file"
             accept="image/*"
+            multiple
             onChange={handleImageUpload}
             className="hidden"
             data-testid="input-vehicle-photo-file"
           />
           <p className="text-sm text-muted-foreground mt-3 text-center">
-            📷 Téléchargez une image haute qualité (max 5MB) • JPG, PNG
+            📷 Ajoutez plusieurs photos (max 20MB par photo) • JPG, PNG • La première sera la photo principale
           </p>
         </div>
       </div>
