@@ -130,7 +130,9 @@ export default function ContactPage() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
-                    Disponible 7j/7 - 24h/24
+                    Lundi - Vendredi: 9h00 - 19h00<br />
+                    Samedi: 10h00 - 18h00<br />
+                    Dimanche: Fermé
                   </p>
                 </CardContent>
               </Card>

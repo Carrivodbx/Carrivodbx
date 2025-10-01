@@ -123,6 +123,7 @@ export default function HelpCenterPage() {
                   Appelez-nous directement
                 </CardDescription>
                 <p className="text-sm font-medium">06 81 18 88 52</p>
+                <p className="text-sm text-muted-foreground mt-2">Lun-Ven: 9h-19h</p>
               </CardContent>
             </Card>
 
