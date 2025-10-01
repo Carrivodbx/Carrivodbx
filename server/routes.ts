@@ -4,6 +4,8 @@ import { storage } from "./storage";
 import { setupAuth } from "./auth";
 import { insertVehicleSchema, insertReservationSchema, insertAgencySchema } from "@shared/schema";
 import Stripe from "stripe";
+import { getChatResponse } from "./openai-chat";
+import { z } from "zod";
 
 const stripe = process.env.STRIPE_SECRET_KEY ? new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: "2024-11-20.acacia" as any,
@@ -428,6 +430,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ success: true });
     } catch (error: any) {
       res.status(500).json({ message: "Error confirming subscription: " + error.message });
+    }
+  });
+
+  // AI Chat route
+  const chatSchema = z.object({
+    messages: z.array(z.object({
+      role: z.enum(["user", "assistant"]),
+      content: z.string(),
+    })),
+  });
+
+  app.post("/api/chat", async (req, res) => {
+    try {
+      const { messages } = chatSchema.parse(req.body);
+      const response = await getChatResponse(messages);
+      res.json({ message: response });
+    } catch (error: any) {
+      if (error.name === "ZodError") {
+        return res.status(400).json({ message: "Invalid request format", errors: error.issues });
+      }
+      res.status(500).json({ message: error.message || "Erreur lors de la communication avec l'assistant" });
     }
   });
 
