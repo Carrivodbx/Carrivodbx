@@ -21,7 +21,7 @@ export default function Footer() {
               <a href="https://www.instagram.com/carivoo_officiel" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors duration-200" data-testid="link-instagram">
                 <Instagram size={20} />
               </a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors duration-200" data-testid="link-tiktok">
+              <a href="https://www.tiktok.com/@carivoo_" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors duration-200" data-testid="link-tiktok">
                 <SiTiktok size={20} />
               </a>
               <a href="#" className="text-muted-foreground hover:text-primary transition-colors duration-200" data-testid="link-twitter">
