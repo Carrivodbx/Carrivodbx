@@ -31,40 +31,12 @@ export default function InsurancePage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Check className="text-primary" size={20} />
-                  Couverture Tous Risques
+                  Assistance en France
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription>
-                  Protection complète contre les dommages matériels, vol et vandalisme avec franchise réduite.
-                </CardDescription>
-              </CardContent>
-            </Card>
-
-            <Card className="glass-morphism neon-border">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Check className="text-primary" size={20} />
-                  Assistance 24/7
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription>
-                  Service d'assistance disponible jour et nuit partout en France et dans toute l'Europe.
-                </CardDescription>
-              </CardContent>
-            </Card>
-
-            <Card className="glass-morphism neon-border">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Check className="text-primary" size={20} />
-                  Véhicule de Remplacement
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription>
-                  En cas d'incident, un véhicule de remplacement premium vous est fourni sous 24h.
+                  Service d'assistance disponible jour et nuit partout en France.
                 </CardDescription>
               </CardContent>
             </Card>
@@ -87,20 +59,6 @@ export default function InsurancePage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Check className="text-primary" size={20} />
-                  Protection Juridique
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription>
-                  Couverture juridique complète en cas de litige suite à un accident de la route.
-                </CardDescription>
-              </CardContent>
-            </Card>
-
-            <Card className="glass-morphism neon-border">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Check className="text-primary" size={20} />
                   Kilométrage Illimité
                 </CardTitle>
               </CardHeader>
@@ -115,12 +73,12 @@ export default function InsurancePage() {
           {/* Pricing */}
           <Card className="glass-morphism neon-border max-w-2xl mx-auto">
             <CardHeader className="text-center">
-              <CardTitle className="text-2xl font-orbitron">Tarification</CardTitle>
-              <CardDescription>L'assurance premium est automatiquement incluse dans toutes les réservations</CardDescription>
+              <CardTitle className="text-2xl font-orbitron">Informations Importantes</CardTitle>
+              <CardDescription>Conditions d'assurance et de location</CardDescription>
             </CardHeader>
             <CardContent className="text-center">
               <p className="text-muted-foreground mb-6">
-                Le coût de l'assurance premium représente 15% du prix de location journalier et est déjà inclus dans le tarif affiché.
+                Les détails complets de l'assurance (couverture tous risques, véhicule de remplacement, protection juridique, etc.) seront définis avec chaque agence lors de la signature du contrat physique de location.
               </p>
               <Link href="/vehicles">
                 <Button className="btn-neon bg-gradient-to-r from-primary to-secondary text-primary-foreground" data-testid="button-browse-vehicles">
