@@ -2,7 +2,7 @@
 
 ## Overview
 
-Carivoo is a web-based marketplace connecting luxury car rental agencies with clients. The platform features a premium Dubai/GTA 6-inspired design aesthetic with vibrant neon colors (pink, violet, turquoise). It supports two user roles: agencies that list vehicles and clients who browse and book rentals. The application includes integrated payment processing via Stripe and a premium subscription model for agencies.
+Carivoo is a web-based marketplace connecting luxury car rental agencies with clients. The platform features a sophisticated, sober and elegant design aesthetic with black and silver colors for a premium, luxurious look. It supports two user roles: agencies that list vehicles and clients who browse and book rentals. The application includes integrated payment processing via Stripe and a premium subscription model for agencies.
 
 ## User Preferences
 
@@ -17,7 +17,7 @@ Preferred communication style: Simple, everyday language.
 - **UI Components**: Radix UI primitives with shadcn/ui component library
 - **Styling**: Tailwind CSS with custom theme variables for the luxury aesthetic (neon borders, glass morphism effects, gradient text)
 - **Forms**: React Hook Form with Zod validation via @hookform/resolvers
-- **Design System**: Custom color palette with primary (hot pink), secondary (purple), and accent (turquoise) colors
+- **Design System**: Custom color palette with primary (silver/grey), secondary (black/dark grey), and accent (light silver) colors for a sober, elegant, and luxurious aesthetic
 
 ### Backend Architecture
 - **Framework**: Express.js with TypeScript
