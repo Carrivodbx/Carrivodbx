@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/hooks/use-auth";
 import { ProtectedRoute } from "@/lib/protected-route";
 import ScrollToTop from "@/components/scroll-to-top";
+import { ChatBot } from "@/components/chatbot";
 import HomePage from "@/pages/home-page";
 import AuthPage from "@/pages/auth-page";
 import VehiclesPage from "@/pages/vehicles-page";
@@ -55,6 +56,7 @@ function App() {
             <ScrollToTop />
             <Toaster />
             <Router />
+            <ChatBot />
           </div>
         </TooltipProvider>
       </AuthProvider>
