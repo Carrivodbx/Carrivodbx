@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Search, Car, Building } from "lucide-react";
-import heroBackground from "@assets/stock_images/porsche_rear_view_ba_b54491f8.jpg";
+import heroVideo from "@assets/5309354-hd_1920_1080_25fps_1759286891675.mp4";
 
 export default function HeroSection() {
   const [, setLocation] = useLocation();
@@ -23,15 +23,19 @@ export default function HeroSection() {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background */}
+      {/* Video Background */}
       <div className="absolute inset-0 z-0">
-        <img 
-          src={heroBackground}
-          alt="Porsche rear view night city" 
-          className="w-full h-full object-cover" 
-        />
+        <video 
+          autoPlay 
+          loop 
+          muted 
+          playsInline
+          className="w-full h-full object-cover"
+        >
+          <source src={heroVideo} type="video/mp4" />
+        </video>
         <div className="absolute inset-0 hero-gradient"></div>
-        <div className="absolute inset-0 bg-black bg-opacity-40"></div>
+        <div className="absolute inset-0 bg-black bg-opacity-50"></div>
       </div>
       
       <div className="relative z-10 text-center max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-32 pb-8">

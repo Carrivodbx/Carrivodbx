@@ -3,11 +3,14 @@ import HeroSection from "@/components/hero-section";
 import VehicleCard from "@/components/vehicle-card";
 import Footer from "@/components/footer";
 import { useQuery } from "@tanstack/react-query";
-import { Shield, Crown, Zap, ChartLine, Users, Star } from "lucide-react";
+import { Shield, Crown, Zap, ChartLine, Users, Star, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
 import type { Vehicle } from "@shared/schema";
-import agencyBg from "@assets/stock_images/porsche_rear_view_ba_b54491f8.jpg";
+import video1 from "@assets/5309378-hd_1920_1080_25fps_1759286916838.mp4";
+import video2 from "@assets/5309319-hd_1920_1080_25fps_1759286936761.mp4";
+import video3 from "@assets/5309381-hd_1920_1080_25fps_1759286956209.mp4";
+import video4 from "@assets/3066451-uhd_4096_2160_24fps_1759286966291.mp4";
 
 export default function HomePage() {
   const [, setLocation] = useLocation();
@@ -117,16 +120,110 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Video Gallery */}
+      <section className="py-12 sm:py-20 bg-muted">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10 sm:mb-16">
+            <h2 className="text-2xl sm:text-3xl md:text-5xl font-orbitron font-bold mb-4 sm:mb-6 px-4">
+              <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                L'Expérience Carivoo
+              </span>
+            </h2>
+            <p className="text-base sm:text-xl text-muted-foreground px-4">
+              Découvrez nos véhicules de luxe en mouvement
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="relative group overflow-hidden rounded-2xl neon-border glass-morphism">
+              <video 
+                autoPlay 
+                loop 
+                muted 
+                playsInline
+                className="w-full h-64 md:h-80 object-cover transition-transform duration-500 group-hover:scale-110"
+              >
+                <source src={video1} type="video/mp4" />
+              </video>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
+                <div className="text-white">
+                  <h3 className="text-xl font-orbitron font-bold mb-2">Performance & Style</h3>
+                  <p className="text-sm text-gray-200">Vivez l'expérience ultime</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="relative group overflow-hidden rounded-2xl neon-border glass-morphism">
+              <video 
+                autoPlay 
+                loop 
+                muted 
+                playsInline
+                className="w-full h-64 md:h-80 object-cover transition-transform duration-500 group-hover:scale-110"
+              >
+                <source src={video2} type="video/mp4" />
+              </video>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
+                <div className="text-white">
+                  <h3 className="text-xl font-orbitron font-bold mb-2">Luxe & Confort</h3>
+                  <p className="text-sm text-gray-200">Raffinement à chaque instant</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="relative group overflow-hidden rounded-2xl neon-border glass-morphism">
+              <video 
+                autoPlay 
+                loop 
+                muted 
+                playsInline
+                className="w-full h-64 md:h-80 object-cover transition-transform duration-500 group-hover:scale-110"
+              >
+                <source src={video3} type="video/mp4" />
+              </video>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
+                <div className="text-white">
+                  <h3 className="text-xl font-orbitron font-bold mb-2">Élégance</h3>
+                  <p className="text-sm text-gray-200">Design intemporel</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="relative group overflow-hidden rounded-2xl neon-border glass-morphism">
+              <video 
+                autoPlay 
+                loop 
+                muted 
+                playsInline
+                className="w-full h-64 md:h-80 object-cover transition-transform duration-500 group-hover:scale-110"
+              >
+                <source src={video4} type="video/mp4" />
+              </video>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
+                <div className="text-white">
+                  <h3 className="text-xl font-orbitron font-bold mb-2">Puissance</h3>
+                  <p className="text-sm text-gray-200">Sensations garanties</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Agency Partnership CTA */}
       <section className="py-20 relative overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img 
-            src={agencyBg}
-            alt="Porsche rear view night city" 
-            className="w-full h-full object-cover" 
-          />
+          <video 
+            autoPlay 
+            loop 
+            muted 
+            playsInline
+            className="w-full h-full object-cover"
+          >
+            <source src={video1} type="video/mp4" />
+          </video>
           <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-secondary/20 to-accent/20"></div>
-          <div className="absolute inset-0 bg-black bg-opacity-60"></div>
+          <div className="absolute inset-0 bg-black bg-opacity-70"></div>
         </div>
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
