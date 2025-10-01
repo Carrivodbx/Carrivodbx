@@ -15,6 +15,9 @@ export const users = pgTable("users", {
   region: text("region"),
   stripeCustomerId: text("stripe_customer_id"),
   stripeSubscriptionId: text("stripe_subscription_id"),
+  emailVerified: boolean("email_verified").default(false).notNull(),
+  verificationTokenHash: text("verification_token_hash"),
+  verificationTokenExpires: timestamp("verification_token_expires"),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -128,6 +131,9 @@ export const insertUserSchema = createInsertSchema(users).omit({
   createdAt: true,
   stripeCustomerId: true,
   stripeSubscriptionId: true,
+  emailVerified: true,
+  verificationTokenHash: true,
+  verificationTokenExpires: true,
 });
 
 export const insertAgencySchema = createInsertSchema(agencies).omit({
