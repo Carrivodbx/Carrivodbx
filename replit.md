@@ -53,6 +53,11 @@ Preferred communication style: Simple, everyday language.
   - Client-side: @stripe/stripe-js and @stripe/react-stripe-js for payment UI
   - Server-side: Stripe API integration with webhook support for payment confirmation
 - **Revenue Model**: 10% platform commission on bookings, premium subscription upsell for agencies
+- **Premium Subscription Access**: 
+  - Visible card in agency dashboard (if not subscribed) with clear CTA button
+  - Direct access to `/premium` page for subscription purchase
+  - Shows active subscription status with badge when subscribed
+  - Requires STRIPE_SECRET_KEY and VITE_STRIPE_PUBLIC_KEY environment variables
 
 ## External Dependencies
 

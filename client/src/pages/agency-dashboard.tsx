@@ -9,9 +9,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Car, Edit, Trash2, Eye, TrendingUp } from "lucide-react";
+import { Plus, Car, Edit, Trash2, Eye, TrendingUp, Crown, Sparkles } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import type { Vehicle, Agency } from "@shared/schema";
+import type { Vehicle, Agency, Subscription } from "@shared/schema";
 import porscheNightBackground from "@assets/stock_images/porsche_rear_view_ba_b54491f8.jpg";
 
 export default function AgencyDashboard() {
@@ -27,6 +27,11 @@ export default function AgencyDashboard() {
 
   const { data: vehicles, isLoading: vehiclesLoading } = useQuery<Vehicle[]>({
     queryKey: ["/api/agency/vehicles"],
+  });
+
+  const { data: subscription } = useQuery<Subscription>({
+    queryKey: ["/api/agency/subscription"],
+    enabled: !!agency,
   });
 
   const deleteVehicleMutation = useMutation({
@@ -248,6 +253,79 @@ export default function AgencyDashboard() {
               </Card>
             ))}
           </div>
+
+          {/* Premium Subscription Section */}
+          {!subscription?.active && (
+            <Card className="glass-morphism neon-border mb-12 border-2 border-accent/30">
+              <CardContent className="p-8">
+                <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+                  <div className="flex items-start gap-4 flex-1">
+                    <div className="w-16 h-16 bg-gradient-to-r from-secondary to-accent rounded-full flex items-center justify-center flex-shrink-0">
+                      <Crown className="text-accent" size={32} />
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-orbitron font-bold text-foreground mb-2 flex items-center gap-2">
+                        Visibilité Premium
+                        <Sparkles className="text-accent" size={20} />
+                      </h3>
+                      <p className="text-muted-foreground mb-3">
+                        Multipliez vos réservations avec un meilleur positionnement dans les résultats de recherche
+                      </p>
+                      <ul className="space-y-2 text-sm text-muted-foreground">
+                        <li className="flex items-center gap-2">
+                          <span className="text-accent">✓</span>
+                          <span>Badge "Premium" sur vos véhicules</span>
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <span className="text-accent">✓</span>
+                          <span>Priorité dans les résultats de recherche</span>
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <span className="text-accent">✓</span>
+                          <span>Statistiques avancées</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-center gap-3">
+                    <div className="text-center">
+                      <p className="text-4xl font-orbitron font-bold text-accent">29,99€</p>
+                      <p className="text-sm text-muted-foreground">par mois</p>
+                    </div>
+                    <Button
+                      onClick={() => setLocation("/premium")}
+                      className="btn-neon bg-gradient-to-r from-secondary to-accent text-white hover:from-accent hover:to-primary px-8 py-6 text-lg font-bold transition-all"
+                      data-testid="button-subscribe-premium"
+                    >
+                      <Crown className="mr-2" size={20} />
+                      S'abonner maintenant
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {subscription?.active && (
+            <Card className="glass-morphism neon-border mb-12 border-2 border-accent/50">
+              <CardContent className="p-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-gradient-to-r from-secondary to-accent rounded-full flex items-center justify-center">
+                    <Crown className="text-accent" size={24} />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-orbitron font-bold text-foreground flex items-center gap-2">
+                      Abonnement Premium Actif
+                      <Badge className="bg-gradient-to-r from-secondary to-accent text-white">Active</Badge>
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                      Vos véhicules bénéficient d'une visibilité maximale
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
           {/* Vehicles Section */}
           <Card className="glass-morphism neon-border">
