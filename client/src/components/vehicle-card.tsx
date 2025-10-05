@@ -37,6 +37,19 @@ export default function VehicleCard({ vehicle, isPremium = false }: VehicleCardP
     setCurrentImageIndex((prev) => (prev - 1 + photos.length) % photos.length);
   };
 
+  // Generate consistent rating between 4.4 and 5.0 based on vehicle ID
+  const generateRating = (id: string): number => {
+    let hash = 0;
+    for (let i = 0; i < id.length; i++) {
+      hash = ((hash << 5) - hash) + id.charCodeAt(i);
+      hash = hash & hash;
+    }
+    const normalized = Math.abs(hash % 100) / 100;
+    return Math.round((4.4 + normalized * 0.6) * 10) / 10;
+  };
+
+  const rating = generateRating(vehicle.id);
+
   return (
     <div className="group glass-morphism rounded-2xl overflow-hidden neon-border hover:scale-105 active:scale-95 transition-all duration-300 relative" data-testid={`card-vehicle-${vehicle.id}`}>
       {isPremium && (
@@ -98,7 +111,7 @@ export default function VehicleCard({ vehicle, isPremium = false }: VehicleCardP
           </h3>
           <div className="flex items-center text-accent flex-shrink-0">
             <Star className="text-sm" size={16} />
-            <span className="ml-1 text-sm font-medium">4.8</span>
+            <span className="ml-1 text-sm font-medium">{rating.toFixed(1)}</span>
           </div>
         </div>
         

@@ -39,6 +39,17 @@ export default function VehicleDetailPage() {
     retry: false,
   });
 
+  // Generate consistent rating between 4.4 and 5.0 based on vehicle ID
+  const generateRating = (vehicleId: string): number => {
+    let hash = 0;
+    for (let i = 0; i < vehicleId.length; i++) {
+      hash = ((hash << 5) - hash) + vehicleId.charCodeAt(i);
+      hash = hash & hash;
+    }
+    const normalized = Math.abs(hash % 100) / 100;
+    return Math.round((4.4 + normalized * 0.6) * 10) / 10;
+  };
+
   const handleBooking = () => {
     if (!user) {
       setLocation("/auth");
@@ -384,7 +395,7 @@ export default function VehicleDetailPage() {
                   <p className="text-muted-foreground">Spécialiste des véhicules de luxe</p>
                   <div className="flex items-center mt-2">
                     <Star className="text-accent mr-1" size={16} />
-                    <span className="text-sm">4.9 • Agence vérifiée</span>
+                    <span className="text-sm">{generateRating(vehicle.id).toFixed(1)} • Agence vérifiée</span>
                   </div>
                 </div>
               </div>
