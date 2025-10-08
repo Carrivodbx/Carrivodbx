@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { FavoriteButton } from "@/components/favorite-button";
 import { MapPin, Users, Star, ChevronLeft, ChevronRight } from "lucide-react";
 import type { Vehicle } from "@shared/schema";
 
@@ -60,6 +61,11 @@ export default function VehicleCard({ vehicle, isPremium = false }: VehicleCardP
           </Badge>
         </div>
       )}
+      
+      {/* Favorite Button */}
+      <div className="absolute top-3 left-3 sm:top-4 sm:left-4 z-10">
+        <FavoriteButton vehicleId={vehicle.id} />
+      </div>
       
       <div className="relative overflow-hidden cursor-pointer" onClick={handleViewDetails}>
         <img 

@@ -32,9 +32,12 @@ Preferred communication style: Simple, everyday language.
 - **Database Schema**:
   - `users`: Authentication and profile data with role field (client/agency)
   - `agencies`: Agency-specific information linked to user accounts
-  - `vehicles`: Car listings with pricing, availability, and location
+  - `vehicles`: Car listings with pricing, availability, location, and geolocation (latitude/longitude for map features)
   - `reservations`: Booking records with date ranges and payment status
   - `subscriptions`: Premium agency subscriptions for enhanced visibility
+  - `reviews`: Client reviews and ratings for agencies (1-5 stars with optional comments)
+  - `favorites`: Client favorite vehicles list
+  - `notifications`: User notifications system (reservation, payment, review, general types)
 - **Session Store**: PostgreSQL-backed sessions for authentication persistence
 
 ### Authentication & Authorization

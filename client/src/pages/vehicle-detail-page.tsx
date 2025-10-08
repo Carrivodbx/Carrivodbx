@@ -7,8 +7,8 @@ import Footer from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { MapPin, Users, Star, ArrowLeft, Calendar, Shield, Zap, ChevronLeft, ChevronRight, X } from "lucide-react";
+import { ImageGalleryModal } from "@/components/image-gallery-modal";
+import { MapPin, Users, Star, ArrowLeft, Calendar, Shield, Zap, ChevronLeft, ChevronRight } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { Vehicle, Agency } from "@shared/schema";
 import porscheNightBackground from "@assets/stock_images/porsche_rear_view_ba_b54491f8.jpg";
@@ -468,54 +468,13 @@ export default function VehicleDetailPage() {
         </div>
       </div>
 
-      {/* Lightbox Modal */}
-      <Dialog open={lightboxOpen} onOpenChange={setLightboxOpen}>
-        <DialogContent className="max-w-7xl w-full h-[90vh] p-0 bg-black/95 border-none">
-          <div className="relative w-full h-full flex items-center justify-center">
-            {/* Close Button */}
-            <button
-              onClick={() => setLightboxOpen(false)}
-              className="absolute top-4 right-4 z-50 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-all"
-              data-testid="button-close-lightbox"
-            >
-              <X size={24} />
-            </button>
-
-            {/* Main Image */}
-            <img
-              src={photos[currentImageIndex]}
-              alt={`${vehicle.brand} ${vehicle.model} - Photo ${currentImageIndex + 1}`}
-              className="max-w-full max-h-full object-contain"
-              data-testid="img-lightbox"
-            />
-
-            {/* Navigation Controls */}
-            {hasMultiplePhotos && (
-              <>
-                <button
-                  onClick={prevImage}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/70 hover:bg-black/90 text-white p-4 rounded-full transition-all z-40"
-                  data-testid="button-lightbox-prev"
-                >
-                  <ChevronLeft size={32} />
-                </button>
-                <button
-                  onClick={nextImage}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/70 hover:bg-black/90 text-white p-4 rounded-full transition-all z-40"
-                  data-testid="button-lightbox-next"
-                >
-                  <ChevronRight size={32} />
-                </button>
-
-                {/* Photo Counter */}
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/70 text-white px-4 py-2 rounded-full text-sm">
-                  {currentImageIndex + 1} / {photos.length}
-                </div>
-              </>
-            )}
-          </div>
-        </DialogContent>
-      </Dialog>
+      {/* Image Gallery Modal */}
+      <ImageGalleryModal
+        images={photos}
+        initialIndex={currentImageIndex}
+        isOpen={lightboxOpen}
+        onClose={() => setLightboxOpen(false)}
+      />
       
       <Footer />
     </div>

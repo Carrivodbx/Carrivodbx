@@ -1,8 +1,10 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
+import { db } from "./db";
 import { setupAuth } from "./auth";
-import { insertVehicleSchema, insertReservationSchema, insertAgencySchema } from "@shared/schema";
+import { insertVehicleSchema, insertReservationSchema, insertAgencySchema, insertReviewSchema, insertFavoriteSchema, insertNotificationSchema, reviews, favorites } from "@shared/schema";
+import { eq } from "drizzle-orm";
 import Stripe from "stripe";
 import { getChatResponse } from "./openai-chat";
 import { z } from "zod";
@@ -462,6 +464,199 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ success: true });
     } catch (error: any) {
       res.status(500).json({ message: "Error confirming subscription: " + error.message });
+    }
+  });
+
+  // Review routes
+  app.get("/api/agencies/:id/reviews", async (req, res) => {
+    try {
+      const reviews = await storage.getReviewsByAgency(req.params.id);
+      res.json(reviews);
+    } catch (error: any) {
+      res.status(500).json({ message: "Error fetching reviews: " + error.message });
+    }
+  });
+
+  app.post("/api/reviews", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    try {
+      const reviewData = insertReviewSchema.parse({
+        ...req.body,
+        userId: req.user!.id,
+      });
+
+      const review = await storage.createReview(reviewData);
+      res.status(201).json(review);
+    } catch (error: any) {
+      res.status(400).json({ message: "Error creating review: " + error.message });
+    }
+  });
+
+  app.put("/api/reviews/:id", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    try {
+      const [review] = await db.select().from(reviews).where(eq(reviews.id, req.params.id)).limit(1);
+      if (!review || review.userId !== req.user!.id) {
+        return res.status(403).json({ message: "You can only edit your own reviews" });
+      }
+
+      const reviewUpdateSchema = z.object({
+        rating: z.number().int().min(1).max(5).optional(),
+        comment: z.string().optional(),
+      }).refine(data => data.rating !== undefined || data.comment !== undefined, {
+        message: "At least one field (rating or comment) must be provided",
+      });
+      const updateData = reviewUpdateSchema.parse(req.body);
+      
+      const updatedReview = await storage.updateReview(req.params.id, updateData);
+      res.json(updatedReview);
+    } catch (error: any) {
+      res.status(400).json({ message: "Error updating review: " + error.message });
+    }
+  });
+
+  app.delete("/api/reviews/:id", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    try {
+      const [review] = await db.select().from(reviews).where(eq(reviews.id, req.params.id)).limit(1);
+      if (!review || review.userId !== req.user!.id) {
+        return res.status(403).json({ message: "You can only delete your own reviews" });
+      }
+
+      await storage.deleteReview(req.params.id);
+      res.status(204).send();
+    } catch (error: any) {
+      res.status(400).json({ message: "Error deleting review: " + error.message });
+    }
+  });
+
+  // Favorite routes
+  app.get("/api/favorites", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    try {
+      const favorites = await storage.getFavoritesByUser(req.user!.id);
+      res.json(favorites);
+    } catch (error: any) {
+      res.status(500).json({ message: "Error fetching favorites: " + error.message });
+    }
+  });
+
+  app.get("/api/favorites/check/:vehicleId", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    try {
+      const favorite = await storage.checkFavorite(req.user!.id, req.params.vehicleId);
+      res.json({ isFavorite: !!favorite, favoriteId: favorite?.id });
+    } catch (error: any) {
+      res.status(500).json({ message: "Error checking favorite: " + error.message });
+    }
+  });
+
+  app.post("/api/favorites", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    try {
+      const favoriteData = insertFavoriteSchema.parse({
+        ...req.body,
+        userId: req.user!.id,
+      });
+
+      const favorite = await storage.createFavorite(favoriteData);
+      res.status(201).json(favorite);
+    } catch (error: any) {
+      res.status(400).json({ message: "Error creating favorite: " + error.message });
+    }
+  });
+
+  app.delete("/api/favorites/:id", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    try {
+      const [favorite] = await db.select().from(favorites).where(eq(favorites.id, req.params.id)).limit(1);
+      if (!favorite || favorite.userId !== req.user!.id) {
+        return res.status(403).json({ message: "You can only delete your own favorites" });
+      }
+
+      await storage.deleteFavorite(req.params.id);
+      res.status(204).send();
+    } catch (error: any) {
+      res.status(400).json({ message: "Error deleting favorite: " + error.message });
+    }
+  });
+
+  // Notification routes
+  app.get("/api/notifications", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    try {
+      const notifications = await storage.getNotificationsByUser(req.user!.id);
+      res.json(notifications);
+    } catch (error: any) {
+      res.status(500).json({ message: "Error fetching notifications: " + error.message });
+    }
+  });
+
+  app.post("/api/notifications", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    try {
+      const notificationData = insertNotificationSchema.parse({
+        ...req.body,
+        userId: req.user!.id,
+      });
+
+      const notification = await storage.createNotification(notificationData);
+      res.status(201).json(notification);
+    } catch (error: any) {
+      res.status(400).json({ message: "Error creating notification: " + error.message });
+    }
+  });
+
+  app.patch("/api/notifications/:id/read", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    try {
+      const notification = await storage.markNotificationAsRead(req.params.id);
+      res.json(notification);
+    } catch (error: any) {
+      res.status(400).json({ message: "Error marking notification as read: " + error.message });
+    }
+  });
+
+  app.delete("/api/notifications/:id", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    try {
+      await storage.deleteNotification(req.params.id);
+      res.status(204).send();
+    } catch (error: any) {
+      res.status(400).json({ message: "Error deleting notification: " + error.message });
     }
   });
 

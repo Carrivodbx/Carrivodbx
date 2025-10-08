@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import VehicleCard from "@/components/vehicle-card";
+import { ReviewsSection } from "@/components/reviews-section";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowLeft, MapPin } from "lucide-react";
@@ -140,6 +141,13 @@ export default function AgencyVehiclesPage() {
               </div>
             )}
           </div>
+
+          {/* Reviews Section */}
+          {agency && (
+            <div className="mt-16">
+              <ReviewsSection agencyId={agency.id} />
+            </div>
+          )}
         </div>
       </div>
       

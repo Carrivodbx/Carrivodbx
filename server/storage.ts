@@ -4,6 +4,9 @@ import {
   vehicles,
   reservations,
   subscriptions,
+  reviews,
+  favorites,
+  notifications,
   type User,
   type InsertUser,
   type Agency,
@@ -14,6 +17,12 @@ import {
   type InsertReservation,
   type Subscription,
   type InsertSubscription,
+  type Review,
+  type InsertReview,
+  type Favorite,
+  type InsertFavorite,
+  type Notification,
+  type InsertNotification,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, and, desc, like, or, sql } from "drizzle-orm";
@@ -57,6 +66,24 @@ export interface IStorage {
   getSubscriptionByAgency(agencyId: string): Promise<Subscription | undefined>;
   createSubscription(subscription: InsertSubscription): Promise<Subscription>;
   updateSubscription(id: string, subscription: Partial<InsertSubscription>): Promise<Subscription>;
+
+  // Review operations
+  getReviewsByAgency(agencyId: string): Promise<Review[]>;
+  createReview(review: InsertReview): Promise<Review>;
+  updateReview(id: string, review: Partial<InsertReview>): Promise<Review>;
+  deleteReview(id: string): Promise<void>;
+
+  // Favorite operations
+  getFavoritesByUser(userId: string): Promise<Favorite[]>;
+  checkFavorite(userId: string, vehicleId: string): Promise<Favorite | undefined>;
+  createFavorite(favorite: InsertFavorite): Promise<Favorite>;
+  deleteFavorite(id: string): Promise<void>;
+
+  // Notification operations
+  getNotificationsByUser(userId: string): Promise<Notification[]>;
+  createNotification(notification: InsertNotification): Promise<Notification>;
+  markNotificationAsRead(id: string): Promise<Notification>;
+  deleteNotification(id: string): Promise<void>;
 
   sessionStore: any;
 }
@@ -174,6 +201,8 @@ export class DatabaseStorage implements IStorage {
       seats: vehicles.seats,
       horsepower: vehicles.horsepower,
       maxKilometers: vehicles.maxKilometers,
+      latitude: vehicles.latitude,
+      longitude: vehicles.longitude,
       agencyId: vehicles.agencyId,
       createdAt: vehicles.createdAt,
     }).from(vehicles).where(and(...conditions)).orderBy(desc(vehicles.createdAt));
@@ -252,6 +281,73 @@ export class DatabaseStorage implements IStorage {
       .where(eq(subscriptions.id, id))
       .returning();
     return subscription;
+  }
+
+  // Review operations
+  async getReviewsByAgency(agencyId: string): Promise<Review[]> {
+    return await db.select().from(reviews).where(eq(reviews.agencyId, agencyId)).orderBy(desc(reviews.createdAt));
+  }
+
+  async createReview(insertReview: InsertReview): Promise<Review> {
+    const [review] = await db.insert(reviews).values(insertReview).returning();
+    return review;
+  }
+
+  async updateReview(id: string, updateReview: Partial<InsertReview>): Promise<Review> {
+    const [review] = await db
+      .update(reviews)
+      .set(updateReview)
+      .where(eq(reviews.id, id))
+      .returning();
+    return review;
+  }
+
+  async deleteReview(id: string): Promise<void> {
+    await db.delete(reviews).where(eq(reviews.id, id));
+  }
+
+  // Favorite operations
+  async getFavoritesByUser(userId: string): Promise<Favorite[]> {
+    return await db.select().from(favorites).where(eq(favorites.userId, userId)).orderBy(desc(favorites.createdAt));
+  }
+
+  async checkFavorite(userId: string, vehicleId: string): Promise<Favorite | undefined> {
+    const [favorite] = await db.select().from(favorites).where(
+      and(eq(favorites.userId, userId), eq(favorites.vehicleId, vehicleId))
+    );
+    return favorite || undefined;
+  }
+
+  async createFavorite(insertFavorite: InsertFavorite): Promise<Favorite> {
+    const [favorite] = await db.insert(favorites).values(insertFavorite).returning();
+    return favorite;
+  }
+
+  async deleteFavorite(id: string): Promise<void> {
+    await db.delete(favorites).where(eq(favorites.id, id));
+  }
+
+  // Notification operations
+  async getNotificationsByUser(userId: string): Promise<Notification[]> {
+    return await db.select().from(notifications).where(eq(notifications.userId, userId)).orderBy(desc(notifications.createdAt));
+  }
+
+  async createNotification(insertNotification: InsertNotification): Promise<Notification> {
+    const [notification] = await db.insert(notifications).values(insertNotification).returning();
+    return notification;
+  }
+
+  async markNotificationAsRead(id: string): Promise<Notification> {
+    const [notification] = await db
+      .update(notifications)
+      .set({ read: true })
+      .where(eq(notifications.id, id))
+      .returning();
+    return notification;
+  }
+
+  async deleteNotification(id: string): Promise<void> {
+    await db.delete(notifications).where(eq(notifications.id, id));
   }
 }
 

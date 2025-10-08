@@ -53,6 +53,8 @@ export const vehicles = pgTable("vehicles", {
   seats: integer("seats"),
   horsepower: integer("horsepower"),
   maxKilometers: integer("max_kilometers"),
+  latitude: decimal("latitude", { precision: 10, scale: 8 }),
+  longitude: decimal("longitude", { precision: 11, scale: 8 }),
   agencyId: varchar("agency_id").notNull().references(() => agencies.id),
   createdAt: timestamp("created_at").defaultNow(),
 });
@@ -83,6 +85,33 @@ export const subscriptions = pgTable("subscriptions", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+export const reviews = pgTable("reviews", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  rating: integer("rating").notNull(),
+  comment: text("comment"),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  agencyId: varchar("agency_id").notNull().references(() => agencies.id),
+  reservationId: varchar("reservation_id").references(() => reservations.id),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const favorites = pgTable("favorites", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  vehicleId: varchar("vehicle_id").notNull().references(() => vehicles.id),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const notifications = pgTable("notifications", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  type: text("type", { enum: ["reservation", "payment", "review", "general"] }).notNull(),
+  title: text("title").notNull(),
+  message: text("message").notNull(),
+  read: boolean("read").default(false),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 // Relations
 export const usersRelations = relations(users, ({ one, many }) => ({
   agency: one(agencies, {
@@ -90,6 +119,9 @@ export const usersRelations = relations(users, ({ one, many }) => ({
     references: [agencies.userId],
   }),
   reservations: many(reservations),
+  reviews: many(reviews),
+  favorites: many(favorites),
+  notifications: many(notifications),
 }));
 
 export const agenciesRelations = relations(agencies, ({ one, many }) => ({
@@ -102,6 +134,7 @@ export const agenciesRelations = relations(agencies, ({ one, many }) => ({
     fields: [agencies.id],
     references: [subscriptions.agencyId],
   }),
+  reviews: many(reviews),
 }));
 
 export const vehiclesRelations = relations(vehicles, ({ one, many }) => ({
@@ -110,9 +143,10 @@ export const vehiclesRelations = relations(vehicles, ({ one, many }) => ({
     references: [agencies.id],
   }),
   reservations: many(reservations),
+  favorites: many(favorites),
 }));
 
-export const reservationsRelations = relations(reservations, ({ one }) => ({
+export const reservationsRelations = relations(reservations, ({ one, many }) => ({
   user: one(users, {
     fields: [reservations.userId],
     references: [users.id],
@@ -121,12 +155,46 @@ export const reservationsRelations = relations(reservations, ({ one }) => ({
     fields: [reservations.vehicleId],
     references: [vehicles.id],
   }),
+  reviews: many(reviews),
 }));
 
 export const subscriptionsRelations = relations(subscriptions, ({ one }) => ({
   agency: one(agencies, {
     fields: [subscriptions.agencyId],
     references: [agencies.id],
+  }),
+}));
+
+export const reviewsRelations = relations(reviews, ({ one }) => ({
+  user: one(users, {
+    fields: [reviews.userId],
+    references: [users.id],
+  }),
+  agency: one(agencies, {
+    fields: [reviews.agencyId],
+    references: [agencies.id],
+  }),
+  reservation: one(reservations, {
+    fields: [reviews.reservationId],
+    references: [reservations.id],
+  }),
+}));
+
+export const favoritesRelations = relations(favorites, ({ one }) => ({
+  user: one(users, {
+    fields: [favorites.userId],
+    references: [users.id],
+  }),
+  vehicle: one(vehicles, {
+    fields: [favorites.vehicleId],
+    references: [vehicles.id],
+  }),
+}));
+
+export const notificationsRelations = relations(notifications, ({ one }) => ({
+  user: one(users, {
+    fields: [notifications.userId],
+    references: [users.id],
   }),
 }));
 
@@ -165,6 +233,21 @@ export const insertSubscriptionSchema = createInsertSchema(subscriptions).omit({
   createdAt: true,
 });
 
+export const insertReviewSchema = createInsertSchema(reviews).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertFavoriteSchema = createInsertSchema(favorites).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertNotificationSchema = createInsertSchema(notifications).omit({
+  id: true,
+  createdAt: true,
+});
+
 // Types
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
@@ -176,3 +259,9 @@ export type Reservation = typeof reservations.$inferSelect;
 export type InsertReservation = z.infer<typeof insertReservationSchema>;
 export type Subscription = typeof subscriptions.$inferSelect;
 export type InsertSubscription = z.infer<typeof insertSubscriptionSchema>;
+export type Review = typeof reviews.$inferSelect;
+export type InsertReview = z.infer<typeof insertReviewSchema>;
+export type Favorite = typeof favorites.$inferSelect;
+export type InsertFavorite = z.infer<typeof insertFavoriteSchema>;
+export type Notification = typeof notifications.$inferSelect;
+export type InsertNotification = z.infer<typeof insertNotificationSchema>;
