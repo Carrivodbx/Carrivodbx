@@ -11,6 +11,7 @@ import HomePage from "@/pages/home-page";
 import AuthPage from "@/pages/auth-page";
 import VehiclesPage from "@/pages/vehicles-page";
 import VehicleDetailPage from "@/pages/vehicle-detail-page";
+import AgencyVehiclesPage from "@/pages/agency-vehicles-page";
 import AgencyDashboard from "@/pages/agency-dashboard";
 import AgencySetup from "@/pages/agency-setup";
 import ClientDashboard from "@/pages/client-dashboard";
@@ -31,6 +32,7 @@ function Router() {
       <Route path="/auth" component={AuthPage} />
       <Route path="/vehicles" component={VehiclesPage} />
       <Route path="/vehicles/:id" component={VehicleDetailPage} />
+      <Route path="/agencies/:id" component={AgencyVehiclesPage} />
       <ProtectedRoute path="/dashboard/agency/setup" component={AgencySetup} />
       <ProtectedRoute path="/dashboard/agency" component={AgencyDashboard} />
       <ProtectedRoute path="/dashboard/client" component={ClientDashboard} />

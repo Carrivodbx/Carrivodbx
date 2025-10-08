@@ -120,6 +120,36 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Agency routes
+  // Public agency route - get agency by ID
+  app.get("/api/agencies/:id", async (req, res) => {
+    try {
+      const agency = await storage.getAgency(req.params.id);
+      if (!agency) {
+        return res.status(404).json({ message: "Agency not found" });
+      }
+      res.json(agency);
+    } catch (error: any) {
+      res.status(500).json({ message: "Error fetching agency: " + error.message });
+    }
+  });
+
+  // Public route - get all vehicles for a specific agency
+  app.get("/api/agencies/:id/vehicles", async (req, res) => {
+    try {
+      const vehicles = await storage.getVehiclesByAgency(req.params.id);
+      
+      // Optimize: only send first photo in list view
+      const optimizedVehicles = vehicles.map(vehicle => ({
+        ...vehicle,
+        photos: vehicle.photos && vehicle.photos.length > 0 ? [vehicle.photos[0]] : vehicle.photo ? [vehicle.photo] : []
+      }));
+      
+      res.json(optimizedVehicles);
+    } catch (error: any) {
+      res.status(500).json({ message: "Error fetching agency vehicles: " + error.message });
+    }
+  });
+
   app.get("/api/agency/profile", async (req, res) => {
     if (!req.isAuthenticated()) {
       return res.status(401).json({ message: "Unauthorized" });

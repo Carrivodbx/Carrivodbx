@@ -39,6 +39,12 @@ export default function VehicleDetailPage() {
     retry: false,
   });
 
+  // Fetch agency information
+  const { data: agency, isLoading: agencyLoading } = useQuery<Agency>({
+    queryKey: ["/api/agencies", vehicle?.agencyId],
+    enabled: !!vehicle?.agencyId,
+  });
+
   // Generate consistent rating between 4.4 and 5.0 based on vehicle ID
   const generateRating = (vehicleId: string): number => {
     let hash = 0;
@@ -386,28 +392,79 @@ export default function VehicleDetailPage() {
           </Card>
 
           {/* Agency Info */}
-          <Card className="glass-morphism neon-border">
-            <CardHeader>
-              <CardTitle className="text-2xl font-orbitron font-bold text-foreground">
-                À propos de l'agence
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center space-x-4">
-                <div className="w-16 h-16 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-xl">A</span>
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold text-foreground">Agence Premium</h3>
-                  <p className="text-muted-foreground">Spécialiste des véhicules de luxe</p>
-                  <div className="flex items-center mt-2">
-                    <Star className="text-accent mr-1" size={16} />
-                    <span className="text-sm">{generateRating(vehicle.id).toFixed(1)} • Agence vérifiée</span>
+          {agencyLoading ? (
+            <Card className="glass-morphism neon-border">
+              <CardHeader>
+                <CardTitle className="text-2xl font-orbitron font-bold text-foreground">
+                  À propos de l'agence
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center space-x-4">
+                  <Skeleton className="w-16 h-16 rounded-full" />
+                  <div className="flex-1">
+                    <Skeleton className="h-6 w-32 mb-2" />
+                    <Skeleton className="h-4 w-48" />
                   </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          ) : agency ? (
+            <Card 
+              className="glass-morphism neon-border cursor-pointer hover-lift transition-all duration-300"
+              onClick={() => setLocation(`/agencies/${agency.id}`)}
+              data-testid={`card-agency-${agency.id}`}
+            >
+              <CardHeader>
+                <CardTitle className="text-2xl font-orbitron font-bold text-foreground">
+                  À propos de l'agence
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-4">
+                    {agency.logo ? (
+                      <img 
+                        src={agency.logo} 
+                        alt={agency.name}
+                        className="w-16 h-16 rounded-full object-cover"
+                        data-testid="img-agency-logo"
+                      />
+                    ) : (
+                      <div className="w-16 h-16 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center">
+                        <span className="text-white font-bold text-xl" data-testid="text-agency-initial">
+                          {agency.name.charAt(0).toUpperCase()}
+                        </span>
+                      </div>
+                    )}
+                    <div>
+                      <h3 className="text-lg font-bold text-foreground" data-testid="text-agency-name">{agency.name}</h3>
+                      <p className="text-muted-foreground" data-testid="text-agency-description">
+                        {agency.description || "Agence de location de véhicules de luxe"}
+                      </p>
+                      {agency.address && (
+                        <div className="flex items-center mt-2 text-sm text-muted-foreground">
+                          <MapPin className="mr-1" size={14} />
+                          <span data-testid="text-agency-address">{agency.address}</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <Button 
+                    variant="outline" 
+                    className="ml-4"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setLocation(`/agencies/${agency.id}`);
+                    }}
+                    data-testid="button-view-agency"
+                  >
+                    Voir les véhicules
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ) : null}
         </div>
       </div>
 
