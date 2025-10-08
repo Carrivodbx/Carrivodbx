@@ -52,6 +52,7 @@ export const vehicles = pgTable("vehicles", {
   available: boolean("available").default(true),
   seats: integer("seats"),
   horsepower: integer("horsepower"),
+  maxKilometers: integer("max_kilometers"),
   agencyId: varchar("agency_id").notNull().references(() => agencies.id),
   createdAt: timestamp("created_at").defaultNow(),
 });

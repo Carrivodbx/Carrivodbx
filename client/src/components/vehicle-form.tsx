@@ -37,6 +37,7 @@ export default function VehicleForm({ vehicle, onSuccess, onCancel }: VehicleFor
     available: true,
     seats: "",
     horsepower: "",
+    maxKilometers: "",
   });
 
   // Populate form when editing
@@ -58,6 +59,7 @@ export default function VehicleForm({ vehicle, onSuccess, onCancel }: VehicleFor
         available: vehicle.available ?? true,
         seats: vehicle.seats?.toString() || "",
         horsepower: vehicle.horsepower?.toString() || "",
+        maxKilometers: vehicle.maxKilometers?.toString() || "",
       });
     }
   }, [vehicle]);
@@ -126,6 +128,7 @@ export default function VehicleForm({ vehicle, onSuccess, onCancel }: VehicleFor
         available: formData.available,
         seats: formData.seats ? parseInt(formData.seats) : null,
         horsepower: formData.horsepower ? parseInt(formData.horsepower) : null,
+        maxKilometers: formData.maxKilometers ? parseInt(formData.maxKilometers) : null,
       };
 
       // Validate using schema (excluding agencyId as it's added server-side)
@@ -319,7 +322,7 @@ export default function VehicleForm({ vehicle, onSuccess, onCancel }: VehicleFor
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
           <Label htmlFor="seats" className="text-foreground">Nombre de places</Label>
           <Input
@@ -346,6 +349,20 @@ export default function VehicleForm({ vehicle, onSuccess, onCancel }: VehicleFor
             onChange={(e) => handleInputChange("horsepower", e.target.value)}
             className="bg-muted border-border text-foreground"
             data-testid="input-vehicle-horsepower"
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="maxKilometers" className="text-foreground">Km max autorisés</Label>
+          <Input
+            id="maxKilometers"
+            type="number"
+            min="0"
+            placeholder="Ex: 500"
+            value={formData.maxKilometers}
+            onChange={(e) => handleInputChange("maxKilometers", e.target.value)}
+            className="bg-muted border-border text-foreground"
+            data-testid="input-vehicle-max-kilometers"
           />
         </div>
       </div>

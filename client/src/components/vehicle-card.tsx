@@ -119,17 +119,26 @@ export default function VehicleCard({ vehicle, isPremium = false }: VehicleCardP
           {vehicle.description}
         </p>
         
-        <div className="flex items-center justify-between mb-3 sm:mb-4 text-sm sm:text-base">
+        <div className="flex items-center justify-between mb-3 sm:mb-4 text-sm sm:text-base gap-2">
           <div className="flex items-center text-muted-foreground">
             <MapPin className="mr-1 sm:mr-2 flex-shrink-0" size={16} />
             <span className="truncate" data-testid={`text-vehicle-region-${vehicle.id}`}>{vehicle.region}</span>
           </div>
-          {vehicle.seats && (
-            <div className="flex items-center text-muted-foreground flex-shrink-0">
-              <Users className="mr-1 sm:mr-2" size={16} />
-              <span data-testid={`text-vehicle-seats-${vehicle.id}`}>{vehicle.seats} places</span>
-            </div>
-          )}
+          <div className="flex items-center gap-3 flex-shrink-0">
+            {vehicle.seats && (
+              <div className="flex items-center text-muted-foreground">
+                <Users className="mr-1 sm:mr-2" size={16} />
+                <span data-testid={`text-vehicle-seats-${vehicle.id}`}>{vehicle.seats}</span>
+              </div>
+            )}
+            {vehicle.maxKilometers && (
+              <div className="flex items-center text-muted-foreground">
+                <span className="text-xs sm:text-sm font-medium" data-testid={`text-vehicle-max-km-${vehicle.id}`}>
+                  {vehicle.maxKilometers}km/j
+                </span>
+              </div>
+            )}
+          </div>
         </div>
         
         <div className="flex items-center justify-between flex-wrap gap-3">

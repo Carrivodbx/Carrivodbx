@@ -302,7 +302,7 @@ export default function VehicleDetailPage() {
                   {vehicle.brand} {vehicle.model}
                 </p>
                 
-                <div className="flex items-center space-x-6 text-muted-foreground mb-6">
+                <div className="flex flex-wrap items-center gap-4 text-muted-foreground mb-6">
                   <div className="flex items-center">
                     <MapPin className="mr-2" size={20} />
                     <span data-testid="text-vehicle-region">{vehicle.region}</span>
@@ -311,6 +311,13 @@ export default function VehicleDetailPage() {
                     <div className="flex items-center">
                       <Users className="mr-2" size={20} />
                       <span data-testid="text-vehicle-seats">{vehicle.seats} places</span>
+                    </div>
+                  )}
+                  {vehicle.maxKilometers && (
+                    <div className="flex items-center">
+                      <span className="font-medium text-accent" data-testid="text-vehicle-max-km">
+                        {vehicle.maxKilometers} km/jour max
+                      </span>
                     </div>
                   )}
                   <div className="flex items-center">
