@@ -108,7 +108,7 @@ export default function VehiclesPage() {
           </div>
 
           {/* Search and Filters */}
-          <div className="glass-morphism rounded-2xl p-4 sm:p-6 mb-6 sm:mb-8 neon-border">
+          <div className="glass-effect rounded-2xl p-4 sm:p-6 mb-6 sm:mb-8 premium-border subtle-shadow animate-fade-in-up">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-3 sm:gap-4 mb-6">
               <div className="md:col-span-2">
                 <div className="relative">
@@ -267,7 +267,18 @@ export default function VehiclesPage() {
           {isLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
               {Array.from({ length: 9 }).map((_, i) => (
-                <div key={i} className="glass-morphism rounded-2xl h-80 sm:h-96 animate-pulse" />
+                <div key={i} className="glass-effect rounded-2xl h-80 sm:h-96 animate-pulse premium-border subtle-shadow">
+                  <div className="h-48 bg-muted/30 rounded-t-2xl"></div>
+                  <div className="p-6 space-y-4">
+                    <div className="h-6 bg-muted/30 rounded w-3/4"></div>
+                    <div className="h-4 bg-muted/30 rounded w-full"></div>
+                    <div className="h-4 bg-muted/30 rounded w-5/6"></div>
+                    <div className="flex justify-between items-center mt-6">
+                      <div className="h-8 bg-muted/30 rounded w-1/3"></div>
+                      <div className="h-10 bg-muted/30 rounded w-1/3"></div>
+                    </div>
+                  </div>
+                </div>
               ))}
             </div>
           ) : filteredVehicles.length === 0 ? (

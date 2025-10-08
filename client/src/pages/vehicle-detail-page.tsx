@@ -327,7 +327,7 @@ export default function VehicleDetailPage() {
                 </div>
               </div>
 
-              <div className="glass-morphism rounded-2xl p-6 neon-border">
+              <div className="glass-effect rounded-2xl p-6 premium-border subtle-shadow animate-fade-in-up">
                 <div className="text-center mb-4">
                   <span className="text-4xl font-orbitron font-bold text-primary" data-testid="text-vehicle-price">
                     €{vehicle.pricePerDay}

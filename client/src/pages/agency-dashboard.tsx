@@ -113,7 +113,7 @@ export default function AgencyDashboard() {
         <Navbar />
         <div className="pt-32 relative z-10">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-            <Card className="glass-morphism neon-border p-8 md:p-12">
+            <Card className="glass-effect premium-border subtle-shadow p-8 md:p-12 animate-fade-in-up">
               <div className="text-center">
                 {/* Icon */}
                 <div className="w-24 h-24 bg-gradient-to-r from-blue-500 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-8 shadow-lg">
@@ -234,18 +234,18 @@ export default function AgencyDashboard() {
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
             {stats.map((stat, index) => (
-              <Card key={index} className="glass-morphism neon-border">
+              <Card key={index} className="glass-effect premium-border hover-lift animate-fade-in-up" style={{ animationDelay: `${index * 0.1}s` }}>
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-muted-foreground text-sm font-medium mb-2">
                         {stat.title}
                       </p>
-                      <p className="text-3xl font-orbitron font-bold text-foreground" data-testid={`stat-${stat.title.toLowerCase().replace(/\s+/g, '-')}`}>
+                      <p className="text-3xl font-orbitron font-bold metallic-text" data-testid={`stat-${stat.title.toLowerCase().replace(/\s+/g, '-')}`}>
                         {stat.value}
                       </p>
                     </div>
-                    <div className={`w-12 h-12 bg-gradient-to-r ${stat.color} rounded-full flex items-center justify-center`}>
+                    <div className={`w-12 h-12 bg-gradient-to-r ${stat.color} rounded-full flex items-center justify-center animate-glow`}>
                       <stat.icon className="text-white" size={24} />
                     </div>
                   </div>
@@ -256,7 +256,7 @@ export default function AgencyDashboard() {
 
           {/* Premium Subscription Section */}
           {!subscription?.active && (
-            <Card className="glass-morphism neon-border mb-12 border-2 border-accent/30">
+            <Card className="glass-effect premium-border subtle-shadow hover-lift mb-12 border-2 border-accent/30 animate-fade-in-up">
               <CardContent className="p-8">
                 <div className="flex flex-col md:flex-row items-center justify-between gap-6">
                   <div className="flex items-start gap-4 flex-1">
