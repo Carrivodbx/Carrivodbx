@@ -23,7 +23,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
         region as string,
         category as string
       );
-      res.json(vehicles);
+      
+      // Optimize response: only send first photo in list view to improve loading speed
+      const optimizedVehicles = vehicles.map(vehicle => ({
+        ...vehicle,
+        // Keep only the main photo, remove full photos array for list view
+        photos: vehicle.photos && vehicle.photos.length > 0 ? [vehicle.photos[0]] : vehicle.photo ? [vehicle.photo] : []
+      }));
+      
+      res.json(optimizedVehicles);
     } catch (error: any) {
       res.status(500).json({ message: "Error fetching vehicles: " + error.message });
     }
