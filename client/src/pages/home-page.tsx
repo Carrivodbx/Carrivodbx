@@ -47,31 +47,31 @@ export default function HomePage() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-            <div className="glass-morphism rounded-2xl p-6 sm:p-8 text-center neon-border hover:scale-105 transition-transform duration-300">
-              <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+            <div className="glass-effect rounded-2xl p-6 sm:p-8 text-center premium-border hover-lift animate-fade-in-up">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 animate-glow">
                 <Shield className="text-white" size={24} />
               </div>
-              <h3 className="text-xl sm:text-2xl font-orbitron font-bold mb-3 sm:mb-4 text-foreground">Sécurité Garantie</h3>
+              <h3 className="text-xl sm:text-2xl font-orbitron font-bold mb-3 sm:mb-4 text-foreground metallic-text">Sécurité Garantie</h3>
               <p className="text-sm sm:text-base text-muted-foreground">
                 Toutes nos agences sont vérifiées. Assurance complète et assistance 24h/24.
               </p>
             </div>
             
-            <div className="glass-morphism rounded-2xl p-6 sm:p-8 text-center neon-border hover:scale-105 transition-transform duration-300">
-              <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-r from-secondary to-accent rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+            <div className="glass-effect rounded-2xl p-6 sm:p-8 text-center premium-border hover-lift animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
+              <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-r from-secondary to-accent rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 animate-glow">
                 <Crown className="text-white" size={24} />
               </div>
-              <h3 className="text-xl sm:text-2xl font-orbitron font-bold mb-3 sm:mb-4 text-foreground">Véhicules Premium</h3>
+              <h3 className="text-xl sm:text-2xl font-orbitron font-bold mb-3 sm:mb-4 text-foreground metallic-text">Véhicules Premium</h3>
               <p className="text-sm sm:text-base text-muted-foreground">
                 Collection exclusive de voitures de luxe, sportives et SUV haut de gamme.
               </p>
             </div>
             
-            <div className="glass-morphism rounded-2xl p-6 sm:p-8 text-center neon-border hover:scale-105 transition-transform duration-300">
-              <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-r from-accent to-primary rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+            <div className="glass-effect rounded-2xl p-6 sm:p-8 text-center premium-border hover-lift animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+              <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-r from-accent to-primary rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 animate-glow">
                 <Zap className="text-white" size={24} />
               </div>
-              <h3 className="text-xl sm:text-2xl font-orbitron font-bold mb-3 sm:mb-4 text-foreground">Réservation Instant</h3>
+              <h3 className="text-xl sm:text-2xl font-orbitron font-bold mb-3 sm:mb-4 text-foreground metallic-text">Réservation Instant</h3>
               <p className="text-sm sm:text-base text-muted-foreground">
                 Réservez en quelques clics avec paiement sécurisé et confirmation immédiate.
               </p>

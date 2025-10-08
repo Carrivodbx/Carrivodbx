@@ -51,7 +51,7 @@ export default function VehicleCard({ vehicle, isPremium = false }: VehicleCardP
   const rating = generateRating(vehicle.id);
 
   return (
-    <div className="group glass-morphism rounded-2xl overflow-hidden neon-border hover:scale-105 active:scale-95 transition-all duration-300 relative" data-testid={`card-vehicle-${vehicle.id}`}>
+    <div className="group glass-effect rounded-2xl overflow-hidden premium-border hover-lift animate-fade-in-up relative" data-testid={`card-vehicle-${vehicle.id}`}>
       {isPremium && (
         <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-10">
           <Badge className="bg-gradient-to-r from-accent to-secondary text-accent-foreground animate-pulse-glow text-xs sm:text-sm" data-testid="badge-premium">
