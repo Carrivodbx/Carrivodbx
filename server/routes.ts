@@ -24,14 +24,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         category as string
       );
       
-      // Optimize response: only send first photo in list view to improve loading speed
-      const optimizedVehicles = vehicles.map(vehicle => ({
-        ...vehicle,
-        // Keep only the main photo, remove full photos array for list view
-        photos: vehicle.photos && vehicle.photos.length > 0 ? [vehicle.photos[0]] : vehicle.photo ? [vehicle.photo] : []
-      }));
-      
-      res.json(optimizedVehicles);
+      // Photos array already optimized at DB level (only first photo loaded)
+      res.json(vehicles);
     } catch (error: any) {
       res.status(500).json({ message: "Error fetching vehicles: " + error.message });
     }

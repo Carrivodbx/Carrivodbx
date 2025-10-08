@@ -16,7 +16,7 @@ import {
   type InsertSubscription,
 } from "@shared/schema";
 import { db } from "./db";
-import { eq, and, desc, like, or } from "drizzle-orm";
+import { eq, and, desc, like, or, sql } from "drizzle-orm";
 import session from "express-session";
 import connectPg from "connect-pg-simple";
 
@@ -154,7 +154,29 @@ export class DatabaseStorage implements IStorage {
       conditions.push(eq(vehicles.category, category));
     }
     
-    return await db.select().from(vehicles).where(and(...conditions)).orderBy(desc(vehicles.createdAt));
+    // Optimize: load only first photo for list view to reduce payload size
+    // PostgreSQL array indexing: photos[1] gets first element (1-indexed in PostgreSQL)
+    return await db.select({
+      id: vehicles.id,
+      title: vehicles.title,
+      brand: vehicles.brand,
+      model: vehicles.model,
+      year: vehicles.year,
+      category: vehicles.category,
+      pricePerDay: vehicles.pricePerDay,
+      depositAmount: vehicles.depositAmount,
+      cashDepositAllowed: vehicles.cashDepositAllowed,
+      region: vehicles.region,
+      description: vehicles.description,
+      photo: vehicles.photo, // Keep legacy photo field
+      photos: sql<string[]>`ARRAY[photos[1]]`.as('photos'), // Only first photo from array
+      available: vehicles.available,
+      seats: vehicles.seats,
+      horsepower: vehicles.horsepower,
+      maxKilometers: vehicles.maxKilometers,
+      agencyId: vehicles.agencyId,
+      createdAt: vehicles.createdAt,
+    }).from(vehicles).where(and(...conditions)).orderBy(desc(vehicles.createdAt));
   }
 
   async createVehicle(insertVehicle: InsertVehicle): Promise<Vehicle> {
