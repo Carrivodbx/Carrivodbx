@@ -155,7 +155,7 @@ export class DatabaseStorage implements IStorage {
     }
     
     // Optimize: load only first photo for list view to reduce payload size
-    // PostgreSQL array indexing: photos[1] gets first element (1-indexed in PostgreSQL)
+    // Use CASE to handle NULL arrays and only extract first element when array exists
     return await db.select({
       id: vehicles.id,
       title: vehicles.title,
@@ -169,7 +169,7 @@ export class DatabaseStorage implements IStorage {
       region: vehicles.region,
       description: vehicles.description,
       photo: vehicles.photo, // Keep legacy photo field
-      photos: sql<string[]>`ARRAY[photos[1]]`.as('photos'), // Only first photo from array
+      photos: sql<string[]>`CASE WHEN photos IS NOT NULL AND array_length(photos, 1) > 0 THEN ARRAY[photos[1]] ELSE NULL END`.as('photos'),
       available: vehicles.available,
       seats: vehicles.seats,
       horsepower: vehicles.horsepower,
