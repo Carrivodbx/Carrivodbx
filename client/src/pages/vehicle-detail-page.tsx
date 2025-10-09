@@ -20,10 +20,11 @@ export default function VehicleDetailPage() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
-  const { data: vehicle, isLoading: vehicleLoading, error } = useQuery<Vehicle & { agency?: Agency }>({
-    queryKey: ["/api/vehicles", id],
+  // Load vehicle info first (fast - no photos)
+  const { data: vehicleInfo, isLoading: vehicleLoading, error } = useQuery<any>({
+    queryKey: ["/api/vehicles", id, "info"],
     queryFn: async () => {
-      const response = await fetch(`/api/vehicles/${id}`);
+      const response = await fetch(`/api/vehicles/${id}/info`);
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({ message: "Unknown error" }));
         throw new Error(errorData.message || "Failed to fetch vehicle");
@@ -32,10 +33,27 @@ export default function VehicleDetailPage() {
     },
     enabled: !!id,
     retry: false,
-    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
-    gcTime: 10 * 60 * 1000, // Keep in cache for 10 minutes
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
   });
 
+  // Load photos separately (slow - lazy loaded)
+  const { data: photosData, isLoading: photosLoading } = useQuery<{ photos: string[] }>({
+    queryKey: ["/api/vehicles", id, "photos"],
+    queryFn: async () => {
+      const response = await fetch(`/api/vehicles/${id}/photos`);
+      if (!response.ok) {
+        return { photos: [] };
+      }
+      return response.json();
+    },
+    enabled: !!id && !!vehicleInfo,
+    retry: false,
+    staleTime: 10 * 60 * 1000,
+    gcTime: 15 * 60 * 1000,
+  });
+
+  const vehicle = vehicleInfo;
   const agency = vehicle?.agency;
 
   // Generate consistent rating between 4.4 and 5.0 based on vehicle ID
@@ -127,14 +145,15 @@ export default function VehicleDetailPage() {
     { icon: Calendar, label: "Annulation flexible" },
   ];
 
-  // Get all photos (use photos array if available, otherwise fallback to single photo)
-  const photos = vehicle && vehicle.photos && vehicle.photos.length > 0 
-    ? vehicle.photos 
-    : vehicle && vehicle.photo 
-    ? [vehicle.photo] 
+  // Get all photos (from separate query or use firstPhoto as fallback)
+  const photos = photosData?.photos && photosData.photos.length > 0
+    ? photosData.photos
+    : vehicle?.firstPhoto
+    ? [vehicle.firstPhoto]
     : ["https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1074&q=80"];
 
   const hasMultiplePhotos = photos.length > 1;
+  const photosFullyLoaded = !photosLoading && photosData?.photos;
 
   const nextImage = () => {
     setCurrentImageIndex((prev) => (prev + 1) % photos.length);
