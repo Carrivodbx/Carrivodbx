@@ -48,6 +48,7 @@ export interface IStorage {
   // Vehicle operations
   getAllVehicles(): Promise<Vehicle[]>;
   getVehicle(id: string): Promise<Vehicle | undefined>;
+  getVehicleWithAgency(id: string): Promise<(Vehicle & { agency?: Agency }) | undefined>;
   getVehiclesByAgency(agencyId: string): Promise<Vehicle[]>;
   searchVehicles(region?: string, category?: string): Promise<Vehicle[]>;
   createVehicle(vehicle: InsertVehicle): Promise<Vehicle>;
@@ -164,6 +165,23 @@ export class DatabaseStorage implements IStorage {
   async getVehicle(id: string): Promise<Vehicle | undefined> {
     const [vehicle] = await db.select().from(vehicles).where(eq(vehicles.id, id));
     return vehicle || undefined;
+  }
+
+  async getVehicleWithAgency(id: string): Promise<(Vehicle & { agency?: Agency }) | undefined> {
+    const result = await db
+      .select({
+        vehicle: vehicles,
+        agency: agencies,
+      })
+      .from(vehicles)
+      .leftJoin(agencies, eq(vehicles.agencyId, agencies.id))
+      .where(eq(vehicles.id, id))
+      .limit(1);
+
+    if (!result.length) return undefined;
+
+    const { vehicle, agency } = result[0];
+    return { ...vehicle, agency: agency || undefined };
   }
 
   async getVehiclesByAgency(agencyId: string): Promise<Vehicle[]> {

@@ -20,30 +20,21 @@ export default function VehicleDetailPage() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
-  const { data: vehicle, isLoading: vehicleLoading, error } = useQuery<Vehicle>({
+  const { data: vehicle, isLoading: vehicleLoading, error } = useQuery<Vehicle & { agency?: Agency }>({
     queryKey: ["/api/vehicles", id],
     queryFn: async () => {
-      console.log("Fetching vehicle with ID:", id);
       const response = await fetch(`/api/vehicles/${id}`);
-      console.log("Response status:", response.status);
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({ message: "Unknown error" }));
-        console.error("Failed to fetch vehicle:", errorData);
         throw new Error(errorData.message || "Failed to fetch vehicle");
       }
-      const data = await response.json();
-      console.log("Vehicle fetched successfully:", data);
-      return data;
+      return response.json();
     },
     enabled: !!id,
     retry: false,
   });
 
-  // Fetch agency information
-  const { data: agency, isLoading: agencyLoading } = useQuery<Agency>({
-    queryKey: ["/api/agencies", vehicle?.agencyId],
-    enabled: !!vehicle?.agencyId,
-  });
+  const agency = vehicle?.agency;
 
   // Generate consistent rating between 4.4 and 5.0 based on vehicle ID
   const generateRating = (vehicleId: string): number => {
@@ -392,7 +383,7 @@ export default function VehicleDetailPage() {
           </Card>
 
           {/* Agency Info */}
-          {agencyLoading ? (
+          {vehicleLoading || !agency ? (
             <Card className="glass-morphism neon-border">
               <CardHeader>
                 <CardTitle className="text-2xl font-orbitron font-bold text-foreground">

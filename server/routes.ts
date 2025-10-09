@@ -35,7 +35,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get("/api/vehicles/:id", async (req, res) => {
     try {
-      const vehicle = await storage.getVehicle(req.params.id);
+      const vehicle = await storage.getVehicleWithAgency(req.params.id);
       if (!vehicle) {
         return res.status(404).json({ message: "Vehicle not found" });
       }
