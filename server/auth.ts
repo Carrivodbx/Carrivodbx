@@ -6,6 +6,7 @@ import { scrypt, randomBytes, timingSafeEqual, createHash } from "crypto";
 import { promisify } from "util";
 import { storage } from "./storage";
 import { User as SelectUser } from "@shared/schema";
+import { sendPasswordResetEmail } from "./resend-client";
 
 declare global {
   namespace Express {
@@ -118,9 +119,16 @@ export function setupAuth(app: Express) {
       // Generate reset link
       const resetLink = `${req.protocol}://${req.get("host")}/reset-password?token=${resetToken}`;
 
-      // TODO: Send email with reset link
-      // For now, log the link (in production, this should send an email)
-      console.log(`Password reset link for ${email}: ${resetLink}`);
+      // Send password reset email
+      const emailResult = await sendPasswordResetEmail(email, resetLink);
+      
+      if (!emailResult.success) {
+        console.error(`Failed to send reset email to ${email}:`, emailResult.error);
+        // Still log the link as fallback
+        console.log(`Password reset link for ${email}: ${resetLink}`);
+      } else {
+        console.log(`Password reset email sent successfully to ${email}`);
+      }
 
       res.json({ message: "If an account exists with this email, you will receive a password reset link" });
     } catch (error: any) {
