@@ -69,38 +69,24 @@ export default function VehicleDetailPage() {
         <Navbar />
         <div className="pt-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            {/* Elegant Loading State */}
+            {/* Loading State with Progress Indicator */}
             <div className="animate-in fade-in duration-300">
-              <Skeleton className="h-6 w-24 mb-6" />
+              <Button 
+                variant="ghost" 
+                onClick={() => setLocation("/vehicles")}
+                className="mb-6 gap-2"
+                data-testid="button-back"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Retour
+              </Button>
               
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* Image Section */}
-                <div className="lg:col-span-2 space-y-4">
-                  <Skeleton className="h-[500px] rounded-2xl glass-morphism" />
-                  <div className="flex gap-2">
-                    <Skeleton className="h-20 w-20 rounded-lg" />
-                    <Skeleton className="h-20 w-20 rounded-lg" />
-                    <Skeleton className="h-20 w-20 rounded-lg" />
-                  </div>
+              <div className="text-center py-20">
+                <div className="inline-block relative">
+                  <div className="w-16 h-16 border-4 border-primary/30 border-t-primary rounded-full animate-spin mx-auto mb-4"></div>
                 </div>
-                
-                {/* Info Section */}
-                <div className="space-y-6">
-                  <div className="glass-morphism neon-border p-6 rounded-2xl space-y-4">
-                    <Skeleton className="h-10 w-full" />
-                    <Skeleton className="h-6 w-3/4" />
-                    <div className="flex gap-2">
-                      <Skeleton className="h-8 w-20 rounded-full" />
-                      <Skeleton className="h-8 w-24 rounded-full" />
-                    </div>
-                    <div className="pt-4 space-y-3">
-                      <Skeleton className="h-4 w-full" />
-                      <Skeleton className="h-4 w-5/6" />
-                      <Skeleton className="h-4 w-4/6" />
-                    </div>
-                    <Skeleton className="h-12 w-full rounded-lg mt-6" />
-                  </div>
-                </div>
+                <h2 className="text-2xl font-semibold mb-2">Chargement du véhicule...</h2>
+                <p className="text-muted-foreground">Veuillez patienter quelques secondes</p>
               </div>
             </div>
           </div>
@@ -109,30 +95,24 @@ export default function VehicleDetailPage() {
     );
   }
 
-  if (!vehicle) {
+  if (error || !vehicle) {
     return (
-      <div className="min-h-screen relative overflow-x-hidden">
-        {/* Background Image */}
-        <div className="fixed inset-0 z-0">
-          <img 
-            src={porscheNightBackground}
-            alt="Porsche rear view night city" 
-            className="w-full h-full object-cover opacity-5" 
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background"></div>
-        </div>
-
-        {/* Subtle Decorative Elements */}
-        <div className="absolute inset-0 pointer-events-none opacity-20">
-          <div className="absolute top-20 right-20 w-px h-40 bg-gradient-to-b from-transparent via-border to-transparent"></div>
-          <div className="absolute bottom-40 left-20 w-px h-40 bg-gradient-to-b from-transparent via-border to-transparent"></div>
-        </div>
-
+      <div className="min-h-screen bg-background">
         <Navbar />
-        <div className="pt-20 bg-background flex items-center justify-center">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold mb-4">Véhicule non trouvé</h1>
-            <Button onClick={() => setLocation("/vehicles")} data-testid="button-back-to-vehicles">
+        <div className="pt-20 flex items-center justify-center min-h-[80vh]">
+          <div className="text-center px-4">
+            <h1 className="text-3xl font-bold mb-4">
+              {error ? "Erreur de chargement" : "Véhicule non trouvé"}
+            </h1>
+            <p className="text-muted-foreground mb-6">
+              {error ? "Le véhicule n'a pas pu être chargé. Veuillez réessayer." : "Ce véhicule n'existe pas ou n'est plus disponible."}
+            </p>
+            <Button 
+              onClick={() => setLocation("/vehicles")} 
+              data-testid="button-back-to-vehicles"
+              className="btn-neon"
+            >
+              <ArrowLeft className="h-4 w-4 mr-2" />
               Retour aux véhicules
             </Button>
           </div>

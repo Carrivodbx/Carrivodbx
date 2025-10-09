@@ -45,6 +45,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.get("/api/vehicles/:id/info", async (req, res) => {
+    try {
+      const vehicleInfo = await storage.getVehicleInfoWithAgency(req.params.id);
+      if (!vehicleInfo) {
+        return res.status(404).json({ message: "Vehicle not found" });
+      }
+      res.json(vehicleInfo);
+    } catch (error: any) {
+      res.status(500).json({ message: "Error fetching vehicle info: " + error.message });
+    }
+  });
+
+  app.get("/api/vehicles/:id/photos", async (req, res) => {
+    try {
+      const photos = await storage.getVehiclePhotos(req.params.id);
+      if (!photos) {
+        return res.status(404).json({ message: "Vehicle not found" });
+      }
+      res.json(photos);
+    } catch (error: any) {
+      res.status(500).json({ message: "Error fetching vehicle photos: " + error.message });
+    }
+  });
+
   app.post("/api/vehicles", async (req, res) => {
     if (!req.isAuthenticated()) {
       return res.status(401).json({ message: "Unauthorized" });

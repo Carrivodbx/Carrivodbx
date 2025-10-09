@@ -184,6 +184,85 @@ export class DatabaseStorage implements IStorage {
     return { ...vehicle, agency: agency || undefined };
   }
 
+  async getVehicleInfoWithAgency(id: string): Promise<(Omit<Vehicle, 'photos' | 'photo'> & { firstPhoto?: string; agency?: Agency }) | undefined> {
+    const result = await db
+      .select({
+        id: vehicles.id,
+        title: vehicles.title,
+        brand: vehicles.brand,
+        model: vehicles.model,
+        year: vehicles.year,
+        category: vehicles.category,
+        pricePerDay: vehicles.pricePerDay,
+        depositAmount: vehicles.depositAmount,
+        cashDepositAllowed: vehicles.cashDepositAllowed,
+        region: vehicles.region,
+        description: vehicles.description,
+        firstPhoto: sql<string>`CASE WHEN photos IS NOT NULL AND array_length(photos, 1) > 0 THEN photos[1] ELSE photo END`.as('firstPhoto'),
+        available: vehicles.available,
+        seats: vehicles.seats,
+        horsepower: vehicles.horsepower,
+        maxKilometers: vehicles.maxKilometers,
+        latitude: vehicles.latitude,
+        longitude: vehicles.longitude,
+        agencyId: vehicles.agencyId,
+        createdAt: vehicles.createdAt,
+        agency: agencies,
+      })
+      .from(vehicles)
+      .leftJoin(agencies, eq(vehicles.agencyId, agencies.id))
+      .where(eq(vehicles.id, id))
+      .limit(1);
+
+    if (!result.length) return undefined;
+
+    const row = result[0];
+    return {
+      id: row.id,
+      title: row.title,
+      brand: row.brand,
+      model: row.model,
+      year: row.year,
+      category: row.category,
+      pricePerDay: row.pricePerDay,
+      depositAmount: row.depositAmount,
+      cashDepositAllowed: row.cashDepositAllowed,
+      region: row.region,
+      description: row.description,
+      firstPhoto: row.firstPhoto || undefined,
+      available: row.available,
+      seats: row.seats,
+      horsepower: row.horsepower,
+      maxKilometers: row.maxKilometers,
+      latitude: row.latitude,
+      longitude: row.longitude,
+      agencyId: row.agencyId,
+      createdAt: row.createdAt,
+      agency: row.agency || undefined,
+    };
+  }
+
+  async getVehiclePhotos(id: string): Promise<{ photos: string[] } | undefined> {
+    const [result] = await db
+      .select({
+        photo: vehicles.photo,
+        photos: vehicles.photos,
+      })
+      .from(vehicles)
+      .where(eq(vehicles.id, id))
+      .limit(1);
+
+    if (!result) return undefined;
+
+    const photos = result.photos && result.photos.length > 0 
+      ? result.photos 
+      : result.photo 
+      ? [result.photo] 
+      : [];
+
+    return { photos };
+  }
+
   async getVehiclesByAgency(agencyId: string): Promise<Vehicle[]> {
     return await db.select().from(vehicles).where(eq(vehicles.agencyId, agencyId)).orderBy(desc(vehicles.createdAt));
   }
