@@ -32,6 +32,8 @@ export default function VehicleDetailPage() {
     },
     enabled: !!id,
     retry: false,
+    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+    gcTime: 10 * 60 * 1000, // Keep in cache for 10 minutes
   });
 
   const agency = vehicle?.agency;
@@ -63,34 +65,42 @@ export default function VehicleDetailPage() {
 
   if (vehicleLoading) {
     return (
-      <div className="min-h-screen relative overflow-x-hidden">
-        {/* Background Image */}
-        <div className="fixed inset-0 z-0">
-          <img 
-            src={porscheNightBackground}
-            alt="Porsche rear view night city" 
-            className="w-full h-full object-cover opacity-5" 
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background"></div>
-        </div>
-
-        {/* Subtle Decorative Elements */}
-        <div className="absolute inset-0 pointer-events-none opacity-20">
-          <div className="absolute top-20 right-20 w-px h-40 bg-gradient-to-b from-transparent via-border to-transparent"></div>
-          <div className="absolute bottom-40 left-20 w-px h-40 bg-gradient-to-b from-transparent via-border to-transparent"></div>
-        </div>
-
+      <div className="min-h-screen bg-background">
         <Navbar />
-        <div className="pt-24 sm:pt-28 bg-background">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <Skeleton className="h-8 w-32 mb-8" />
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-              <Skeleton className="h-96 rounded-2xl" />
-              <div className="space-y-6">
-                <Skeleton className="h-12 w-3/4" />
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-2/3" />
-                <Skeleton className="h-32 w-full" />
+        <div className="pt-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            {/* Elegant Loading State */}
+            <div className="animate-in fade-in duration-300">
+              <Skeleton className="h-6 w-24 mb-6" />
+              
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                {/* Image Section */}
+                <div className="lg:col-span-2 space-y-4">
+                  <Skeleton className="h-[500px] rounded-2xl glass-morphism" />
+                  <div className="flex gap-2">
+                    <Skeleton className="h-20 w-20 rounded-lg" />
+                    <Skeleton className="h-20 w-20 rounded-lg" />
+                    <Skeleton className="h-20 w-20 rounded-lg" />
+                  </div>
+                </div>
+                
+                {/* Info Section */}
+                <div className="space-y-6">
+                  <div className="glass-morphism neon-border p-6 rounded-2xl space-y-4">
+                    <Skeleton className="h-10 w-full" />
+                    <Skeleton className="h-6 w-3/4" />
+                    <div className="flex gap-2">
+                      <Skeleton className="h-8 w-20 rounded-full" />
+                      <Skeleton className="h-8 w-24 rounded-full" />
+                    </div>
+                    <div className="pt-4 space-y-3">
+                      <Skeleton className="h-4 w-full" />
+                      <Skeleton className="h-4 w-5/6" />
+                      <Skeleton className="h-4 w-4/6" />
+                    </div>
+                    <Skeleton className="h-12 w-full rounded-lg mt-6" />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
