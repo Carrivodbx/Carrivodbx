@@ -2,7 +2,7 @@ import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { Express } from "express";
 import session from "express-session";
-import { scrypt, randomBytes, timingSafeEqual } from "crypto";
+import { scrypt, randomBytes, timingSafeEqual, createHash } from "crypto";
 import { promisify } from "util";
 import { storage } from "./storage";
 import { User as SelectUser } from "@shared/schema";
@@ -90,4 +90,86 @@ export function setupAuth(app: Express) {
     if (!req.isAuthenticated()) return res.sendStatus(401);
     res.json(req.user);
   });
+
+  app.post("/api/forgot-password", async (req, res) => {
+    try {
+      const { email } = req.body;
+      
+      if (!email) {
+        return res.status(400).json({ message: "Email is required" });
+      }
+
+      const user = await storage.getUserByEmail(email);
+      
+      // Always return success to prevent email enumeration
+      if (!user) {
+        return res.json({ message: "If an account exists with this email, you will receive a password reset link" });
+      }
+
+      // Generate reset token
+      const resetToken = randomBytes(32).toString("hex");
+      // Use SHA-256 for deterministic hash (allows lookup by token)
+      const resetTokenHash = createHash("sha256").update(resetToken).digest("hex");
+      const resetTokenExpires = new Date(Date.now() + 3600000); // 1 hour
+
+      // Save token to database
+      await storage.updateResetToken(user.id, resetTokenHash, resetTokenExpires, "email", email);
+
+      // Generate reset link
+      const resetLink = `${req.protocol}://${req.get("host")}/reset-password?token=${resetToken}`;
+
+      // TODO: Send email with reset link
+      // For now, log the link (in production, this should send an email)
+      console.log(`Password reset link for ${email}: ${resetLink}`);
+      console.log(`Reset token: ${resetToken}`);
+
+      res.json({ message: "If an account exists with this email, you will receive a password reset link" });
+    } catch (error: any) {
+      console.error("Forgot password error:", error);
+      res.status(500).json({ message: "Error processing request" });
+    }
+  });
+
+  app.post("/api/reset-password", async (req, res) => {
+    try {
+      const { token, password } = req.body;
+      
+      if (!token || !password) {
+        return res.status(400).json({ message: "Token and password are required" });
+      }
+
+      // Hash the provided token to find the matching user
+      const tokenHash = createHash("sha256").update(token).digest("hex");
+
+      // Find user with this token hash
+      const user = await storage.getUserByResetToken(tokenHash);
+      
+      if (!user || !user.resetTokenHash || !user.resetTokenExpires) {
+        return res.status(400).json({ message: "Invalid or expired reset token" });
+      }
+
+      // Check if token has expired
+      if (new Date() > new Date(user.resetTokenExpires)) {
+        return res.status(400).json({ message: "Reset token has expired" });
+      }
+
+      // Verify token hash matches
+      if (tokenHash !== user.resetTokenHash) {
+        return res.status(400).json({ message: "Invalid reset token" });
+      }
+
+      // Hash new password
+      const hashedPassword = await hashPassword(password);
+
+      // Update password and clear reset token
+      await storage.updatePassword(user.id, hashedPassword);
+
+      res.json({ message: "Password has been reset successfully" });
+    } catch (error: any) {
+      console.error("Reset password error:", error);
+      res.status(500).json({ message: "Error resetting password" });
+    }
+  });
 }
+
+export { hashPassword, comparePasswords };

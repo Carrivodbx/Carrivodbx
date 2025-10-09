@@ -38,6 +38,9 @@ export interface IStorage {
   getUserByEmail(email: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
   updateUserStripeInfo(userId: string, stripeCustomerId: string, stripeSubscriptionId?: string): Promise<User>;
+  updateResetToken(userId: string, resetTokenHash: string, resetTokenExpires: Date, resetChannel: string, resetTarget: string): Promise<User>;
+  getUserByResetToken(tokenHash: string): Promise<User | undefined>;
+  updatePassword(userId: string, password: string): Promise<User>;
 
   // Agency operations
   getAgency(id: string): Promise<Agency | undefined>;
@@ -126,6 +129,48 @@ export class DatabaseStorage implements IStorage {
       .set({
         stripeCustomerId,
         ...(stripeSubscriptionId && { stripeSubscriptionId }),
+      })
+      .where(eq(users.id, userId))
+      .returning();
+    return user;
+  }
+
+  async updateResetToken(userId: string, resetTokenHash: string, resetTokenExpires: Date, resetChannel: string, resetTarget: string): Promise<User> {
+    const [user] = await db
+      .update(users)
+      .set({
+        resetTokenHash,
+        resetTokenExpires,
+        resetChannel: resetChannel as "email" | "sms",
+        resetTarget,
+      })
+      .where(eq(users.id, userId))
+      .returning();
+    return user;
+  }
+
+  async getUserByResetToken(tokenHash: string): Promise<User | undefined> {
+    // Find user by token hash and check if not expired
+    const [user] = await db
+      .select()
+      .from(users)
+      .where(and(
+        eq(users.resetTokenHash, tokenHash),
+        sql`${users.resetTokenExpires} > NOW()`
+      ))
+      .limit(1);
+    return user || undefined;
+  }
+
+  async updatePassword(userId: string, password: string): Promise<User> {
+    const [user] = await db
+      .update(users)
+      .set({
+        password,
+        resetTokenHash: null,
+        resetTokenExpires: null,
+        resetChannel: null,
+        resetTarget: null,
       })
       .where(eq(users.id, userId))
       .returning();

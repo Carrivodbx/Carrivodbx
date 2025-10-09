@@ -10,6 +10,8 @@ import { ChatBot } from "@/components/chatbot";
 import { CookieConsent } from "@/components/cookie-consent";
 import HomePage from "@/pages/home-page";
 import AuthPage from "@/pages/auth-page";
+import ForgotPasswordPage from "@/pages/forgot-password-page";
+import ResetPasswordPage from "@/pages/reset-password-page";
 import VehiclesPage from "@/pages/vehicles-page";
 import VehicleDetailPage from "@/pages/vehicle-detail-page";
 import AgencyVehiclesPage from "@/pages/agency-vehicles-page";
@@ -31,6 +33,8 @@ function Router() {
     <Switch>
       <Route path="/" component={HomePage} />
       <Route path="/auth" component={AuthPage} />
+      <Route path="/forgot-password" component={ForgotPasswordPage} />
+      <Route path="/reset-password" component={ResetPasswordPage} />
       <Route path="/vehicles" component={VehiclesPage} />
       <Route path="/vehicles/:id" component={VehicleDetailPage} />
       <Route path="/agencies/:id" component={AgencyVehiclesPage} />
