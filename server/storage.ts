@@ -198,6 +198,7 @@ export class DatabaseStorage implements IStorage {
         cashDepositAllowed: vehicles.cashDepositAllowed,
         region: vehicles.region,
         description: vehicles.description,
+        thumbnail: vehicles.thumbnail,
         available: vehicles.available,
         seats: vehicles.seats,
         horsepower: vehicles.horsepower,
@@ -228,6 +229,7 @@ export class DatabaseStorage implements IStorage {
       cashDepositAllowed: row.cashDepositAllowed,
       region: row.region,
       description: row.description,
+      thumbnail: row.thumbnail,
       available: row.available,
       seats: row.seats,
       horsepower: row.horsepower,
@@ -276,8 +278,7 @@ export class DatabaseStorage implements IStorage {
       conditions.push(eq(vehicles.category, category));
     }
     
-    // Optimize: load only first photo for list view to reduce payload size
-    // Use CASE to handle NULL arrays and only extract first element when array exists
+    // Optimize: load only thumbnail for list view to reduce payload size
     return await db.select({
       id: vehicles.id,
       title: vehicles.title,
@@ -290,8 +291,9 @@ export class DatabaseStorage implements IStorage {
       cashDepositAllowed: vehicles.cashDepositAllowed,
       region: vehicles.region,
       description: vehicles.description,
-      photo: vehicles.photo, // Keep legacy photo field
-      photos: sql<string[]>`CASE WHEN photos IS NOT NULL AND array_length(photos, 1) > 0 THEN ARRAY[photos[1]] ELSE NULL END`.as('photos'),
+      photo: vehicles.thumbnail, // Use thumbnail instead of full photo for list view
+      thumbnail: vehicles.thumbnail,
+      photos: sql<string[]>`NULL`.as('photos'), // No photos array in list view
       available: vehicles.available,
       seats: vehicles.seats,
       horsepower: vehicles.horsepower,
