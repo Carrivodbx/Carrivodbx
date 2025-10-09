@@ -223,6 +223,10 @@ export const insertVehicleSchema = createInsertSchema(vehicles).omit({
   createdAt: true,
 });
 
+export const updateVehicleSchema = insertVehicleSchema.partial().omit({
+  agencyId: true, // Cannot change agency
+});
+
 export const insertReservationSchema = createInsertSchema(reservations).omit({
   id: true,
   createdAt: true,

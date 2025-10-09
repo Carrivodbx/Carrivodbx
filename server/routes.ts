@@ -3,11 +3,12 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { db } from "./db";
 import { setupAuth } from "./auth";
-import { insertVehicleSchema, insertReservationSchema, insertAgencySchema, insertReviewSchema, insertFavoriteSchema, insertNotificationSchema, reviews, favorites } from "@shared/schema";
+import { insertVehicleSchema, updateVehicleSchema, insertReservationSchema, insertAgencySchema, insertReviewSchema, insertFavoriteSchema, insertNotificationSchema, reviews, favorites } from "@shared/schema";
 import { eq } from "drizzle-orm";
 import Stripe from "stripe";
 import { getChatResponse } from "./openai-chat";
 import { z } from "zod";
+import { compressBase64Image, compressImageArray } from './utils/image-compression';
 
 const stripe = process.env.STRIPE_SECRET_KEY ? new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: "2024-11-20.acacia" as any,
@@ -85,10 +86,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Agency profile not found" });
       }
 
+      // Validate first
       const vehicleData = insertVehicleSchema.parse({
         ...req.body,
         agencyId: agency.id,
       });
+
+      // Then compress validated images
+      if (vehicleData.photo) {
+        vehicleData.photo = await compressBase64Image(vehicleData.photo);
+      }
+      if (vehicleData.photos && Array.isArray(vehicleData.photos)) {
+        vehicleData.photos = await compressImageArray(vehicleData.photos);
+      }
 
       const vehicle = await storage.createVehicle(vehicleData);
       res.status(201).json(vehicle);
@@ -114,7 +124,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(403).json({ message: "Unauthorized to modify this vehicle" });
       }
 
-      const updatedVehicle = await storage.updateVehicle(req.params.id, req.body);
+      // Validate update data with schema
+      const updateData = updateVehicleSchema.parse(req.body);
+
+      // Compress validated images
+      if (updateData.photo) {
+        updateData.photo = await compressBase64Image(updateData.photo);
+      }
+      if (updateData.photos && Array.isArray(updateData.photos)) {
+        updateData.photos = await compressImageArray(updateData.photos);
+      }
+
+      const updatedVehicle = await storage.updateVehicle(req.params.id, updateData);
       res.json(updatedVehicle);
     } catch (error: any) {
       res.status(400).json({ message: "Error updating vehicle: " + error.message });
