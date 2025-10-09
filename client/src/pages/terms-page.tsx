@@ -109,7 +109,7 @@ export default function TermsPage() {
               <section>
                 <h2 className="text-2xl font-orbitron font-bold mb-4">10. Contact</h2>
                 <p className="text-muted-foreground leading-relaxed">
-                  Pour toute question concernant ces conditions, contactez-nous à : support@carivoo.com
+                  Pour toute question concernant ces conditions, contactez-nous à : support@carivoo.fr
                 </p>
               </section>
             </CardContent>

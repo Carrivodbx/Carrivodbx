@@ -145,7 +145,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <CardTitle>Email</CardTitle>
-                      <CardDescription className="text-base mt-1">support@carivoo.com</CardDescription>
+                      <CardDescription className="text-base mt-1">support@carivoo.fr</CardDescription>
                     </div>
                   </div>
                 </CardHeader>

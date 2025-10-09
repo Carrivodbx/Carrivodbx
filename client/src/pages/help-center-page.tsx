@@ -138,7 +138,7 @@ export default function HelpCenterPage() {
                 <CardDescription className="mb-4">
                   Envoyez-nous un message
                 </CardDescription>
-                <p className="text-sm font-medium">support@carivoo.com</p>
+                <p className="text-sm font-medium">support@carivoo.fr</p>
               </CardContent>
             </Card>
           </div>
