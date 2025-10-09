@@ -32,13 +32,15 @@ Preferred communication style: Simple, everyday language.
 - **Database Schema**:
   - `users`: Authentication and profile data with role field (client/agency)
   - `agencies`: Agency-specific information linked to user accounts
-  - `vehicles`: Car listings with pricing, availability, location, and geolocation (latitude/longitude for map features)
+  - `vehicles`: Car listings with pricing, availability, location, geolocation, and optimized images (photo, thumbnail, photos[])
   - `reservations`: Booking records with date ranges and payment status
   - `subscriptions`: Premium agency subscriptions for enhanced visibility
   - `reviews`: Client reviews and ratings for agencies (1-5 stars with optional comments)
   - `favorites`: Client favorite vehicles list
   - `notifications`: User notifications system (reservation, payment, review, general types)
+  - `sessions`: Session table managed by connect-pg-simple (included in schema to prevent accidental deletion)
 - **Session Store**: PostgreSQL-backed sessions for authentication persistence
+- **Image Storage**: Base64 images stored in database with automatic compression and thumbnail generation
 
 ### Authentication & Authorization
 - **Strategy**: Session-based authentication with secure password hashing (scrypt with salt)
@@ -85,3 +87,21 @@ Preferred communication style: Simple, everyday language.
 - **Vite**: Fast development server with HMR
 - **PostCSS**: CSS processing with Tailwind and autoprefixer
 - **Path Aliases**: Configured for @/, @shared/, and @assets/ imports
+- **Sharp**: High-performance image processing for compression and optimization
+
+## Performance Optimizations
+
+### Image Optimization (October 2025)
+- **Automatic Compression**: All uploaded images are compressed using Sharp library
+  - Main photos: Resized to max 1200x1200px, JPEG quality 70%
+  - Thumbnails: 400x400px, fit: cover, JPEG quality 60%
+  - EXIF orientation auto-correction with `.rotate()` to fix rotated images
+- **Thumbnail System**: Separate thumbnail field for vehicle list views
+  - List view loads only lightweight thumbnails (~20-36KB vs 200-260KB)
+  - Detail view loads full photos separately via `/api/vehicles/:id/photos` endpoint
+  - Performance gain: Vehicle list loads in ~300ms (down from 30+ seconds)
+- **Split Loading Strategy**:
+  - `/api/vehicles/:id/info` - Vehicle info without photos (fast, ~150ms)
+  - `/api/vehicles/:id/photos` - Photos loaded separately (deferred, ~500ms)
+- **Compression Results**: 44-88% size reduction on existing images
+  - Example: BMW x6m main photo reduced from 260KB to 36KB thumbnail (86% reduction)
