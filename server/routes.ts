@@ -8,7 +8,7 @@ import { eq } from "drizzle-orm";
 import Stripe from "stripe";
 import { getChatResponse } from "./openai-chat";
 import { z } from "zod";
-import { compressBase64Image, compressImageArray } from './utils/image-compression';
+import { compressBase64Image, compressImageArray, createThumbnail } from './utils/image-compression';
 
 const stripe = process.env.STRIPE_SECRET_KEY ? new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: "2024-11-20.acacia" as any,
@@ -92,9 +92,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         agencyId: agency.id,
       });
 
-      // Then compress validated images
+      // Then compress validated images and generate thumbnail
       if (vehicleData.photo) {
         vehicleData.photo = await compressBase64Image(vehicleData.photo);
+        vehicleData.thumbnail = await createThumbnail(vehicleData.photo);
       }
       if (vehicleData.photos && Array.isArray(vehicleData.photos)) {
         vehicleData.photos = await compressImageArray(vehicleData.photos);
@@ -127,9 +128,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Validate update data with schema
       const updateData = updateVehicleSchema.parse(req.body);
 
-      // Compress validated images
+      // Compress validated images and generate thumbnail
       if (updateData.photo) {
         updateData.photo = await compressBase64Image(updateData.photo);
+        updateData.thumbnail = await createThumbnail(updateData.photo);
       }
       if (updateData.photos && Array.isArray(updateData.photos)) {
         updateData.photos = await compressImageArray(updateData.photos);

@@ -48,6 +48,7 @@ export const vehicles = pgTable("vehicles", {
   region: text("region").notNull(),
   description: text("description"),
   photo: text("photo"),
+  thumbnail: text("thumbnail"), // Small thumbnail for list view
   photos: text("photos").array(),
   available: boolean("available").default(true),
   seats: integer("seats"),
@@ -110,6 +111,13 @@ export const notifications = pgTable("notifications", {
   read: boolean("read").default(false),
   userId: varchar("user_id").notNull().references(() => users.id),
   createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Session table managed by express-session / connect-pg-simple
+export const sessions = pgTable("session", {
+  sid: varchar("sid").primaryKey(),
+  sess: text("sess").notNull(), // JSON stored as text
+  expire: timestamp("expire", { precision: 6 }).notNull(),
 });
 
 // Relations
