@@ -7,6 +7,7 @@ import { AuthProvider } from "@/hooks/use-auth";
 import { ProtectedRoute } from "@/lib/protected-route";
 import ScrollToTop from "@/components/scroll-to-top";
 import { ChatBot } from "@/components/chatbot";
+import { CookieConsent } from "@/components/cookie-consent";
 import HomePage from "@/pages/home-page";
 import AuthPage from "@/pages/auth-page";
 import VehiclesPage from "@/pages/vehicles-page";
@@ -59,6 +60,7 @@ function App() {
             <Toaster />
             <Router />
             <ChatBot />
+            <CookieConsent />
           </div>
         </TooltipProvider>
       </AuthProvider>
