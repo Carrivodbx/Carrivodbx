@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ImageGalleryModal } from "@/components/image-gallery-modal";
-import { MapPin, Users, Star, ArrowLeft, Calendar, Shield, Zap, ChevronLeft, ChevronRight } from "lucide-react";
+import { MapPin, Users, Star, ArrowLeft, Calendar, Shield, Zap, ChevronLeft, ChevronRight, Gauge, CreditCard, Banknote, Car } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { Vehicle, Agency } from "@shared/schema";
 import porscheNightBackground from "@assets/stock_images/porsche_rear_view_ba_b54491f8.jpg";
@@ -388,7 +388,7 @@ export default function VehicleDetailPage() {
           </div>
 
           {/* Description */}
-          <Card className="glass-morphism neon-border mb-12">
+          <Card className="glass-morphism neon-border mb-8">
             <CardHeader>
               <CardTitle className="text-2xl font-orbitron font-bold text-foreground">
                 Description
@@ -400,6 +400,127 @@ export default function VehicleDetailPage() {
               </p>
             </CardContent>
           </Card>
+
+          {/* Specifications */}
+          <Card className="glass-morphism neon-border mb-8">
+            <CardHeader>
+              <CardTitle className="text-2xl font-orbitron font-bold text-foreground">
+                Spécifications techniques
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {vehicle.year && (
+                  <div className="flex items-start space-x-3">
+                    <Calendar className="text-accent mt-1" size={20} />
+                    <div>
+                      <p className="font-semibold text-foreground">Année</p>
+                      <p className="text-muted-foreground" data-testid="text-vehicle-year">{vehicle.year}</p>
+                    </div>
+                  </div>
+                )}
+                {vehicle.horsepower && (
+                  <div className="flex items-start space-x-3">
+                    <Gauge className="text-accent mt-1" size={20} />
+                    <div>
+                      <p className="font-semibold text-foreground">Puissance</p>
+                      <p className="text-muted-foreground" data-testid="text-vehicle-horsepower">{vehicle.horsepower} chevaux</p>
+                    </div>
+                  </div>
+                )}
+                {vehicle.seats && (
+                  <div className="flex items-start space-x-3">
+                    <Users className="text-accent mt-1" size={20} />
+                    <div>
+                      <p className="font-semibold text-foreground">Places</p>
+                      <p className="text-muted-foreground" data-testid="text-vehicle-seats-spec">{vehicle.seats} places</p>
+                    </div>
+                  </div>
+                )}
+                {vehicle.maxKilometers && (
+                  <div className="flex items-start space-x-3">
+                    <Zap className="text-accent mt-1" size={20} />
+                    <div>
+                      <p className="font-semibold text-foreground">Kilométrage maximum</p>
+                      <p className="text-muted-foreground" data-testid="text-vehicle-max-km-spec">{vehicle.maxKilometers} km/jour</p>
+                    </div>
+                  </div>
+                )}
+                <div className="flex items-start space-x-3">
+                  <Car className="text-accent mt-1" size={20} />
+                  <div>
+                    <p className="font-semibold text-foreground">Catégorie</p>
+                    <p className="text-muted-foreground" data-testid="text-vehicle-category">{vehicle.category}</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <MapPin className="text-accent mt-1" size={20} />
+                  <div>
+                    <p className="font-semibold text-foreground">Localisation</p>
+                    <p className="text-muted-foreground" data-testid="text-vehicle-location">{vehicle.region}</p>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Deposit Information */}
+          {vehicle.depositAmount && (
+            <Card className="glass-morphism neon-border mb-12 border-accent/50">
+              <CardHeader>
+                <CardTitle className="text-2xl font-orbitron font-bold text-foreground flex items-center gap-2">
+                  <Shield className="text-accent" size={24} />
+                  Caution
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between p-4 rounded-lg bg-accent/10 border border-accent/20">
+                    <div>
+                      <p className="text-sm text-muted-foreground">Montant de la caution</p>
+                      <p className="text-3xl font-orbitron font-bold text-accent" data-testid="text-deposit-amount">
+                        €{vehicle.depositAmount}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-3 p-4 rounded-lg bg-muted/30">
+                    <p className="font-semibold text-foreground">Modalités de paiement de la caution :</p>
+                    <p className="text-muted-foreground text-sm" data-testid="text-deposit-info">
+                      La caution sera collectée sur place lors de la prise en charge du véhicule selon les modalités suivantes :
+                    </p>
+                    <div className="space-y-2 ml-4">
+                      <div className="flex items-start space-x-3">
+                        <CreditCard className="text-accent mt-0.5" size={18} />
+                        <p className="text-sm text-muted-foreground">
+                          <span className="font-semibold text-foreground">Empreinte bancaire</span> - Empreinte de carte bancaire (montant bloqué temporairement)
+                        </p>
+                      </div>
+                      <div className="flex items-start space-x-3">
+                        <Banknote className="text-accent mt-0.5" size={18} />
+                        <p className="text-sm text-muted-foreground">
+                          <span className="font-semibold text-foreground">Espèces</span> - Paiement en espèces
+                        </p>
+                      </div>
+                      {vehicle.cashDepositAllowed && (
+                        <div className="flex items-start space-x-3">
+                          <Car className="text-accent mt-0.5" size={18} />
+                          <p className="text-sm text-muted-foreground">
+                            <span className="font-semibold text-foreground">Échange de véhicule</span> - L'agence accepte un véhicule en garantie
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                    <div className="mt-4 p-3 rounded-lg bg-accent/10 border border-accent/20">
+                      <p className="text-xs text-muted-foreground">
+                        <strong className="text-foreground">Note :</strong> La caution vous sera intégralement restituée à la fin de la location si le véhicule est rendu en bon état.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
           {/* Agency Info */}
           {vehicleLoading || !agency ? (
