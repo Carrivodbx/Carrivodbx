@@ -145,12 +145,12 @@ export default function VehicleDetailPage() {
     { icon: Calendar, label: "Annulation flexible" },
   ];
 
-  // Get all photos (from separate query or use firstPhoto as fallback)
+  // Get all photos (from separate query or use placeholder)
+  const placeholderPhoto = "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1074&q=80";
+  
   const photos = photosData?.photos && photosData.photos.length > 0
     ? photosData.photos
-    : vehicle?.firstPhoto
-    ? [vehicle.firstPhoto]
-    : ["https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1074&q=80"];
+    : [placeholderPhoto];
 
   const hasMultiplePhotos = photos.length > 1;
   const photosFullyLoaded = !photosLoading && photosData?.photos;

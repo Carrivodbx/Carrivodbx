@@ -184,7 +184,7 @@ export class DatabaseStorage implements IStorage {
     return { ...vehicle, agency: agency || undefined };
   }
 
-  async getVehicleInfoWithAgency(id: string): Promise<(Omit<Vehicle, 'photos' | 'photo'> & { firstPhoto?: string; agency?: Agency }) | undefined> {
+  async getVehicleInfoWithAgency(id: string): Promise<(Omit<Vehicle, 'photos' | 'photo'> & { agency?: Agency }) | undefined> {
     const result = await db
       .select({
         id: vehicles.id,
@@ -198,7 +198,6 @@ export class DatabaseStorage implements IStorage {
         cashDepositAllowed: vehicles.cashDepositAllowed,
         region: vehicles.region,
         description: vehicles.description,
-        firstPhoto: sql<string>`CASE WHEN photos IS NOT NULL AND array_length(photos, 1) > 0 THEN photos[1] ELSE photo END`.as('firstPhoto'),
         available: vehicles.available,
         seats: vehicles.seats,
         horsepower: vehicles.horsepower,
@@ -229,7 +228,6 @@ export class DatabaseStorage implements IStorage {
       cashDepositAllowed: row.cashDepositAllowed,
       region: row.region,
       description: row.description,
-      firstPhoto: row.firstPhoto || undefined,
       available: row.available,
       seats: row.seats,
       horsepower: row.horsepower,
