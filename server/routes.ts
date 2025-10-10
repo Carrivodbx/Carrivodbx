@@ -297,7 +297,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const user = req.user!;
       const reservations = await storage.getReservationsByUser(user.id);
-      res.json(reservations);
+      
+      // Enrich reservations with vehicle and agency data
+      const enrichedReservations = await Promise.all(
+        reservations.map(async (reservation) => {
+          const vehicle = await storage.getVehicle(reservation.vehicleId);
+          let vehicleWithAgency: any = vehicle;
+          
+          if (vehicle) {
+            const agency = await storage.getAgency(vehicle.agencyId);
+            vehicleWithAgency = { ...vehicle, agency };
+          }
+          
+          return {
+            ...reservation,
+            vehicle: vehicleWithAgency,
+          };
+        })
+      );
+      
+      res.json(enrichedReservations);
     } catch (error: any) {
       res.status(500).json({ message: "Error fetching reservations: " + error.message });
     }
