@@ -524,7 +524,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         clientSecret: paymentIntent.client_secret,
       });
     } catch (error: any) {
-      console.error("Subscription creation error:", error);
+      console.error("=== SUBSCRIPTION ERROR DETAILS ===");
+      console.error("Error message:", error.message);
+      console.error("Error stack:", error.stack);
+      console.error("Full error:", JSON.stringify(error, null, 2));
+      console.error("===================================");
       res.status(500).json({ message: "Error creating subscription: " + error.message });
     }
   });
