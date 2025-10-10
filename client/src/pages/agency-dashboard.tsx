@@ -5,14 +5,20 @@ import { useLocation } from "wouter";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import Navbar from "@/components/navbar";
 import VehicleForm from "@/components/vehicle-form";
+import ReservationChat from "@/components/reservation-chat";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Car, Edit, Trash2, Eye, TrendingUp, Crown, Sparkles } from "lucide-react";
+import { Plus, Car, Edit, Trash2, Eye, TrendingUp, Crown, Sparkles, Calendar, MapPin } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import type { Vehicle, Agency, Subscription } from "@shared/schema";
+import type { Vehicle, Agency, Subscription, Reservation, User } from "@shared/schema";
 import porscheNightBackground from "@assets/stock_images/porsche_rear_view_ba_b54491f8.jpg";
+
+interface ReservationWithDetails extends Reservation {
+  vehicle?: Vehicle;
+  user?: User;
+}
 
 export default function AgencyDashboard() {
   const { user } = useAuth();
@@ -31,6 +37,11 @@ export default function AgencyDashboard() {
 
   const { data: subscription } = useQuery<Subscription>({
     queryKey: ["/api/agency/subscription"],
+    enabled: !!agency,
+  });
+
+  const { data: reservations, isLoading: reservationsLoading } = useQuery<ReservationWithDetails[]>({
+    queryKey: ["/api/agency/reservations"],
     enabled: !!agency,
   });
 
@@ -68,6 +79,36 @@ export default function AgencyDashboard() {
   const handleCloseForm = () => {
     setIsVehicleFormOpen(false);
     setEditingVehicle(null);
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "paid":
+        return "bg-green-500";
+      case "pending":
+        return "bg-yellow-500";
+      case "completed":
+        return "bg-blue-500";
+      case "cancelled":
+        return "bg-red-500";
+      default:
+        return "bg-gray-500";
+    }
+  };
+
+  const getStatusLabel = (status: string) => {
+    switch (status) {
+      case "paid":
+        return "Payée";
+      case "pending":
+        return "En attente";
+      case "completed":
+        return "Terminée";
+      case "cancelled":
+        return "Annulée";
+      default:
+        return status;
+    }
   };
 
   const stats = [
@@ -403,6 +444,100 @@ export default function AgencyDashboard() {
                             <Trash2 size={16} />
                           </Button>
                         </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Reservations Section */}
+          <Card className="glass-morphism neon-border">
+            <CardHeader>
+              <CardTitle className="text-2xl font-orbitron font-bold text-foreground">
+                Réservations
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {reservationsLoading ? (
+                <div className="space-y-4">
+                  {Array.from({ length: 3 }).map((_, i) => (
+                    <div key={i} className="h-32 bg-muted rounded-lg animate-pulse" />
+                  ))}
+                </div>
+              ) : reservations?.length === 0 ? (
+                <div className="text-center py-16">
+                  <Calendar className="mx-auto mb-4 text-muted-foreground" size={64} />
+                  <h3 className="text-xl font-bold mb-2">Aucune réservation</h3>
+                  <p className="text-muted-foreground">
+                    Vos clients pourront réserver vos véhicules et vous pourrez gérer les réservations ici.
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  {reservations?.map((reservation) => (
+                    <div key={reservation.id} className="glass-morphism rounded-xl p-6 border border-border" data-testid={`reservation-card-${reservation.id}`}>
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex items-center space-x-4">
+                          <img
+                            src={reservation.vehicle?.photo || "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1074&q=80"}
+                            alt={reservation.vehicle?.title}
+                            className="w-20 h-20 object-cover rounded-lg"
+                          />
+                          <div>
+                            <h3 className="text-xl font-orbitron font-bold text-foreground" data-testid={`reservation-vehicle-${reservation.id}`}>
+                              {reservation.vehicle?.title}
+                            </h3>
+                            <p className="text-muted-foreground">
+                              Client: {reservation.user?.fullName || reservation.user?.username}
+                            </p>
+                            <div className="flex items-center mt-2 text-muted-foreground">
+                              <MapPin className="mr-2" size={16} />
+                              <span>{reservation.vehicle?.region}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <Badge className={`${getStatusColor(reservation.status || 'pending')} text-white`} data-testid={`reservation-status-${reservation.id}`}>
+                          {getStatusLabel(reservation.status || 'pending')}
+                        </Badge>
+                      </div>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-sm">
+                        <div>
+                          <p className="text-muted-foreground">Date de début</p>
+                          <p className="font-medium text-foreground" data-testid={`reservation-start-${reservation.id}`}>
+                            {new Date(reservation.startDate).toLocaleDateString('fr-FR')}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-muted-foreground">Date de fin</p>
+                          <p className="font-medium text-foreground" data-testid={`reservation-end-${reservation.id}`}>
+                            {new Date(reservation.endDate).toLocaleDateString('fr-FR')}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-muted-foreground">Durée</p>
+                          <p className="font-medium text-foreground" data-testid={`reservation-days-${reservation.id}`}>
+                            {reservation.days} jour{reservation.days > 1 ? 's' : ''}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-muted-foreground">Total</p>
+                          <p className="font-bold text-primary text-lg" data-testid={`reservation-total-${reservation.id}`}>
+                            €{reservation.total}
+                          </p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex justify-end gap-2 mt-4">
+                        {reservation.user?.id && (
+                          <ReservationChat
+                            reservationId={reservation.id}
+                            receiverId={reservation.user.id}
+                            vehicleTitle={reservation.vehicle?.title || 'Véhicule'}
+                          />
+                        )}
                       </div>
                     </div>
                   ))}

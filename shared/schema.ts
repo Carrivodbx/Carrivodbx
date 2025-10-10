@@ -113,6 +113,16 @@ export const notifications = pgTable("notifications", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+export const messages = pgTable("messages", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  content: text("content").notNull(),
+  senderId: varchar("sender_id").notNull().references(() => users.id),
+  receiverId: varchar("receiver_id").notNull().references(() => users.id),
+  reservationId: varchar("reservation_id").notNull().references(() => reservations.id),
+  read: boolean("read").default(false),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 // Session table managed by express-session / connect-pg-simple
 export const sessions = pgTable("session", {
   sid: varchar("sid").primaryKey(),
@@ -130,6 +140,8 @@ export const usersRelations = relations(users, ({ one, many }) => ({
   reviews: many(reviews),
   favorites: many(favorites),
   notifications: many(notifications),
+  sentMessages: many(messages, { relationName: "sentMessages" }),
+  receivedMessages: many(messages, { relationName: "receivedMessages" }),
 }));
 
 export const agenciesRelations = relations(agencies, ({ one, many }) => ({
@@ -164,6 +176,7 @@ export const reservationsRelations = relations(reservations, ({ one, many }) => 
     references: [vehicles.id],
   }),
   reviews: many(reviews),
+  messages: many(messages),
 }));
 
 export const subscriptionsRelations = relations(subscriptions, ({ one }) => ({
@@ -203,6 +216,23 @@ export const notificationsRelations = relations(notifications, ({ one }) => ({
   user: one(users, {
     fields: [notifications.userId],
     references: [users.id],
+  }),
+}));
+
+export const messagesRelations = relations(messages, ({ one }) => ({
+  sender: one(users, {
+    fields: [messages.senderId],
+    references: [users.id],
+    relationName: "sentMessages",
+  }),
+  receiver: one(users, {
+    fields: [messages.receiverId],
+    references: [users.id],
+    relationName: "receivedMessages",
+  }),
+  reservation: one(reservations, {
+    fields: [messages.reservationId],
+    references: [reservations.id],
   }),
 }));
 
@@ -260,6 +290,11 @@ export const insertNotificationSchema = createInsertSchema(notifications).omit({
   createdAt: true,
 });
 
+export const insertMessageSchema = createInsertSchema(messages).omit({
+  id: true,
+  createdAt: true,
+});
+
 // Types
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
@@ -277,3 +312,5 @@ export type Favorite = typeof favorites.$inferSelect;
 export type InsertFavorite = z.infer<typeof insertFavoriteSchema>;
 export type Notification = typeof notifications.$inferSelect;
 export type InsertNotification = z.infer<typeof insertNotificationSchema>;
+export type Message = typeof messages.$inferSelect;
+export type InsertMessage = z.infer<typeof insertMessageSchema>;

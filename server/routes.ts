@@ -3,7 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { db } from "./db";
 import { setupAuth } from "./auth";
-import { insertVehicleSchema, updateVehicleSchema, insertReservationSchema, insertAgencySchema, insertReviewSchema, insertFavoriteSchema, insertNotificationSchema, reviews, favorites } from "@shared/schema";
+import { insertVehicleSchema, updateVehicleSchema, insertReservationSchema, insertAgencySchema, insertReviewSchema, insertFavoriteSchema, insertNotificationSchema, insertMessageSchema, reviews, favorites } from "@shared/schema";
 import { eq } from "drizzle-orm";
 import Stripe from "stripe";
 import { getChatResponse } from "./openai-chat";
@@ -252,6 +252,39 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(vehicles);
     } catch (error: any) {
       res.status(500).json({ message: "Error fetching agency vehicles: " + error.message });
+    }
+  });
+
+  app.get("/api/agency/reservations", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    try {
+      const user = req.user!;
+      const agency = await storage.getAgencyByUserId(user.id);
+      if (!agency) {
+        return res.status(400).json({ message: "Agency profile not found" });
+      }
+
+      const reservations = await storage.getReservationsByAgency(agency.id);
+      
+      // Enrich reservations with vehicle and user data
+      const enrichedReservations = await Promise.all(
+        reservations.map(async (reservation) => {
+          const vehicle = await storage.getVehicle(reservation.vehicleId);
+          const client = await storage.getUser(reservation.userId);
+          return {
+            ...reservation,
+            vehicle,
+            user: client,
+          };
+        })
+      );
+      
+      res.json(enrichedReservations);
+    } catch (error: any) {
+      res.status(500).json({ message: "Error fetching agency reservations: " + error.message });
     }
   });
 
@@ -704,6 +737,95 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(204).send();
     } catch (error: any) {
       res.status(400).json({ message: "Error deleting notification: " + error.message });
+    }
+  });
+
+  // Message routes
+  app.post("/api/messages", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    try {
+      const user = req.user!;
+      const messageData = insertMessageSchema.parse({
+        ...req.body,
+        senderId: user.id,
+      });
+
+      // Verify that the user is part of this reservation (either client or agency owner)
+      const reservation = await storage.getReservation(messageData.reservationId);
+      if (!reservation) {
+        return res.status(404).json({ message: "Reservation not found" });
+      }
+
+      const vehicle = await storage.getVehicle(reservation.vehicleId);
+      if (!vehicle) {
+        return res.status(404).json({ message: "Vehicle not found" });
+      }
+
+      const agency = await storage.getAgency(vehicle.agencyId);
+      if (!agency) {
+        return res.status(404).json({ message: "Agency not found" });
+      }
+
+      // Check if user is authorized (either the client who made the reservation or the agency that owns the vehicle)
+      if (reservation.userId !== user.id && agency.userId !== user.id) {
+        return res.status(403).json({ message: "Unauthorized to send message for this reservation" });
+      }
+
+      const message = await storage.createMessage(messageData);
+      res.status(201).json(message);
+    } catch (error: any) {
+      res.status(400).json({ message: "Error sending message: " + error.message });
+    }
+  });
+
+  app.get("/api/reservations/:id/messages", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    try {
+      const user = req.user!;
+      const reservation = await storage.getReservation(req.params.id);
+      
+      if (!reservation) {
+        return res.status(404).json({ message: "Reservation not found" });
+      }
+
+      const vehicle = await storage.getVehicle(reservation.vehicleId);
+      if (!vehicle) {
+        return res.status(404).json({ message: "Vehicle not found" });
+      }
+
+      const agency = await storage.getAgency(vehicle.agencyId);
+      if (!agency) {
+        return res.status(404).json({ message: "Agency not found" });
+      }
+
+      // Check if user is authorized to view messages
+      if (reservation.userId !== user.id && agency.userId !== user.id) {
+        return res.status(403).json({ message: "Unauthorized to view messages for this reservation" });
+      }
+
+      const messages = await storage.getMessagesByReservation(req.params.id);
+      res.json(messages);
+    } catch (error: any) {
+      res.status(500).json({ message: "Error fetching messages: " + error.message });
+    }
+  });
+
+  app.patch("/api/messages/:id/read", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    try {
+      const message = await storage.markMessageAsRead(req.params.id);
+      res.json(message);
+    } catch (error: any) {
+      res.status(400).json({ message: "Error marking message as read: " + error.message });
     }
   });
 

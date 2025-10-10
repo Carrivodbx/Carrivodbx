@@ -6,11 +6,12 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar, Car, Clock, MapPin, Star, Eye } from "lucide-react";
 import { useLocation } from "wouter";
-import type { Reservation, Vehicle } from "@shared/schema";
+import type { Reservation, Vehicle, Agency } from "@shared/schema";
 import porscheNightBackground from "@assets/stock_images/porsche_rear_view_ba_b54491f8.jpg";
+import ReservationChat from "@/components/reservation-chat";
 
 interface ReservationWithVehicle extends Reservation {
-  vehicle: Vehicle;
+  vehicle: Vehicle & { agency?: Agency };
 }
 
 export default function ClientDashboard() {
@@ -229,7 +230,14 @@ export default function ClientDashboard() {
                         </div>
                       </div>
                       
-                      <div className="flex justify-end mt-4">
+                      <div className="flex justify-end gap-2 mt-4">
+                        {reservation.vehicle?.agency?.userId && (
+                          <ReservationChat
+                            reservationId={reservation.id}
+                            receiverId={reservation.vehicle.agency.userId}
+                            vehicleTitle={reservation.vehicle.title}
+                          />
+                        )}
                         <Button
                           variant="outline"
                           size="sm"

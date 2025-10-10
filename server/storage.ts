@@ -7,6 +7,7 @@ import {
   reviews,
   favorites,
   notifications,
+  messages,
   type User,
   type InsertUser,
   type Agency,
@@ -23,6 +24,8 @@ import {
   type InsertFavorite,
   type Notification,
   type InsertNotification,
+  type Message,
+  type InsertMessage,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, and, desc, like, or, sql } from "drizzle-orm";
@@ -62,6 +65,7 @@ export interface IStorage {
   getReservation(id: string): Promise<Reservation | undefined>;
   getReservationsByUser(userId: string): Promise<Reservation[]>;
   getReservationsByVehicle(vehicleId: string): Promise<Reservation[]>;
+  getReservationsByAgency(agencyId: string): Promise<Reservation[]>;
   createReservation(reservation: InsertReservation): Promise<Reservation>;
   updateReservationStatus(id: string, status: string): Promise<Reservation>;
   updateReservationPaymentIntent(id: string, paymentIntentId: string): Promise<Reservation>;
@@ -88,6 +92,11 @@ export interface IStorage {
   createNotification(notification: InsertNotification): Promise<Notification>;
   markNotificationAsRead(id: string): Promise<Notification>;
   deleteNotification(id: string): Promise<void>;
+
+  // Message operations
+  getMessagesByReservation(reservationId: string): Promise<Message[]>;
+  createMessage(message: InsertMessage): Promise<Message>;
+  markMessageAsRead(id: string): Promise<Message>;
 
   sessionStore: any;
 }
@@ -382,6 +391,18 @@ export class DatabaseStorage implements IStorage {
     return await db.select().from(reservations).where(eq(reservations.vehicleId, vehicleId)).orderBy(desc(reservations.createdAt));
   }
 
+  async getReservationsByAgency(agencyId: string): Promise<Reservation[]> {
+    const agencyVehicles = await db.select().from(vehicles).where(eq(vehicles.agencyId, agencyId));
+    const vehicleIds = agencyVehicles.map(v => v.id);
+    
+    if (vehicleIds.length === 0) return [];
+    
+    return await db.select()
+      .from(reservations)
+      .where(sql`${reservations.vehicleId} IN (${sql.join(vehicleIds.map(id => sql`${id}`), sql`, `)})`)
+      .orderBy(desc(reservations.createdAt));
+  }
+
   async createReservation(insertReservation: InsertReservation): Promise<Reservation> {
     const [reservation] = await db.insert(reservations).values(insertReservation).returning();
     return reservation;
@@ -490,6 +511,25 @@ export class DatabaseStorage implements IStorage {
 
   async deleteNotification(id: string): Promise<void> {
     await db.delete(notifications).where(eq(notifications.id, id));
+  }
+
+  // Message operations
+  async getMessagesByReservation(reservationId: string): Promise<Message[]> {
+    return await db.select().from(messages).where(eq(messages.reservationId, reservationId)).orderBy(messages.createdAt);
+  }
+
+  async createMessage(insertMessage: InsertMessage): Promise<Message> {
+    const [message] = await db.insert(messages).values(insertMessage).returning();
+    return message;
+  }
+
+  async markMessageAsRead(id: string): Promise<Message> {
+    const [message] = await db
+      .update(messages)
+      .set({ read: true })
+      .where(eq(messages.id, id))
+      .returning();
+    return message;
   }
 }
 
