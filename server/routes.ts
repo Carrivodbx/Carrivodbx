@@ -499,55 +499,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Agency profile not found" });
       }
 
-      let stripeCustomerId = user.stripeCustomerId;
-
-      if (!stripeCustomerId) {
-        const customer = await stripe.customers.create({
-          email: user.email,
-          name: agency.name,
-        });
-        stripeCustomerId = customer.id;
-        await storage.updateUserStripeInfo(user.id, stripeCustomerId);
-      }
-
-      // Create a product and price for the subscription
-      const product = await stripe!.products.create({
-        name: 'Carivoo Premium',
-        description: 'Abonnement Premium pour visibilité accrue',
-      });
-
-      const price = await stripe!.prices.create({
-        product: product.id,
-        unit_amount: 2999,
+      // Create a one-time payment intent for the subscription (29.99 EUR)
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: 2999,
         currency: 'eur',
-        recurring: {
-          interval: 'month',
+        automatic_payment_methods: {
+          enabled: true,
+        },
+        metadata: {
+          agencyId: agency.id,
+          userId: user.id,
+          type: 'subscription',
         },
       });
 
-      const subscription = await stripe!.subscriptions.create({
-        customer: stripeCustomerId,
-        items: [{
-          price: price.id,
-        }],
-        payment_behavior: 'default_incomplete',
-        payment_settings: {
-          payment_method_types: ['card'],
-        },
-        expand: ['latest_invoice.payment_intent'],
-      });
-
+      // Create subscription record in database (inactive until payment confirmed)
       await storage.createSubscription({
         agencyId: agency.id,
         active: false,
-        stripeSubscriptionId: subscription.id,
+        stripeSubscriptionId: paymentIntent.id,
       });
 
-      await storage.updateUserStripeInfo(user.id, stripeCustomerId, subscription.id);
-
       res.json({
-        subscriptionId: subscription.id,
-        clientSecret: (subscription.latest_invoice as any)?.payment_intent?.client_secret,
+        clientSecret: paymentIntent.client_secret,
       });
     } catch (error: any) {
       console.error("Subscription creation error:", error);
