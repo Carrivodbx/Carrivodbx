@@ -515,7 +515,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         items: [{
           price_data: {
             currency: 'eur',
-            product: 'prod_carivoo_premium',
+            product_data: {
+              name: 'Carivoo Premium',
+              description: 'Abonnement Premium pour visibilité accrue',
+            },
             unit_amount: 2999,
             recurring: {
               interval: 'month',
