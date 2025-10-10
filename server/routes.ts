@@ -526,6 +526,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
           } as any,
         }],
         payment_behavior: 'default_incomplete',
+        payment_settings: {
+          payment_method_types: ['card'],
+        },
         expand: ['latest_invoice.payment_intent'],
       });
 
@@ -542,6 +545,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         clientSecret: (subscription.latest_invoice as any)?.payment_intent?.client_secret,
       });
     } catch (error: any) {
+      console.error("Subscription creation error:", error);
       res.status(500).json({ message: "Error creating subscription: " + error.message });
     }
   });
