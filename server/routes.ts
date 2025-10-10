@@ -513,21 +513,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
         },
       });
 
-      // Create subscription record in database (inactive until payment confirmed)
-      await storage.createSubscription({
-        agencyId: agency.id,
-        active: false,
-        stripeSubscriptionId: paymentIntent.id,
-      });
-
       res.json({
         clientSecret: paymentIntent.client_secret,
       });
     } catch (error: any) {
       console.error("=== SUBSCRIPTION ERROR DETAILS ===");
       console.error("Error message:", error.message);
-      console.error("Error stack:", error.stack);
-      console.error("Full error:", JSON.stringify(error, null, 2));
+      console.error("Error type:", error.type);
+      console.error("Error code:", error.code);
       console.error("===================================");
       res.status(500).json({ message: "Error creating subscription: " + error.message });
     }
