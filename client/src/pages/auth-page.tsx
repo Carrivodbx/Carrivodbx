@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { User, Building, ArrowLeft } from "lucide-react";
+import { User, Building, ArrowLeft, Eye, EyeOff } from "lucide-react";
 import logoPath from "@assets/Image4_1759292728996.jpg";
 import { useToast } from "@/hooks/use-toast";
 import { insertUserSchema } from "@shared/schema";
@@ -35,6 +35,11 @@ export default function AuthPage() {
     phone: "",
     region: "",
   });
+
+  // Password visibility states
+  const [showLoginPassword, setShowLoginPassword] = useState(false);
+  const [showRegisterPassword, setShowRegisterPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   // If user is already authenticated, redirect to appropriate dashboard
   if (user) {
@@ -168,15 +173,25 @@ export default function AuthPage() {
                       
                       <div>
                         <Label htmlFor="password">Mot de passe</Label>
-                        <Input
-                          id="password"
-                          type="password"
-                          placeholder="••••••••"
-                          value={loginData.password}
-                          onChange={(e) => setLoginData(prev => ({ ...prev, password: e.target.value }))}
-                          className="bg-muted border-border"
-                          data-testid="input-login-password"
-                        />
+                        <div className="relative">
+                          <Input
+                            id="password"
+                            type={showLoginPassword ? "text" : "password"}
+                            placeholder="••••••••"
+                            value={loginData.password}
+                            onChange={(e) => setLoginData(prev => ({ ...prev, password: e.target.value }))}
+                            className="bg-muted border-border pr-10"
+                            data-testid="input-login-password"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowLoginPassword(!showLoginPassword)}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                            data-testid="button-toggle-login-password"
+                          >
+                            {showLoginPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                          </button>
+                        </div>
                       </div>
                       
                       <Button
@@ -302,15 +317,25 @@ export default function AuthPage() {
                       <div className="grid grid-cols-2 gap-4">
                         <div>
                           <Label htmlFor="reg-password">Mot de passe</Label>
-                          <Input
-                            id="reg-password"
-                            type="password"
-                            placeholder="••••••••"
-                            value={registerData.password}
-                            onChange={(e) => setRegisterData(prev => ({ ...prev, password: e.target.value }))}
-                            className="bg-muted border-border"
-                            data-testid="input-register-password"
-                          />
+                          <div className="relative">
+                            <Input
+                              id="reg-password"
+                              type={showRegisterPassword ? "text" : "password"}
+                              placeholder="••••••••"
+                              value={registerData.password}
+                              onChange={(e) => setRegisterData(prev => ({ ...prev, password: e.target.value }))}
+                              className="bg-muted border-border pr-10"
+                              data-testid="input-register-password"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setShowRegisterPassword(!showRegisterPassword)}
+                              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                              data-testid="button-toggle-register-password"
+                            >
+                              {showRegisterPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                            </button>
+                          </div>
                           <p className="text-xs text-muted-foreground mt-1">
                             Minimum 8 caractères avec au moins 1 chiffre
                           </p>
@@ -318,15 +343,25 @@ export default function AuthPage() {
                         
                         <div>
                           <Label htmlFor="reg-confirm-password">Confirmer</Label>
-                          <Input
-                            id="reg-confirm-password"
-                            type="password"
-                            placeholder="••••••••"
-                            value={registerData.confirmPassword}
-                            onChange={(e) => setRegisterData(prev => ({ ...prev, confirmPassword: e.target.value }))}
-                            className="bg-muted border-border"
-                            data-testid="input-register-confirm-password"
-                          />
+                          <div className="relative">
+                            <Input
+                              id="reg-confirm-password"
+                              type={showConfirmPassword ? "text" : "password"}
+                              placeholder="••••••••"
+                              value={registerData.confirmPassword}
+                              onChange={(e) => setRegisterData(prev => ({ ...prev, confirmPassword: e.target.value }))}
+                              className="bg-muted border-border pr-10"
+                              data-testid="input-register-confirm-password"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                              data-testid="button-toggle-confirm-password"
+                            >
+                              {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                            </button>
+                          </div>
                         </div>
                       </div>
                       
