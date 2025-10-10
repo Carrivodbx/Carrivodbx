@@ -522,17 +522,17 @@ export default function VehicleDetailPage() {
             </Card>
           )}
 
-          {/* Agency Info */}
+          {/* Agency Info - Enhanced Design */}
           {vehicleLoading || !agency ? (
             <Card className="glass-morphism neon-border">
               <CardHeader>
                 <CardTitle className="text-2xl font-orbitron font-bold text-foreground">
-                  À propos de l'agence
+                  Agence partenaire
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center space-x-4">
-                  <Skeleton className="w-16 h-16 rounded-full" />
+                  <Skeleton className="w-20 h-20 rounded-full" />
                   <div className="flex-1">
                     <Skeleton className="h-6 w-32 mb-2" />
                     <Skeleton className="h-4 w-48" />
@@ -542,56 +542,82 @@ export default function VehicleDetailPage() {
             </Card>
           ) : agency ? (
             <Card 
-              className="glass-morphism neon-border cursor-pointer hover-lift transition-all duration-300"
-              onClick={() => setLocation(`/agencies/${agency.id}`)}
+              className="glass-morphism neon-border overflow-hidden relative"
               data-testid={`card-agency-${agency.id}`}
             >
-              <CardHeader>
-                <CardTitle className="text-2xl font-orbitron font-bold text-foreground">
-                  À propos de l'agence
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-accent to-primary"></div>
+              
+              <CardHeader className="pb-4">
+                <CardTitle className="text-2xl font-orbitron font-bold text-foreground flex items-center gap-2">
+                  <MapPin className="text-accent" size={24} />
+                  Agence partenaire
                 </CardTitle>
               </CardHeader>
+              
               <CardContent>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4">
+                <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                  {/* Left Section - Agency Logo & Name */}
+                  <div className="flex items-center space-x-4 flex-1">
                     {agency.logo ? (
-                      <img 
-                        src={agency.logo} 
-                        alt={agency.name}
-                        className="w-16 h-16 rounded-full object-cover"
-                        data-testid="img-agency-logo"
-                      />
+                      <div className="relative">
+                        <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-full blur-md opacity-50"></div>
+                        <img 
+                          src={agency.logo} 
+                          alt={agency.name}
+                          className="relative w-20 h-20 rounded-full object-cover border-2 border-primary/30"
+                          data-testid="img-agency-logo"
+                        />
+                      </div>
                     ) : (
-                      <div className="w-16 h-16 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center">
-                        <span className="text-white font-bold text-xl" data-testid="text-agency-initial">
-                          {agency.name.charAt(0).toUpperCase()}
-                        </span>
+                      <div className="relative">
+                        <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-full blur-md opacity-50"></div>
+                        <div className="relative w-20 h-20 bg-gradient-to-br from-primary via-accent to-secondary rounded-full flex items-center justify-center border-2 border-primary/30">
+                          <span className="text-white font-bold text-2xl" data-testid="text-agency-initial">
+                            {agency.name.charAt(0).toUpperCase()}
+                          </span>
+                        </div>
                       </div>
                     )}
-                    <div>
-                      <h3 className="text-lg font-bold text-foreground" data-testid="text-agency-name">{agency.name}</h3>
-                      <p className="text-muted-foreground" data-testid="text-agency-description">
-                        {agency.description || "Agence de location de véhicules de luxe"}
-                      </p>
+                    
+                    <div className="flex-1">
+                      <h3 className="text-2xl font-bold text-foreground mb-1 font-orbitron" data-testid="text-agency-name">
+                        {agency.name}
+                      </h3>
+                      
                       {agency.address && (
-                        <div className="flex items-center mt-2 text-sm text-muted-foreground">
-                          <MapPin className="mr-1" size={14} />
-                          <span data-testid="text-agency-address">{agency.address}</span>
+                        <div className="flex items-start mt-2 space-x-2">
+                          <MapPin className="text-accent mt-0.5 flex-shrink-0" size={18} />
+                          <div>
+                            <p className="text-muted-foreground font-medium" data-testid="text-agency-address">
+                              {agency.address}
+                            </p>
+                          </div>
                         </div>
+                      )}
+                      
+                      {agency.description && (
+                        <p className="text-sm text-muted-foreground mt-2 italic" data-testid="text-agency-description">
+                          "{agency.description}"
+                        </p>
                       )}
                     </div>
                   </div>
-                  <Button 
-                    variant="outline" 
-                    className="ml-4"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setLocation(`/agencies/${agency.id}`);
-                    }}
-                    data-testid="button-view-agency"
-                  >
-                    Voir les véhicules
-                  </Button>
+                  
+                  {/* Right Section - Action Button */}
+                  <div className="flex flex-col gap-2 md:ml-4">
+                    <Button 
+                      className="btn-neon bg-gradient-to-r from-primary to-accent text-primary-foreground font-semibold"
+                      onClick={() => setLocation(`/agencies/${agency.id}`)}
+                      data-testid="button-view-agency"
+                    >
+                      <Star className="mr-2" size={18} />
+                      Voir tous les véhicules
+                    </Button>
+                    <div className="flex items-center justify-center gap-1 text-xs text-muted-foreground">
+                      <Star className="text-accent" size={12} />
+                      <span>{generateRating(agency.id)} / 5</span>
+                    </div>
+                  </div>
                 </div>
               </CardContent>
             </Card>
