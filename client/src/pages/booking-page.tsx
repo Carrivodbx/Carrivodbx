@@ -458,13 +458,15 @@ export default function BookingPage() {
                           <span className="text-muted-foreground">Commission Carivoo (10%)</span>
                           <span className="font-medium text-foreground">€{(total * 0.1).toFixed(2)}</span>
                         </div>
-                        <div className="flex justify-between text-muted-foreground">
-                          <span className="flex items-center gap-1">
-                            Caution
-                            <span className="text-xs">(à régler sur place)</span>
-                          </span>
-                          <span className="font-medium">€{(total * 0.2).toFixed(2)}</span>
-                        </div>
+                        {vehicle.depositAmount && (
+                          <div className="flex justify-between text-muted-foreground">
+                            <span className="flex items-center gap-1">
+                              Caution
+                              <span className="text-xs">(à régler sur place)</span>
+                            </span>
+                            <span className="font-medium">€{parseFloat(vehicle.depositAmount).toFixed(2)}</span>
+                          </div>
+                        )}
                         <div className="flex justify-between border-t border-border pt-3">
                           <span className="text-lg font-bold text-foreground">Total à payer en ligne</span>
                           <span className="text-2xl font-orbitron font-bold text-primary" data-testid="text-total-price">
