@@ -510,20 +510,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
         await storage.updateUserStripeInfo(user.id, stripeCustomerId);
       }
 
+      // Create a product and price for the subscription
+      const product = await stripe!.products.create({
+        name: 'Carivoo Premium',
+        description: 'Abonnement Premium pour visibilité accrue',
+      });
+
+      const price = await stripe!.prices.create({
+        product: product.id,
+        unit_amount: 2999,
+        currency: 'eur',
+        recurring: {
+          interval: 'month',
+        },
+      });
+
       const subscription = await stripe!.subscriptions.create({
         customer: stripeCustomerId,
         items: [{
-          price_data: {
-            currency: 'eur',
-            product_data: {
-              name: 'Carivoo Premium',
-              description: 'Abonnement Premium pour visibilité accrue',
-            },
-            unit_amount: 2999,
-            recurring: {
-              interval: 'month',
-            },
-          } as any,
+          price: price.id,
         }],
         payment_behavior: 'default_incomplete',
         payment_settings: {
