@@ -211,6 +211,15 @@ export default function ClientDashboard() {
                           </p>
                         </div>
                         <div>
+                          {reservation.vehicle?.agency?.userId && (
+                            <div className="mb-2">
+                              <ReservationChat
+                                reservationId={reservation.id}
+                                receiverId={reservation.vehicle.agency.userId}
+                                vehicleTitle={reservation.vehicle.title}
+                              />
+                            </div>
+                          )}
                           <p className="text-muted-foreground">Date de fin</p>
                           <p className="font-medium text-foreground" data-testid={`reservation-end-${reservation.id}`}>
                             {new Date(reservation.endDate).toLocaleDateString('fr-FR')}
@@ -231,13 +240,6 @@ export default function ClientDashboard() {
                       </div>
                       
                       <div className="flex justify-end gap-2 mt-4">
-                        {reservation.vehicle?.agency?.userId && (
-                          <ReservationChat
-                            reservationId={reservation.id}
-                            receiverId={reservation.vehicle.agency.userId}
-                            vehicleTitle={reservation.vehicle.title}
-                          />
-                        )}
                         <Button
                           variant="outline"
                           size="sm"
