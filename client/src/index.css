@@ -145,10 +145,18 @@
     width: 100% !important;
     max-width: 100% !important;
     box-sizing: border-box !important;
+    font-size: 14px !important;
+    padding: 8px 6px !important;
   }
   
   input[type="date"]::-webkit-date-and-time-value {
     text-align: left;
+    font-size: 14px;
+  }
+  
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    margin-left: 2px;
+    padding: 0;
   }
 }
 

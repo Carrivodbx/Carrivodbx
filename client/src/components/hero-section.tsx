@@ -49,8 +49,8 @@ export default function HeroSection() {
         </p>
         
         {/* Search Bar */}
-        <div className="glass-effect rounded-2xl p-4 sm:p-6 mb-6 sm:mb-8 max-w-4xl mx-auto premium-border animate-fade-in-up subtle-shadow">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-3 sm:gap-4">
+        <div className="glass-effect rounded-2xl p-3 sm:p-6 mb-6 sm:mb-8 max-w-4xl mx-auto premium-border animate-fade-in-up subtle-shadow">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-2 sm:gap-4">
             <div className="md:col-span-2 w-full">
               <Label className="block text-sm font-medium text-gray-300 mb-2">
                 Où souhaitez-vous conduire ?

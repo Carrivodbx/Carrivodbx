@@ -507,7 +507,7 @@ export default function BookingPage() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-6">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div className="w-full">
                         <Label htmlFor="start-date" className="text-foreground">Date de début</Label>
                         <Input
