@@ -1,16 +1,61 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Search, Car, Building } from "lucide-react";
+import { Search, Car, Building, MapPin } from "lucide-react";
 import heroVideo from "@assets/5309354-hd_1920_1080_25fps_1759286891675.mp4";
+
+const FRENCH_CITIES = [
+  "Paris", "Marseille", "Lyon", "Toulouse", "Nice", "Nantes", "Strasbourg", "Montpellier", "Bordeaux", "Lille",
+  "Rennes", "Reims", "Le Havre", "Saint-Étienne", "Toulon", "Grenoble", "Dijon", "Angers", "Nîmes", "Villeurbanne",
+  "Clermont-Ferrand", "Le Mans", "Aix-en-Provence", "Brest", "Tours", "Amiens", "Limoges", "Annecy", "Perpignan", "Boulogne-Billancourt",
+  "Metz", "Besançon", "Orléans", "Saint-Denis", "Argenteuil", "Rouen", "Mulhouse", "Montreuil", "Caen", "Nancy",
+  "Saint-Paul", "Tourcoing", "Roubaix", "Nanterre", "Avignon", "Vitry-sur-Seine", "Créteil", "Dunkerque", "Poitiers", "Asnières-sur-Seine",
+  "Versailles", "Colombes", "Aulnay-sous-Bois", "Courbevoie", "Fort-de-France", "Cherbourg-en-Cotentin", "Rueil-Malmaison", "Champigny-sur-Marne", 
+  "Antibes", "Béziers", "Calais", "Cannes", "Bourges", "La Rochelle", "Drancy", "Ajaccio", "Troyes", "Levallois-Perret",
+  "Issy-les-Moulineaux", "Quimper", "Noisy-le-Grand", "Villeneuve-d'Ascq", "Neuilly-sur-Seine", "Valence", "Antony", "Cergy",
+  "Ivry-sur-Seine", "Vénissieux", "Pessac", "Chambéry", "Saint-Quentin", "Cayenne", "Niort", "Beauvais", "Lorient", "Cholet"
+];
 
 export default function HeroSection() {
   const [, setLocation] = useLocation();
   const [searchRegion, setSearchRegion] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const suggestionsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (suggestionsRef.current && !suggestionsRef.current.contains(event.target as Node)) {
+        setShowSuggestions(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleRegionChange = (value: string) => {
+    setSearchRegion(value);
+    if (value.trim().length >= 2) {
+      const filtered = FRENCH_CITIES.filter(city => 
+        city.toLowerCase().startsWith(value.toLowerCase())
+      ).slice(0, 8);
+      setSuggestions(filtered);
+      setShowSuggestions(filtered.length > 0);
+    } else {
+      setSuggestions([]);
+      setShowSuggestions(false);
+    }
+  };
+
+  const selectCity = (city: string) => {
+    setSearchRegion(city);
+    setShowSuggestions(false);
+  };
 
   const handleSearch = () => {
     const params = new URLSearchParams();
@@ -51,7 +96,7 @@ export default function HeroSection() {
         {/* Search Bar */}
         <div className="glass-effect rounded-2xl p-3 sm:p-6 mb-6 sm:mb-8 max-w-4xl mx-auto premium-border animate-fade-in-up subtle-shadow">
           <div className="flex flex-col md:grid md:grid-cols-4 gap-3 sm:gap-4">
-            <div className="md:col-span-2 w-full">
+            <div className="md:col-span-2 w-full relative" ref={suggestionsRef}>
               <Label className="block text-sm font-medium text-gray-300 mb-2">
                 Où souhaitez-vous conduire ?
               </Label>
@@ -59,10 +104,27 @@ export default function HeroSection() {
                 type="text"
                 placeholder="Ville, région..."
                 value={searchRegion}
-                onChange={(e) => setSearchRegion(e.target.value)}
+                onChange={(e) => handleRegionChange(e.target.value)}
                 className="bg-muted border-border text-foreground h-12 text-base w-full"
                 data-testid="input-search-region"
               />
+              
+              {/* Suggestions Dropdown */}
+              {showSuggestions && suggestions.length > 0 && (
+                <div className="absolute z-50 w-full mt-1 bg-zinc-900 border border-zinc-700 rounded-lg shadow-2xl max-h-64 overflow-y-auto">
+                  {suggestions.map((city, index) => (
+                    <button
+                      key={index}
+                      onClick={() => selectCity(city)}
+                      className="w-full text-left px-4 py-3 hover:bg-zinc-800 transition-colors flex items-center gap-2 text-gray-200 border-b border-zinc-800 last:border-b-0"
+                      data-testid={`suggestion-${city.toLowerCase()}`}
+                    >
+                      <MapPin className="w-4 h-4 text-zinc-500" />
+                      <span>{city}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
             <div className="w-full">
               <Label className="block text-sm font-medium text-gray-300 mb-2">
