@@ -6,25 +6,21 @@ import { Label } from "@/components/ui/label";
 import { Search, Car, Building, MapPin } from "lucide-react";
 import heroVideo from "@assets/5309354-hd_1920_1080_25fps_1759286891675.mp4";
 
-const FRENCH_CITIES = [
-  "Paris", "Marseille", "Lyon", "Toulouse", "Nice", "Nantes", "Strasbourg", "Montpellier", "Bordeaux", "Lille",
-  "Rennes", "Reims", "Le Havre", "Saint-Étienne", "Toulon", "Grenoble", "Dijon", "Angers", "Nîmes", "Villeurbanne",
-  "Clermont-Ferrand", "Le Mans", "Aix-en-Provence", "Brest", "Tours", "Amiens", "Limoges", "Annecy", "Perpignan", "Boulogne-Billancourt",
-  "Metz", "Besançon", "Orléans", "Saint-Denis", "Argenteuil", "Rouen", "Mulhouse", "Montreuil", "Caen", "Nancy",
-  "Saint-Paul", "Tourcoing", "Roubaix", "Nanterre", "Avignon", "Vitry-sur-Seine", "Créteil", "Dunkerque", "Poitiers", "Asnières-sur-Seine",
-  "Versailles", "Colombes", "Aulnay-sous-Bois", "Courbevoie", "Fort-de-France", "Cherbourg-en-Cotentin", "Rueil-Malmaison", "Champigny-sur-Marne", 
-  "Antibes", "Béziers", "Calais", "Cannes", "Bourges", "La Rochelle", "Drancy", "Ajaccio", "Troyes", "Levallois-Perret",
-  "Issy-les-Moulineaux", "Quimper", "Noisy-le-Grand", "Villeneuve-d'Ascq", "Neuilly-sur-Seine", "Valence", "Antony", "Cergy",
-  "Ivry-sur-Seine", "Vénissieux", "Pessac", "Chambéry", "Saint-Quentin", "Cayenne", "Niort", "Beauvais", "Lorient", "Cholet"
-];
+interface City {
+  nom: string;
+  code: string;
+  codeDepartement: string;
+  codeRegion: string;
+}
 
 export default function HeroSection() {
   const [, setLocation] = useLocation();
   const [searchRegion, setSearchRegion] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [suggestions, setSuggestions] = useState<City[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const suggestionsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -38,22 +34,32 @@ export default function HeroSection() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleRegionChange = (value: string) => {
+  const handleRegionChange = async (value: string) => {
     setSearchRegion(value);
+    
     if (value.trim().length >= 2) {
-      const filtered = FRENCH_CITIES.filter(city => 
-        city.toLowerCase().startsWith(value.toLowerCase())
-      ).slice(0, 8);
-      setSuggestions(filtered);
-      setShowSuggestions(filtered.length > 0);
+      setIsLoading(true);
+      try {
+        const response = await fetch(
+          `https://geo.api.gouv.fr/communes?nom=${encodeURIComponent(value)}&fields=nom,code,codeDepartement,codeRegion&boost=population&limit=10`
+        );
+        const data: City[] = await response.json();
+        setSuggestions(data);
+        setShowSuggestions(data.length > 0);
+      } catch (error) {
+        console.error("Erreur lors de la recherche de villes:", error);
+        setSuggestions([]);
+      } finally {
+        setIsLoading(false);
+      }
     } else {
       setSuggestions([]);
       setShowSuggestions(false);
     }
   };
 
-  const selectCity = (city: string) => {
-    setSearchRegion(city);
+  const selectCity = (city: City) => {
+    setSearchRegion(city.nom);
     setShowSuggestions(false);
   };
 
@@ -114,15 +120,21 @@ export default function HeroSection() {
                 <div className="absolute z-50 w-full mt-1 bg-zinc-900 border border-zinc-700 rounded-lg shadow-2xl max-h-64 overflow-y-auto">
                   {suggestions.map((city, index) => (
                     <button
-                      key={index}
+                      key={city.code}
                       onClick={() => selectCity(city)}
                       className="w-full text-left px-4 py-3 hover:bg-zinc-800 transition-colors flex items-center gap-2 text-gray-200 border-b border-zinc-800 last:border-b-0"
-                      data-testid={`suggestion-${city.toLowerCase()}`}
+                      data-testid={`suggestion-${city.nom.toLowerCase().replace(/\s+/g, '-')}`}
                     >
                       <MapPin className="w-4 h-4 text-zinc-500" />
-                      <span>{city}</span>
+                      <span className="font-medium">{city.nom}</span>
+                      <span className="text-xs text-zinc-500 ml-auto">({city.codeDepartement})</span>
                     </button>
                   ))}
+                </div>
+              )}
+              {isLoading && (
+                <div className="absolute z-50 w-full mt-1 bg-zinc-900 border border-zinc-700 rounded-lg shadow-2xl p-3 text-center text-zinc-500 text-sm">
+                  Recherche en cours...
                 </div>
               )}
             </div>
