@@ -584,12 +584,14 @@ export default function VehicleDetailPage() {
                         {agency.name}
                       </h3>
                       
-                      {agency.address && (
+                      {(agency.street || agency.address) && (
                         <div className="flex items-start mt-2 space-x-2">
                           <MapPin className="text-accent mt-0.5 flex-shrink-0" size={18} />
                           <div>
                             <p className="text-muted-foreground font-medium" data-testid="text-agency-address">
-                              {agency.address}
+                              {agency.street && agency.address 
+                                ? `${agency.street}, ${agency.address}`
+                                : agency.street || agency.address}
                             </p>
                           </div>
                         </div>

@@ -220,11 +220,13 @@ export default function ClientDashboard() {
                                 <h4 className="font-bold text-foreground text-sm mb-2" data-testid={`agency-name-${reservation.id}`}>
                                   {reservation.vehicle.agency.name}
                                 </h4>
-                                {reservation.vehicle.agency.address && (
+                                {(reservation.vehicle.agency.street || reservation.vehicle.agency.address) && (
                                   <div className="flex items-start gap-2">
                                     <MapPin className="text-accent flex-shrink-0 mt-0.5" size={14} />
                                     <p className="text-xs text-muted-foreground" data-testid={`agency-address-${reservation.id}`}>
-                                      {reservation.vehicle.agency.address}
+                                      {reservation.vehicle.agency.street && reservation.vehicle.agency.address 
+                                        ? `${reservation.vehicle.agency.street}, ${reservation.vehicle.agency.address}`
+                                        : reservation.vehicle.agency.street || reservation.vehicle.agency.address}
                                     </p>
                                   </div>
                                 )}

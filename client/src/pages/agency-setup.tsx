@@ -21,6 +21,15 @@ interface City {
   codeRegion: string;
 }
 
+interface Street {
+  properties: {
+    label: string;
+    name: string;
+    citycode: string;
+    city: string;
+  };
+}
+
 export default function AgencySetup() {
   const { user, isLoading } = useAuth();
   const [, setLocation] = useLocation();
@@ -29,14 +38,21 @@ export default function AgencySetup() {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
+    street: "",
     address: "",
     logo: "",
   });
 
+  const [selectedCityCode, setSelectedCityCode] = useState("");
   const [citySuggestions, setCitySuggestions] = useState<City[]>([]);
   const [showCitySuggestions, setShowCitySuggestions] = useState(false);
   const [isCityLoading, setIsCityLoading] = useState(false);
   const citySuggestionsRef = useRef<HTMLDivElement>(null);
+
+  const [streetSuggestions, setStreetSuggestions] = useState<Street[]>([]);
+  const [showStreetSuggestions, setShowStreetSuggestions] = useState(false);
+  const [isStreetLoading, setIsStreetLoading] = useState(false);
+  const streetSuggestionsRef = useRef<HTMLDivElement>(null);
 
   const createAgencyMutation = useMutation({
     mutationFn: async (data: any) => {
@@ -64,6 +80,9 @@ export default function AgencySetup() {
     const handleClickOutside = (event: MouseEvent) => {
       if (citySuggestionsRef.current && !citySuggestionsRef.current.contains(event.target as Node)) {
         setShowCitySuggestions(false);
+      }
+      if (streetSuggestionsRef.current && !streetSuggestionsRef.current.contains(event.target as Node)) {
+        setShowStreetSuggestions(false);
       }
     };
 
@@ -97,7 +116,39 @@ export default function AgencySetup() {
 
   const selectCity = (city: City) => {
     setFormData(prev => ({ ...prev, address: city.nom }));
+    setSelectedCityCode(city.code);
     setShowCitySuggestions(false);
+    // Clear street when city changes
+    setFormData(prev => ({ ...prev, street: "" }));
+  };
+
+  const handleStreetChange = async (value: string) => {
+    setFormData(prev => ({ ...prev, street: value }));
+    
+    if (value.trim().length >= 2 && selectedCityCode) {
+      setIsStreetLoading(true);
+      try {
+        const response = await fetch(
+          `https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(value)}&type=street&citycode=${selectedCityCode}&limit=10`
+        );
+        const data = await response.json();
+        setStreetSuggestions(data.features || []);
+        setShowStreetSuggestions((data.features || []).length > 0);
+      } catch (error) {
+        console.error("Erreur lors de la recherche de rues:", error);
+        setStreetSuggestions([]);
+      } finally {
+        setIsStreetLoading(false);
+      }
+    } else {
+      setStreetSuggestions([]);
+      setShowStreetSuggestions(false);
+    }
+  };
+
+  const selectStreet = (street: Street) => {
+    setFormData(prev => ({ ...prev, street: street.properties.name }));
+    setShowStreetSuggestions(false);
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -268,6 +319,43 @@ export default function AgencySetup() {
                     </div>
                   )}
                   {isCityLoading && (
+                    <div className="absolute z-50 w-full mt-1 bg-zinc-900 border border-zinc-700 rounded-lg shadow-2xl p-3 text-center text-zinc-500 text-sm">
+                      Recherche en cours...
+                    </div>
+                  )}
+                </div>
+
+                <div className="relative" ref={streetSuggestionsRef}>
+                  <Label htmlFor="street" className="text-foreground">Rue</Label>
+                  <Input
+                    id="street"
+                    type="text"
+                    placeholder={selectedCityCode ? "Ex: Avenue des Champs-Élysées..." : "Sélectionnez d'abord une ville"}
+                    value={formData.street}
+                    onChange={(e) => handleStreetChange(e.target.value)}
+                    className="bg-muted border-border text-foreground"
+                    disabled={!selectedCityCode}
+                    data-testid="input-agency-street"
+                  />
+                  
+                  {/* Street Suggestions Dropdown */}
+                  {showStreetSuggestions && streetSuggestions.length > 0 && (
+                    <div className="absolute z-50 w-full mt-1 bg-zinc-900 border border-zinc-700 rounded-lg shadow-2xl max-h-64 overflow-y-auto">
+                      {streetSuggestions.map((street, index) => (
+                        <button
+                          key={index}
+                          type="button"
+                          onClick={() => selectStreet(street)}
+                          className="w-full text-left px-4 py-3 hover:bg-zinc-800 transition-colors flex items-center gap-2 text-gray-200 border-b border-zinc-800 last:border-b-0"
+                          data-testid={`street-suggestion-${index}`}
+                        >
+                          <MapPin className="w-4 h-4 text-zinc-500" />
+                          <span className="font-medium">{street.properties.name}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                  {isStreetLoading && (
                     <div className="absolute z-50 w-full mt-1 bg-zinc-900 border border-zinc-700 rounded-lg shadow-2xl p-3 text-center text-zinc-500 text-sm">
                       Recherche en cours...
                     </div>

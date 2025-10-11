@@ -97,10 +97,14 @@ export default function AgencyVehiclesPage() {
                       {agency.description}
                     </p>
                   )}
-                  {agency.address && (
+                  {(agency.street || agency.address) && (
                     <div className="flex items-center text-muted-foreground">
                       <MapPin className="mr-2" size={16} />
-                      <span data-testid="text-agency-address">{agency.address}</span>
+                      <span data-testid="text-agency-address">
+                        {agency.street && agency.address 
+                          ? `${agency.street}, ${agency.address}`
+                          : agency.street || agency.address}
+                      </span>
                     </div>
                   )}
                 </div>
