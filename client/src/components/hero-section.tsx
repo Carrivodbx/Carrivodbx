@@ -51,7 +51,7 @@ export default function HeroSection() {
         {/* Search Bar */}
         <div className="glass-effect rounded-2xl p-4 sm:p-6 mb-6 sm:mb-8 max-w-4xl mx-auto premium-border animate-fade-in-up subtle-shadow">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-3 sm:gap-4">
-            <div className="md:col-span-2">
+            <div className="md:col-span-2 w-full">
               <Label className="block text-sm font-medium text-gray-300 mb-2">
                 Où souhaitez-vous conduire ?
               </Label>
@@ -60,11 +60,11 @@ export default function HeroSection() {
                 placeholder="Ville, région..."
                 value={searchRegion}
                 onChange={(e) => setSearchRegion(e.target.value)}
-                className="bg-muted border-border text-foreground h-12 text-base"
+                className="bg-muted border-border text-foreground h-12 text-base w-full max-w-full"
                 data-testid="input-search-region"
               />
             </div>
-            <div>
+            <div className="w-full">
               <Label className="block text-sm font-medium text-gray-300 mb-2">
                 Date de début
               </Label>
@@ -72,11 +72,11 @@ export default function HeroSection() {
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="bg-muted border-border text-foreground h-12 text-base"
+                className="bg-muted border-border text-foreground h-12 text-base w-full max-w-full"
                 data-testid="input-start-date"
               />
             </div>
-            <div>
+            <div className="w-full">
               <Label className="block text-sm font-medium text-gray-300 mb-2">
                 Date de fin
               </Label>
@@ -84,7 +84,7 @@ export default function HeroSection() {
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="bg-muted border-border text-foreground h-12 text-base"
+                className="bg-muted border-border text-foreground h-12 text-base w-full max-w-full"
                 data-testid="input-end-date"
               />
             </div>

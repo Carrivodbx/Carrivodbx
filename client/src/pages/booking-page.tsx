@@ -507,8 +507,8 @@ export default function BookingPage() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-6">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="w-full">
                         <Label htmlFor="start-date" className="text-foreground">Date de début</Label>
                         <Input
                           id="start-date"
@@ -516,11 +516,11 @@ export default function BookingPage() {
                           value={startDate}
                           onChange={(e) => setStartDate(e.target.value)}
                           min={new Date().toISOString().split('T')[0]}
-                          className="bg-muted border-border text-foreground"
+                          className="bg-muted border-border text-foreground w-full max-w-full"
                           data-testid="input-start-date"
                         />
                       </div>
-                      <div>
+                      <div className="w-full">
                         <Label htmlFor="end-date" className="text-foreground">Date de fin</Label>
                         <Input
                           id="end-date"
@@ -528,7 +528,7 @@ export default function BookingPage() {
                           value={endDate}
                           onChange={(e) => setEndDate(e.target.value)}
                           min={startDate || new Date().toISOString().split('T')[0]}
-                          className="bg-muted border-border text-foreground"
+                          className="bg-muted border-border text-foreground w-full max-w-full"
                           data-testid="input-end-date"
                         />
                       </div>
