@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/use-auth";
 import { useLocation } from "wouter";
@@ -9,10 +9,17 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Building, ArrowRight } from "lucide-react";
+import { Building, ArrowRight, MapPin } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { insertAgencySchema } from "@shared/schema";
 import porscheNightBackground from "@assets/stock_images/porsche_rear_view_ba_b54491f8.jpg";
+
+interface City {
+  nom: string;
+  code: string;
+  codeDepartement: string;
+  codeRegion: string;
+}
 
 export default function AgencySetup() {
   const { user, isLoading } = useAuth();
@@ -25,6 +32,11 @@ export default function AgencySetup() {
     address: "",
     logo: "",
   });
+
+  const [citySuggestions, setCitySuggestions] = useState<City[]>([]);
+  const [showCitySuggestions, setShowCitySuggestions] = useState(false);
+  const [isCityLoading, setIsCityLoading] = useState(false);
+  const citySuggestionsRef = useRef<HTMLDivElement>(null);
 
   const createAgencyMutation = useMutation({
     mutationFn: async (data: any) => {
@@ -47,6 +59,46 @@ export default function AgencySetup() {
       });
     },
   });
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (citySuggestionsRef.current && !citySuggestionsRef.current.contains(event.target as Node)) {
+        setShowCitySuggestions(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleAddressChange = async (value: string) => {
+    setFormData(prev => ({ ...prev, address: value }));
+    
+    if (value.trim().length >= 2) {
+      setIsCityLoading(true);
+      try {
+        const response = await fetch(
+          `https://geo.api.gouv.fr/communes?nom=${encodeURIComponent(value)}&fields=nom,code,codeDepartement,codeRegion&boost=population&limit=10`
+        );
+        const data: City[] = await response.json();
+        setCitySuggestions(data);
+        setShowCitySuggestions(data.length > 0);
+      } catch (error) {
+        console.error("Erreur lors de la recherche de villes:", error);
+        setCitySuggestions([]);
+      } finally {
+        setIsCityLoading(false);
+      }
+    } else {
+      setCitySuggestions([]);
+      setShowCitySuggestions(false);
+    }
+  };
+
+  const selectCity = (city: City) => {
+    setFormData(prev => ({ ...prev, address: city.nom }));
+    setShowCitySuggestions(false);
+  };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -185,17 +237,41 @@ export default function AgencySetup() {
                   )}
                 </div>
 
-                <div>
-                  <Label htmlFor="address" className="text-foreground">Adresse</Label>
+                <div className="relative" ref={citySuggestionsRef}>
+                  <Label htmlFor="address" className="text-foreground">Ville</Label>
                   <Input
                     id="address"
                     type="text"
-                    placeholder="Ex: 12 Avenue de Monte-Carlo, Monaco"
+                    placeholder="Ex: Paris, Lyon, Marseille..."
                     value={formData.address}
-                    onChange={(e) => setFormData(prev => ({ ...prev, address: e.target.value }))}
+                    onChange={(e) => handleAddressChange(e.target.value)}
                     className="bg-muted border-border text-foreground"
                     data-testid="input-agency-address"
                   />
+                  
+                  {/* City Suggestions Dropdown */}
+                  {showCitySuggestions && citySuggestions.length > 0 && (
+                    <div className="absolute z-50 w-full mt-1 bg-zinc-900 border border-zinc-700 rounded-lg shadow-2xl max-h-64 overflow-y-auto">
+                      {citySuggestions.map((city) => (
+                        <button
+                          key={city.code}
+                          type="button"
+                          onClick={() => selectCity(city)}
+                          className="w-full text-left px-4 py-3 hover:bg-zinc-800 transition-colors flex items-center gap-2 text-gray-200 border-b border-zinc-800 last:border-b-0"
+                          data-testid={`city-suggestion-${city.nom.toLowerCase().replace(/\s+/g, '-')}`}
+                        >
+                          <MapPin className="w-4 h-4 text-zinc-500" />
+                          <span className="font-medium">{city.nom}</span>
+                          <span className="text-xs text-zinc-500 ml-auto">({city.codeDepartement})</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                  {isCityLoading && (
+                    <div className="absolute z-50 w-full mt-1 bg-zinc-900 border border-zinc-700 rounded-lg shadow-2xl p-3 text-center text-zinc-500 text-sm">
+                      Recherche en cours...
+                    </div>
+                  )}
                 </div>
 
                 <div>

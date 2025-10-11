@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,14 @@ import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { insertVehicleSchema } from "@shared/schema";
 import type { Vehicle } from "@shared/schema";
+import { MapPin } from "lucide-react";
+
+interface City {
+  nom: string;
+  code: string;
+  codeDepartement: string;
+  codeRegion: string;
+}
 
 interface VehicleFormProps {
   vehicle?: Vehicle | null;
@@ -40,6 +48,11 @@ export default function VehicleForm({ vehicle, onSuccess, onCancel }: VehicleFor
     maxKilometers: "",
   });
 
+  const [citySuggestions, setCitySuggestions] = useState<City[]>([]);
+  const [showCitySuggestions, setShowCitySuggestions] = useState(false);
+  const [isCityLoading, setIsCityLoading] = useState(false);
+  const citySuggestionsRef = useRef<HTMLDivElement>(null);
+
   // Populate form when editing
   useEffect(() => {
     if (vehicle) {
@@ -63,6 +76,46 @@ export default function VehicleForm({ vehicle, onSuccess, onCancel }: VehicleFor
       });
     }
   }, [vehicle]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (citySuggestionsRef.current && !citySuggestionsRef.current.contains(event.target as Node)) {
+        setShowCitySuggestions(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleRegionChange = async (value: string) => {
+    handleInputChange("region", value);
+    
+    if (value.trim().length >= 2) {
+      setIsCityLoading(true);
+      try {
+        const response = await fetch(
+          `https://geo.api.gouv.fr/communes?nom=${encodeURIComponent(value)}&fields=nom,code,codeDepartement,codeRegion&boost=population&limit=10`
+        );
+        const data: City[] = await response.json();
+        setCitySuggestions(data);
+        setShowCitySuggestions(data.length > 0);
+      } catch (error) {
+        console.error("Erreur lors de la recherche de villes:", error);
+        setCitySuggestions([]);
+      } finally {
+        setIsCityLoading(false);
+      }
+    } else {
+      setCitySuggestions([]);
+      setShowCitySuggestions(false);
+    }
+  };
+
+  const selectCity = (city: City) => {
+    handleInputChange("region", city.nom);
+    setShowCitySuggestions(false);
+  };
 
   const createMutation = useMutation({
     mutationFn: async (data: any) => {
@@ -362,18 +415,42 @@ export default function VehicleForm({ vehicle, onSuccess, onCancel }: VehicleFor
       </div>
 
       <div className="grid grid-cols-1 gap-4">
-        <div>
-          <Label htmlFor="region" className="text-foreground">Région *</Label>
+        <div className="relative" ref={citySuggestionsRef}>
+          <Label htmlFor="region" className="text-foreground">Ville *</Label>
           <Input
             id="region"
             type="text"
-            placeholder="Ex: Paris, France"
+            placeholder="Ex: Paris, Lyon, Marseille..."
             value={formData.region}
-            onChange={(e) => handleInputChange("region", e.target.value)}
+            onChange={(e) => handleRegionChange(e.target.value)}
             className="bg-muted border-border text-foreground"
             required
             data-testid="input-vehicle-region"
           />
+          
+          {/* City Suggestions Dropdown */}
+          {showCitySuggestions && citySuggestions.length > 0 && (
+            <div className="absolute z-50 w-full mt-1 bg-zinc-900 border border-zinc-700 rounded-lg shadow-2xl max-h-64 overflow-y-auto">
+              {citySuggestions.map((city) => (
+                <button
+                  key={city.code}
+                  type="button"
+                  onClick={() => selectCity(city)}
+                  className="w-full text-left px-4 py-3 hover:bg-zinc-800 transition-colors flex items-center gap-2 text-gray-200 border-b border-zinc-800 last:border-b-0"
+                  data-testid={`vehicle-city-suggestion-${city.nom.toLowerCase().replace(/\s+/g, '-')}`}
+                >
+                  <MapPin className="w-4 h-4 text-zinc-500" />
+                  <span className="font-medium">{city.nom}</span>
+                  <span className="text-xs text-zinc-500 ml-auto">({city.codeDepartement})</span>
+                </button>
+              ))}
+            </div>
+          )}
+          {isCityLoading && (
+            <div className="absolute z-50 w-full mt-1 bg-zinc-900 border border-zinc-700 rounded-lg shadow-2xl p-3 text-center text-zinc-500 text-sm">
+              Recherche en cours...
+            </div>
+          )}
         </div>
       </div>
 
