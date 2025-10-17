@@ -15,7 +15,6 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { User, LogOut, Menu, Home, Car, LayoutDashboard, Crown, Zap, Building2, Mountain, Wind, Leaf, Plug, Flame } from "lucide-react";
-import logoPath from "@assets/Image4_1759292728996.jpg";
 import { useState } from "react";
 
 export default function Navbar() {
@@ -38,7 +37,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-20 sm:h-24">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3 flex-shrink-0">
-            <img src={logoPath} alt="Carivoo Logo" className="h-16 sm:h-20 w-auto" />
+            <span className="text-2xl sm:text-3xl font-bold tracking-wider">CARIVOO</span>
           </Link>
           
           {/* Navigation Links - Desktop */}

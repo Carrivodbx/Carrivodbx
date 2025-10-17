@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowLeft, MapPin } from "lucide-react";
 import type { Vehicle, Agency } from "@shared/schema";
-import porscheNightBackground from "@assets/stock_images/porsche_rear_view_ba_b54491f8.jpg";
 
 export default function AgencyVehiclesPage() {
   const { id } = useParams<{ id: string }>();
@@ -28,13 +27,8 @@ export default function AgencyVehiclesPage() {
 
   return (
     <div className="min-h-screen relative overflow-x-hidden">
-      {/* Background Image */}
+      {/* Background Gradient */}
       <div className="fixed inset-0 z-0">
-        <img 
-          src={porscheNightBackground}
-          alt="Porsche rear view night city" 
-          className="w-full h-full object-cover opacity-5" 
-        />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background"></div>
       </div>
 

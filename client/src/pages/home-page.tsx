@@ -7,10 +7,6 @@ import { Shield, Crown, Zap, ChartLine, Users, Star, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
 import type { Vehicle } from "@shared/schema";
-import video1 from "@assets/5309378-hd_1920_1080_25fps_1759286916838.mp4";
-import video2 from "@assets/5309319-hd_1920_1080_25fps_1759286936761.mp4";
-import video3 from "@assets/5309381-hd_1920_1080_25fps_1759286956209.mp4";
-import video4 from "@assets/3066451-uhd_4096_2160_24fps_1759286966291.mp4";
 
 export default function HomePage() {
   const [, setLocation] = useLocation();
@@ -136,15 +132,7 @@ export default function HomePage() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="relative group overflow-hidden rounded-2xl neon-border glass-morphism">
-              <video 
-                autoPlay 
-                loop 
-                muted 
-                playsInline
-                className="w-full h-64 md:h-80 object-cover transition-transform duration-500 group-hover:scale-110"
-              >
-                <source src={video1} type="video/mp4" />
-              </video>
+              <div className="w-full h-64 md:h-80 bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 transition-transform duration-500 group-hover:scale-110"></div>
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
                 <div className="text-white">
                   <h3 className="text-xl font-orbitron font-bold mb-2">Performance & Style</h3>
@@ -154,15 +142,7 @@ export default function HomePage() {
             </div>
 
             <div className="relative group overflow-hidden rounded-2xl neon-border glass-morphism">
-              <video 
-                autoPlay 
-                loop 
-                muted 
-                playsInline
-                className="w-full h-64 md:h-80 object-cover transition-transform duration-500 group-hover:scale-110"
-              >
-                <source src={video2} type="video/mp4" />
-              </video>
+              <div className="w-full h-64 md:h-80 bg-gradient-to-br from-zinc-800 via-zinc-900 to-black transition-transform duration-500 group-hover:scale-110"></div>
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
                 <div className="text-white">
                   <h3 className="text-xl font-orbitron font-bold mb-2">Luxe & Confort</h3>
@@ -172,15 +152,7 @@ export default function HomePage() {
             </div>
 
             <div className="relative group overflow-hidden rounded-2xl neon-border glass-morphism">
-              <video 
-                autoPlay 
-                loop 
-                muted 
-                playsInline
-                className="w-full h-64 md:h-80 object-cover transition-transform duration-500 group-hover:scale-110"
-              >
-                <source src={video3} type="video/mp4" />
-              </video>
+              <div className="w-full h-64 md:h-80 bg-gradient-to-br from-black via-zinc-900 to-zinc-800 transition-transform duration-500 group-hover:scale-110"></div>
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
                 <div className="text-white">
                   <h3 className="text-xl font-orbitron font-bold mb-2">Élégance</h3>
@@ -190,15 +162,7 @@ export default function HomePage() {
             </div>
 
             <div className="relative group overflow-hidden rounded-2xl neon-border glass-morphism">
-              <video 
-                autoPlay 
-                loop 
-                muted 
-                playsInline
-                className="w-full h-64 md:h-80 object-cover transition-transform duration-500 group-hover:scale-110"
-              >
-                <source src={video4} type="video/mp4" />
-              </video>
+              <div className="w-full h-64 md:h-80 bg-gradient-to-br from-zinc-900 via-black to-zinc-800 transition-transform duration-500 group-hover:scale-110"></div>
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
                 <div className="text-white">
                   <h3 className="text-xl font-orbitron font-bold mb-2">Puissance</h3>

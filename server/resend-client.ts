@@ -1,15 +1,16 @@
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 export async function sendPasswordResetEmail(to: string, resetLink: string) {
   try {
-    if (!process.env.RESEND_API_KEY) {
-      throw new Error('RESEND_API_KEY not configured');
+    if (!resend) {
+      console.warn('RESEND_API_KEY not configured - password reset email not sent');
+      return { success: false, error: 'Email service not configured' };
     }
-    
+
     const fromEmail = process.env.EMAIL_FROM || 'Carivoo <onboarding@resend.dev>';
-    
+
     const { data, error } = await resend.emails.send({
       from: fromEmail,
       to: [to],

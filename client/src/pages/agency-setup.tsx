@@ -12,7 +12,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Building, ArrowRight, MapPin } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { insertAgencySchema } from "@shared/schema";
-import porscheNightBackground from "@assets/stock_images/porsche_rear_view_ba_b54491f8.jpg";
 
 interface City {
   nom: string;

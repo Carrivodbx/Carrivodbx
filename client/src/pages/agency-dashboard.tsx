@@ -13,7 +13,6 @@ import { Badge } from "@/components/ui/badge";
 import { Plus, Car, Edit, Trash2, Eye, TrendingUp, Crown, Sparkles, Calendar, MapPin } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import type { Vehicle, Agency, Subscription, Reservation, User } from "@shared/schema";
-import porscheNightBackground from "@assets/stock_images/porsche_rear_view_ba_b54491f8.jpg";
 
 interface ReservationWithDetails extends Reservation {
   vehicle?: Vehicle;

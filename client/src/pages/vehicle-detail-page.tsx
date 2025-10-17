@@ -11,7 +11,6 @@ import { ImageGalleryModal } from "@/components/image-gallery-modal";
 import { MapPin, Users, Star, ArrowLeft, Calendar, Shield, Zap, ChevronLeft, ChevronRight, Gauge, CreditCard, Banknote, Car } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { Vehicle, Agency } from "@shared/schema";
-import porscheNightBackground from "@assets/stock_images/porsche_rear_view_ba_b54491f8.jpg";
 
 export default function VehicleDetailPage() {
   const { id } = useParams<{ id: string }>();

@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Calendar, Car, Clock, MapPin, Star, Eye } from "lucide-react";
 import { useLocation } from "wouter";
 import type { Reservation, Vehicle, Agency } from "@shared/schema";
-import porscheNightBackground from "@assets/stock_images/porsche_rear_view_ba_b54491f8.jpg";
 import ReservationChat from "@/components/reservation-chat";
 
 interface ReservationWithVehicle extends Reservation {

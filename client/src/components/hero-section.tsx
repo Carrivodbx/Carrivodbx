@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Search, Car, Building, MapPin } from "lucide-react";
-import heroVideo from "@assets/5309354-hd_1920_1080_25fps_1759286891675.mp4";
 
 interface City {
   nom: string;
@@ -76,15 +75,7 @@ export default function HeroSection() {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Video Background */}
       <div className="absolute inset-0 z-0">
-        <video 
-          autoPlay 
-          loop 
-          muted 
-          playsInline
-          className="w-full h-full object-cover"
-        >
-          <source src={heroVideo} type="video/mp4" />
-        </video>
+        <div className="w-full h-full bg-gradient-to-br from-zinc-900 via-black to-zinc-800"></div>
         <div className="absolute inset-0 hero-gradient"></div>
         <div className="absolute inset-0 bg-black bg-opacity-50"></div>
       </div>

@@ -10,7 +10,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Slider } from "@/components/ui/slider";
 import { Search, Filter, Euro } from "lucide-react";
 import type { Vehicle } from "@shared/schema";
-import backgroundVideo from "@assets/5309319-hd_1920_1080_25fps_1759286936761.mp4";
 
 export default function VehiclesPage() {
   const searchParams = useSearch();
@@ -69,17 +68,8 @@ export default function VehiclesPage() {
 
   return (
     <div className="min-h-screen relative overflow-x-hidden">
-      {/* Background Video */}
+      {/* Background Gradient */}
       <div className="fixed inset-0 z-0">
-        <video 
-          autoPlay 
-          loop 
-          muted 
-          playsInline
-          className="w-full h-full object-cover opacity-5"
-        >
-          <source src={backgroundVideo} type="video/mp4" />
-        </video>
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background"></div>
       </div>
 
